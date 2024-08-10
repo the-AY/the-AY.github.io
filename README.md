@@ -32,4 +32,3 @@ Email
 ## License
 
 MIT
-![alt text](assets/images/project-9.png)
