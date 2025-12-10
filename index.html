@@ -1,155 +1,128 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Adish Yermal - Portfolio</title>
 
-  <!-- Favicon -->
-  <link rel="shortcut icon" href="./assets/images/logo.ico" type="image/x-icon">
-
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
-
-  <!-- CSS -->
-  <link rel="stylesheet" href="./assets/css/style.css">
 
   <!-- Ionicons -->
   <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
   <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+
+  <!-- QRCode.js library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+  <style>
+    /* Basic Reset */
+    * {margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif;}
+    body{background:#f4f4f4;color:#333;line-height:1.6;}
+    main{display:flex;min-height:100vh;}
+    .sidebar{width:260px;background:#111;color:#fff;padding:20px;flex-shrink:0;display:flex;flex-direction:column;justify-content:flex-start;position:fixed;height:100%;}
+    .sidebar-info{margin-bottom:20px;text-align:center;}
+    .avatar-box img{border-radius:50%;}
+    .name{margin:10px 0 0;font-size:1.3em;font-weight:600;}
+    .title{font-size:0.9em;color:#aaa;}
+    .social-list{display:flex;justify-content:center;gap:10px;margin-top:20px;}
+    .social-link{color:#fff;font-size:1.2em;}
+    .main-content{margin-left:260px;padding:20px;flex:1;}
+    .navbar{margin-bottom:20px;}
+    .navbar-list{display:flex;gap:10px;flex-wrap:wrap;}
+    .navbar-link{background:#fff;padding:10px 15px;border:none;border-radius:5px;cursor:pointer;transition:0.3s;}
+    .navbar-link.active{background:#111;color:#fff;}
+    article{display:none;}
+    article.active{display:block;}
+    h2.article-title{margin-bottom:15px;color:#111;}
+    
+    /* QR Section */
+    .qr-section{max-width:500px;margin:20px auto;padding:20px;background:#fff;border-radius:10px;box-shadow:0 4px 10px rgba(0,0,0,0.1);}
+    .qr-section h3{margin-bottom:15px;text-align:center;color:#111;}
+    .qr-input{width:100%;padding:10px;border:1px solid #ccc;border-radius:5px;margin-bottom:15px;font-size:1em;}
+    .qr-btn{width:100%;padding:10px;background:#111;color:#fff;border:none;border-radius:5px;font-size:1em;cursor:pointer;transition:0.3s;}
+    .qr-btn:hover{background:#333;}
+    #qrcode{display:flex;justify-content:center;margin-top:15px;}
+  </style>
 </head>
-
 <body>
-
   <main>
-
     <!-- Sidebar -->
-    <aside class="sidebar" data-sidebar>
+    <aside class="sidebar">
       <div class="sidebar-info">
         <figure class="avatar-box">
-          <img src="./assets/images/my-avatar.png" alt="Adish Yermal" width="80">
+          <img src="https://via.placeholder.com/80" alt="Adish Yermal">
         </figure>
         <div class="info-content">
           <h1 class="name">Adish Yermal</h1>
           <p class="title">Software Developer</p>
         </div>
-        <button class="info_more-btn" data-sidebar-btn>
-          <span>Show Contacts</span>
-          <ion-icon name="chevron-down"></ion-icon>
-        </button>
-      </div>
-
-      <div class="sidebar-info_more">
-        <div class="separator"></div>
-        <ul class="contacts-list">
-          <li class="contact-item">
-            <div class="icon-box"><ion-icon name="mail-outline"></ion-icon></div>
-            <div class="contact-info">
-              <p class="contact-title">Email</p>
-              <a href="mailto:adishy.is19@gmail.com" class="contact-link">adishy.is19@gmail.com</a>
-            </div>
-          </li>
-          <li class="contact-item">
-            <div class="icon-box"><ion-icon name="phone-portrait-outline"></ion-icon></div>
-            <div class="contact-info">
-              <p class="contact-title">Phone</p>
-              <a href="tel:+91779527723" class="contact-link">+91 77957723</a>
-            </div>
-          </li>
-          <li class="contact-item">
-            <div class="icon-box"><ion-icon name="calendar-outline"></ion-icon></div>
-            <div class="contact-info">
-              <p class="contact-title">Birthday</p>
-              <time datetime="2001-09-21">21 September 2001</time>
-            </div>
-          </li>
-          <li class="contact-item">
-            <div class="icon-box"><ion-icon name="location-outline"></ion-icon></div>
-            <div class="contact-info">
-              <p class="contact-title">Location</p>
-              <address>Karnataka, India</address>
-            </div>
-          </li>
-        </ul>
-
-        <div class="separator"></div>
-
         <ul class="social-list">
-          <li class="social-item"><a href="https://www.linkedin.com/in/adish-yermal/" class="social-link"><ion-icon name="logo-linkedin"></ion-icon></a></li>
-          <li class="social-item"><a href="https://github.com/the-AY" class="social-link"><ion-icon name="logo-github"></ion-icon></a></li>
-          <li class="social-item"><a href="http://g.dev/Adish_yermal" class="social-link"><ion-icon name="logo-google"></ion-icon></a></li>
-          <li class="social-item"><a href="#" class="social-link"><ion-icon name="logo-twitter"></ion-icon></a></li>
-          <li class="social-item"><a href="#" class="social-link"><ion-icon name="logo-instagram"></ion-icon></a></li>
+          <li><a href="https://www.linkedin.com/in/adish-yermal/" class="social-link"><ion-icon name="logo-linkedin"></ion-icon></a></li>
+          <li><a href="https://github.com/the-AY" class="social-link"><ion-icon name="logo-github"></ion-icon></a></li>
         </ul>
       </div>
     </aside>
 
     <!-- Main Content -->
     <div class="main-content">
-
       <!-- Navbar -->
       <nav class="navbar">
         <ul class="navbar-list">
-          <li class="navbar-item"><button class="navbar-link active" data-nav-link>About</button></li>
-          <li class="navbar-item"><button class="navbar-link" data-nav-link>Resume</button></li>
-          <li class="navbar-item"><button class="navbar-link" data-nav-link>Portfolio</button></li>
-          <li class="navbar-item"><button class="navbar-link" data-nav-link>Blog</button></li>
-          <li class="navbar-item"><button class="navbar-link" data-nav-link>Contact</button></li>
-          <li class="navbar-item"><button class="navbar-link" data-nav-link>QR</button></li>
+          <li><button class="navbar-link active" data-page="about">About</button></li>
+          <li><button class="navbar-link" data-page="qr">QR</button></li>
         </ul>
       </nav>
 
       <!-- About Page -->
       <article class="about active" data-page="about">
-        <header>
-          <h2 class="h2 article-title">About Me</h2>
-        </header>
-        <section class="about-text">
-          <p>I'm a CyberSecurity Enthusiast currently working as a C++ Developer. I enjoy building secure, functional, and user-friendly solutions while exploring modern web design and development.</p>
-        </section>
-
-        <section class="service">
-          <h3 class="h3 service-title">What I'm Doing</h3>
-          <ul class="service-list">
-            <li class="service-item">
-              <div class="service-icon-box"><img src="./assets/images/icon-design.svg" alt="design icon" width="40"></div>
-              <div class="service-content-box">
-                <h4 class="h4 service-item-title">Web Design & Development</h4>
-                <p class="service-item-text">Modern, high-quality design at a professional level.</p>
-              </div>
-            </li>
-            <li class="service-item">
-              <div class="service-icon-box"><img src="./assets/images/icon-dev.svg" alt="web development icon" width="40"></div>
-              <div class="service-content-box">
-                <h4 class="h4 service-item-title">CyberSecurity</h4>
-                <p class="service-item-text">Professional analysis of system vulnerabilities.</p>
-              </div>
-            </li>
-            <li class="service-item">
-              <div class="service-icon-box"><img src="./assets/images/icon-app.svg" alt="app icon" width="40"></div>
-              <div class="service-content-box">
-                <h4 class="h4 service-item-title">Mobile Apps</h4>
-                <p class="service-item-text">Professional iOS and Android app development.</p>
-              </div>
-            </li>
-            <li class="service-item">
-              <div class="service-icon-box"><img src="./assets/images/icon-photo.svg" alt="photo icon" width="40"></div>
-              <div class="service-content-box">
-                <h4 class="h4 service-item-title">Photography</h4>
-                <p class="service-item-text">High-quality professional photography.</p>
-              </div>
-            </li>
-          </ul>
-        </section>
+        <h2 class="article-title">About Me</h2>
+        <p>I'm a CyberSecurity Enthusiast currently working as a C++ Developer. I enjoy building secure, functional, and user-friendly solutions while exploring modern web design and development.</p>
       </article>
 
+      <!-- QR Section -->
+      <article class="qr-section" data-page="qr">
+        <h3>Generate Your QR Code</h3>
+        <input type="text" id="qr-text" class="qr-input" placeholder="Enter text or URL" />
+        <button id="generate-qr" class="qr-btn">Generate QR</button>
+        <div id="qrcode"></div>
+      </article>
     </div>
   </main>
 
-  <!-- JS -->
-  <script src="./assets/js/script.js"></script>
-</body>
+  <script>
+    // Page switching
+    const navLinks = document.querySelectorAll('.navbar-link');
+    const articles = document.querySelectorAll('article');
+    navLinks.forEach(link=>{
+      link.addEventListener('click', ()=>{
+        navLinks.forEach(l=>l.classList.remove('active'));
+        link.classList.add('active');
+        const page = link.dataset.page;
+        articles.forEach(article=>{
+          article.classList.toggle('active', article.dataset.page===page);
+        });
+      });
+    });
 
+    // QR code generation
+    const qrBtn = document.getElementById('generate-qr');
+    const qrText = document.getElementById('qr-text');
+    const qrContainer = document.getElementById('qrcode');
+
+    qrBtn.addEventListener('click', ()=>{
+      qrContainer.innerHTML = '';
+      if(qrText.value.trim()!==''){
+        new QRCode(qrContainer, {
+          text: qrText.value,
+          width: 200,
+          height: 200
+        });
+      } else {
+        alert('Please enter some text or URL');
+      }
+    });
+  </script>
+</body>
 </html>
