@@ -59,9 +59,26 @@
           <ion-icon name="document-text-outline"></ion-icon>
           View Resume
         </a>
+        <button class="btn btn-secondary" onclick="showQRCode()">
+          <ion-icon name="qr-code-outline"></ion-icon>
+          QR Code
+        </button>
       </div>
     </div>
   </section>
+
+  <!-- QR CODE MODAL -->
+  <div id="qrModal" class="qr-modal" onclick="hideQRCode()">
+    <div class="qr-modal-content" onclick="event.stopPropagation()">
+      <button class="qr-close" onclick="hideQRCode()">
+        <ion-icon name="close-outline"></ion-icon>
+      </button>
+      <h3>Scan to Connect</h3>
+      <img src="./assets/images/qr-code.png" alt="QR Code" class="qr-code-image">
+      <p class="qr-url">the-AY.github.io/links</p>
+      <p class="qr-description">Scan this QR code to access all my social media and professional links</p>
+    </div>
+  </div>
 
   <!-- LINKTREE SECTION -->
   <section id="links" class="linktree">
@@ -476,6 +493,24 @@
           link.classList.add('active');
         }
       });
+    });
+
+    // QR Code Modal Functions
+    function showQRCode() {
+      document.getElementById('qrModal').style.display = 'flex';
+      document.body.style.overflow = 'hidden';
+    }
+
+    function hideQRCode() {
+      document.getElementById('qrModal').style.display = 'none';
+      document.body.style.overflow = 'auto';
+    }
+
+    // Close modal with Escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        hideQRCode();
+      }
     });
   </script>
 
