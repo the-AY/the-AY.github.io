@@ -5,1187 +5,480 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>(BETA)Personal Portfolio</title>
+  <title>Adish Yermal - Software Developer & Cybersecurity Enthusiast</title>
 
-  <!--
-    - favicon
-  -->
+  <!-- Favicon -->
   <link rel="shortcut icon" href="./assets/images/logo.ico" type="image/x-icon">
 
-  <!--
-    - custom css link
-  -->
+  <!-- Custom CSS -->
   <link rel="stylesheet" href="./assets/css/style.css">
 
-  <!--
-    - google font link
-  -->
+  <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+  <!-- Ionicons -->
+  <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+  <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
 </head>
 
 <body>
 
-  <!--
-    - #MAIN
-  -->
+  <!-- NAVIGATION -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="#" class="nav-brand">Adish Yermal</a>
+      <div class="nav-menu">
+        <a href="#home" class="nav-link active">Home</a>
+        <a href="#links" class="nav-link">Links</a>
+        <a href="#about" class="nav-link">About</a>
+        <a href="#resume" class="nav-link">Resume</a>
+        <a href="#portfolio" class="nav-link">Portfolio</a>
+        <a href="#contact" class="nav-link">Contact</a>
+      </div>
+    </div>
+  </nav>
 
-  <main>
+  <!-- HERO SECTION -->
+  <section id="home" class="hero">
+    <div class="hero-container">
+      <img src="./assets/images/my-avatar.png" alt="Adish Yermal" class="hero-avatar">
+      <h1 class="hero-title">Adish Yermal</h1>
+      <p class="hero-subtitle">Software Developer & Cybersecurity Enthusiast</p>
+      <p class="hero-description">
+        Passionate about building secure, scalable applications and exploring the world of cybersecurity.
+        Currently working as a C++ Developer with expertise in web development and security analysis.
+      </p>
+      <div class="hero-buttons">
+        <a href="#contact" class="btn btn-primary">
+          <ion-icon name="mail-outline"></ion-icon>
+          Get In Touch
+        </a>
+        <a href="#resume" class="btn btn-secondary">
+          <ion-icon name="document-text-outline"></ion-icon>
+          View Resume
+        </a>
+      </div>
+    </div>
+  </section>
 
-    <!--
-      - #SIDEBAR
-    -->
+  <!-- LINKTREE SECTION -->
+  <section id="links" class="linktree">
+    <div class="section-container">
+      <h2 class="section-title">Connect With Me</h2>
+      <p class="section-subtitle">Find me on these platforms</p>
 
-    <aside class="sidebar" data-sidebar>
+      <div class="links-grid">
 
-      <div class="sidebar-info">
+        <a href="https://www.linkedin.com/in/adish-yermal/" target="_blank" class="link-card">
+          <div class="link-icon linkedin">
+            <ion-icon name="logo-linkedin"></ion-icon>
+          </div>
+          <div class="link-content">
+            <h3>LinkedIn</h3>
+            <p>Professional network & connections</p>
+          </div>
+        </a>
 
-        <figure class="avatar-box">
-          <img src="./assets/images/my-avatar.png" alt="Adish Yermal" width="80">
-        </figure>
+        <a href="https://github.com/the-AY" target="_blank" class="link-card">
+          <div class="link-icon github">
+            <ion-icon name="logo-github"></ion-icon>
+          </div>
+          <div class="link-content">
+            <h3>GitHub</h3>
+            <p>Open source projects & code</p>
+          </div>
+        </a>
 
-        <div class="info-content">
-          <h1 class="name" title="Adish Yermal">Adish Yermal</h1>
+        <a href="http://g.dev/Adish_yermal" target="_blank" class="link-card">
+          <div class="link-icon google">
+            <ion-icon name="logo-google"></ion-icon>
+          </div>
+          <div class="link-content">
+            <h3>Google Developer</h3>
+            <p>Developer profile & contributions</p>
+          </div>
+        </a>
 
-          <p class="title">Software Developer</p>
-        </div>
+        <a href="mailto:adishy.is19@gmail.com" class="link-card">
+          <div class="link-icon email">
+            <ion-icon name="mail-outline"></ion-icon>
+          </div>
+          <div class="link-content">
+            <h3>Email</h3>
+            <p>adishy.is19@gmail.com</p>
+          </div>
+        </a>
 
-        <button class="info_more-btn" data-sidebar-btn>
-          <span>Show Contacts </span>
+        <a href="#" target="_blank" class="link-card">
+          <div class="link-icon twitter">
+            <ion-icon name="logo-twitter"></ion-icon>
+          </div>
+          <div class="link-content">
+            <h3>Twitter</h3>
+            <p>Thoughts & updates</p>
+          </div>
+        </a>
 
-          <ion-icon name="chevron-down"></ion-icon>
-        </button>
+        <a href="#" target="_blank" class="link-card">
+          <div class="link-icon instagram">
+            <ion-icon name="logo-instagram"></ion-icon>
+          </div>
+          <div class="link-content">
+            <h3>Instagram</h3>
+            <p>Photos & stories</p>
+          </div>
+        </a>
+
+        <a href="#portfolio" class="link-card">
+          <div class="link-icon portfolio">
+            <ion-icon name="briefcase-outline"></ion-icon>
+          </div>
+          <div class="link-content">
+            <h3>Portfolio</h3>
+            <p>View my projects & work</p>
+          </div>
+        </a>
+
+        <a href="#resume" class="link-card">
+          <div class="link-icon resume">
+            <ion-icon name="document-text-outline"></ion-icon>
+          </div>
+          <div class="link-content">
+            <h3>Resume</h3>
+            <p>Download my CV</p>
+          </div>
+        </a>
 
       </div>
+    </div>
+  </section>
 
-      <div class="sidebar-info_more">
+  <!-- ABOUT SECTION -->
+  <section id="about" class="about">
+    <div class="section-container">
+      <h2 class="section-title">About Me</h2>
+      <div class="about-content">
+        <p class="about-text">
+          I'm a Cybersecurity Enthusiast currently working as a C++ Developer. I'm passionate about building
+          secure applications and exploring vulnerabilities in systems. With a strong foundation in software
+          development and security analysis, I strive to create robust and efficient solutions.
+        </p>
 
-        <div class="separator"></div>
+        <div class="skills-grid">
+          <div class="skill-card">
+            <div class="skill-icon">🌐</div>
+            <h3>Web Development</h3>
+            <p>Modern, responsive web applications</p>
+          </div>
 
-        <ul class="contacts-list">
+          <div class="skill-card">
+            <div class="skill-icon">🔒</div>
+            <h3>Cybersecurity</h3>
+            <p>Vulnerability analysis & security</p>
+          </div>
 
-          <li class="contact-item">
+          <div class="skill-card">
+            <div class="skill-icon">📱</div>
+            <h3>Mobile Apps</h3>
+            <p>iOS & Android development</p>
+          </div>
 
-            <div class="icon-box">
+          <div class="skill-card">
+            <div class="skill-icon">⚙️</div>
+            <h3>C++ Development</h3>
+            <p>High-performance applications</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- RESUME SECTION -->
+  <section id="resume" class="resume">
+    <div class="section-container">
+      <h2 class="section-title">Resume</h2>
+      <p class="section-subtitle">My professional journey</p>
+
+      <!-- Experience -->
+      <div class="timeline-section">
+        <div class="timeline-header">
+          <div class="timeline-icon">
+            <ion-icon name="briefcase-outline"></ion-icon>
+          </div>
+          <h3>Experience</h3>
+        </div>
+
+        <div class="timeline">
+          <div class="timeline-item">
+            <div class="timeline-item-header">
+              <h4>TEL - Engineer (Building)</h4>
+              <span class="timeline-date">October 2023 — Present</span>
+            </div>
+            <p>Working on building engineering projects with a focus on C++ development and system optimization.</p>
+          </div>
+
+          <div class="timeline-item">
+            <div class="timeline-item-header">
+              <h4>E-Commerce Intern</h4>
+              <span class="timeline-date">February 2023 — April 2023</span>
+            </div>
+            <p>Developed and maintained e-commerce platform features, improving user experience and backend
+              functionality.</p>
+          </div>
+
+          <div class="timeline-item">
+            <div class="timeline-item-header">
+              <h4>Cybersecurity Trainee</h4>
+              <span class="timeline-date">2022 — 2023</span>
+            </div>
+            <p>Trained in vulnerability assessment, penetration testing, and security analysis of various systems.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Education -->
+      <div class="timeline-section">
+        <div class="timeline-header">
+          <div class="timeline-icon">
+            <ion-icon name="school-outline"></ion-icon>
+          </div>
+          <h3>Education</h3>
+        </div>
+
+        <div class="timeline">
+          <div class="timeline-item">
+            <div class="timeline-item-header">
+              <h4>Sahyadri College of Engineering and Management</h4>
+              <span class="timeline-date">2019 — 2024</span>
+            </div>
+            <p>Bachelor's degree in Computer Science & Engineering with focus on software development and cybersecurity.
+            </p>
+          </div>
+
+          <div class="timeline-item">
+            <div class="timeline-item-header">
+              <h4>Expert PU College</h4>
+              <span class="timeline-date">2017 — 2019</span>
+            </div>
+            <p>Pre-University education with specialization in Science stream.</p>
+          </div>
+
+          <div class="timeline-item">
+            <div class="timeline-item-header">
+              <h4>St. Aloysius High School</h4>
+              <span class="timeline-date">2015 — 2017</span>
+            </div>
+            <p>Secondary education with strong foundation in mathematics and science.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Skills -->
+      <div class="timeline-section">
+        <div class="timeline-header">
+          <div class="timeline-icon">
+            <ion-icon name="code-slash-outline"></ion-icon>
+          </div>
+          <h3>Technical Skills</h3>
+        </div>
+
+        <div class="skills-list">
+          <span class="skill-tag">C++</span>
+          <span class="skill-tag">Python</span>
+          <span class="skill-tag">JavaScript</span>
+          <span class="skill-tag">HTML/CSS</span>
+          <span class="skill-tag">Cybersecurity</span>
+          <span class="skill-tag">Penetration Testing</span>
+          <span class="skill-tag">Web Development</span>
+          <span class="skill-tag">Mobile Development</span>
+          <span class="skill-tag">Git/GitHub</span>
+          <span class="skill-tag">Linux</span>
+          <span class="skill-tag">SQL</span>
+          <span class="skill-tag">Android Development</span>
+        </div>
+      </div>
+
+      <!-- Download Button -->
+      <div style="text-align: center; margin-top: 3rem;">
+        <a href="#" class="btn btn-primary">
+          <ion-icon name="download-outline"></ion-icon>
+          Download Resume (PDF)
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- PORTFOLIO SECTION -->
+  <section id="portfolio" class="portfolio">
+    <div class="section-container">
+      <h2 class="section-title">Portfolio</h2>
+      <p class="section-subtitle">Recent projects & work</p>
+
+      <div class="projects-grid">
+
+        <div class="project-card">
+          <img src="./assets/images/default.png" alt="Railway Ticket Management" class="project-image">
+          <div class="project-content">
+            <p class="project-category">Web Development</p>
+            <h3>Railway Ticket Management System</h3>
+            <p>A comprehensive ticket booking and management system with user authentication and payment integration.
+            </p>
+          </div>
+        </div>
+
+        <div class="project-card">
+          <img src="./assets/images/default.png" alt="Password Hashing" class="project-image">
+          <div class="project-content">
+            <p class="project-category">Cybersecurity</p>
+            <h3>Password Hashing Algorithm</h3>
+            <p>Custom cryptographic hashing implementation for secure password storage and authentication.</p>
+          </div>
+        </div>
+
+        <div class="project-card">
+          <img src="./assets/images/default.png" alt="E-Waste Management" class="project-image">
+          <div class="project-content">
+            <p class="project-category">Android Development</p>
+            <h3>E-Waste Management System</h3>
+            <p>Mobile application for efficient e-waste collection, tracking, and recycling management.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT SECTION -->
+  <section id="contact" class="contact">
+    <div class="section-container">
+      <h2 class="section-title">Get In Touch</h2>
+      <p class="section-subtitle">Let's work together</p>
+
+      <div class="contact-grid">
+
+        <div class="contact-info">
+          <div class="contact-item">
+            <div class="contact-item-icon">
               <ion-icon name="mail-outline"></ion-icon>
             </div>
-
-            <div class="contact-info">
-              <p class="contact-title">Email-id</p>
-
-              <a href="adishy.is19@gmail.com" class="contact-link">adishy.is19@gmail.com</a>
+            <div>
+              <h4>Email</h4>
+              <p>adishy.is19@gmail.com</p>
             </div>
+          </div>
 
-          </li>
-
-          <li class="contact-item">
-
-            <div class="icon-box">
-              <ion-icon name="phone-portrait-outline"></ion-icon>
+          <div class="contact-item">
+            <div class="contact-item-icon">
+              <ion-icon name="call-outline"></ion-icon>
             </div>
-
-            <div class="contact-info">
-              <p class="contact-title">Phone</p>
-
-              <a href="tel:+91779527723" class="contact-link">77957723</a>
+            <div>
+              <h4>Phone</h4>
+              <p>77957723</p>
             </div>
+          </div>
 
-          </li>
-
-          <li class="contact-item">
-
-            <div class="icon-box">
-              <ion-icon name="calendar-outline"></ion-icon>
-            </div>
-
-            <div class="contact-info">
-              <p class="contact-title">Birthday</p>
-
-              <time datetime="1982-06-23">September 2001</time>
-            </div>
-
-          </li>
-
-          <li class="contact-item">
-
-            <div class="icon-box">
+          <div class="contact-item">
+            <div class="contact-item-icon">
               <ion-icon name="location-outline"></ion-icon>
             </div>
-
-            <div class="contact-info">
-              <p class="contact-title">Location</p>
-
-              <address>Karnataka, India</address>
+            <div>
+              <h4>Location</h4>
+              <p>Karnataka, India</p>
             </div>
-
-          </li>
-
-        </ul>
-
-        <div class="separator"></div>
-
-        <ul class="social-list">
-
-      
-          <li class="social-item">
-            <a href="https://www.linkedin.com/in/adish-yermal/" class="social-link">
-              <ion-icon name="logo-linkedin"></ion-icon>
-            </a>
-          </li>
-          <li class="social-item">
-            <a href="https://github.com/the-AY" class="social-link">
-              <ion-icon name="logo-github"></ion-icon>
-            </a>
-          </li>
-          <li class="social-item">
-            <a href="http://g.dev/Adish_yermal" class="social-link">
-              <ion-icon name="logo-google"></ion-icon>
-            </a>
-          </li>
-
-          <li class="social-item">
-            <a href="#" class="social-link">
-              <ion-icon name="logo-twitter"></ion-icon>
-            </a>
-          </li>
-
-          <li class="social-item">
-            <a href="#" class="social-link">
-              <ion-icon name="logo-instagram"></ion-icon>
-            </a>
-          </li>
-
-        </ul>
-
-      </div>
-
-    </aside>
-
-
-
-
-
-    <!--
-      - #main-content
-    -->
-
-    <div class="main-content">
-
-      <!--
-        - #NAVBAR
-      -->
-
-      <nav class="navbar">
-
-        <ul class="navbar-list">
-
-          <li class="navbar-item">
-            <button class="navbar-link  active" data-nav-link>About</button>
-          </li>
-
-          <li class="navbar-item">
-            <button class="navbar-link" data-nav-link>Resume</button>
-          </li>
-
-          <li class="navbar-item">
-            <button class="navbar-link" data-nav-link>Portfolio</button>
-          </li>
-
-          <li class="navbar-item">
-            <button class="navbar-link" data-nav-link>Blog</button>
-          </li>
-
-          <li class="navbar-item">
-            <button class="navbar-link" data-nav-link>Contact</button>
-          </li>
-          <li class="navbar-item">
-            <button class="navbar-link  " data-nav-link>QR</button>
-          </li>
-
-        </ul>
-
-      </nav>
-
-
-
-
-
-      <!--
-        - #ABOUT
-      -->
-
-      <article class="about  active" data-page="about">
-
-        <header>
-          <h2 class="h2 article-title">About me (BETA)</h2>
-        </header>
-
-        <section class="about-text">
-          <p>
-            <!-- I'm Cybersecurity Ethusitic
-            I enjoy
-            turning complex problems into simple, beautiful and intuitive designs. -->
-          </p>
-
-          <p>
-
-            Im a CyberSecurity Enthusiast Currently working as a C++ Developer.
-            <!-- My job is to build your website so that it is functional and user-friendly but at the same time attractive.
-            Moreover, I
-            add personal touch to your product and make sure that is eye-catching and easy to use. My aim is to bring
-            across your
-            message and identity in the most creative way. I created web design for many famous brand companies. -->
-          </p>
-        </section>
-
-
-        <!--
-          - service
-        -->
-
-        <section class="service">
-
-          <h3 class="h3 service-title">What i'm doing</h3>
-
-          <ul class="service-list">
-
-            <li class="service-item">
-
-              <div class="service-icon-box">
-                <img src="./assets/images/icon-design.svg
-                " alt="design icon" width="40">
-              </div>
-
-              <div class="service-content-box">
-                <h4 class="h4 service-item-title">Web design and development</h4>
-
-                <p class="service-item-text">
-                  The most modern and high-quality design made at a professional level.
-                </p>
-              </div>
-
-            </li>
-
-            <li class="service-item">
-
-              <div class="service-icon-box">
-                <img src="./assets/images/icon-dev.svg" alt="Web development icon" width="40">
-              </div>
-
-              <div class="service-content-box">
-                <h4 class="h4 service-item-title">CyberSecurity</h4>
-
-                <p class="service-item-text">
-                  High-quality Analysis of vulnerabilities in the system at the professional level.
-                </p>
-              </div>
-
-            </li>
-
-            <li class="service-item">
-
-              <div class="service-icon-box">
-                <img src="./assets/images/icon-app.svg" alt="mobile app icon" width="40">
-              </div>
-
-              <div class="service-content-box">
-                <h4 class="h4 service-item-title">Mobile apps</h4>
-
-                <p class="service-item-text">
-                  Professional development of applications for iOS and Android.
-                </p>
-              </div>
-
-            </li>
-
-            <li class="service-item">
-
-              <div class="service-icon-box">
-                <img src="./assets/images/icon-photo.svg" alt="camera icon" width="40">
-              </div>
-
-              <div class="service-content-box">
-                <h4 class="h4 service-item-title">Photography</h4>
-
-                <p class="service-item-text">
-                  I make high-quality photos of any category at a professional level.
-                </p>
-              </div>
-
-            </li>
-
-          </ul>
-
-        </section>
-
-
-        <!--
-          - testimonials
-        
-
-        <section class="testimonials">
-
-          <h3 class="h3 testimonials-title">Testimonials</h3>
-
-          <ul class="testimonials-list has-scrollbar">
-
-            <li class="testimonials-item">
-              <div class="content-card" data-testimonials-item>
-
-                <figure class="testimonials-avatar-box">
-                  <img src="./assets/images/avatar-1.png" alt="Daniel lewis" width="60" data-testimonials-avatar>
-                </figure>
-
-                <h4 class="h4 testimonials-item-title" data-testimonials-title>P1</h4>
-
-                <div class="testimonials-text" data-testimonials-text>
-                  <p>
-                    BETA
-                  </p>
-                </div>
-
-              </div>
-            </li>
-
-            <li class="testimonials-item">
-              <div class="content-card" data-testimonials-item>
-
-                <figure class="testimonials-avatar-box">
-                  <img src="./assets/images/avatar-2.png" alt="Jessica miller" width="60" data-testimonials-avatar>
-                </figure>
-
-                <h4 class="h4 testimonials-item-title" data-testimonials-title>P2</h4>
-
-                <div class="testimonials-text" data-testimonials-text>
-                  <p>
-                    BETA
-                  </p>
-                </div>
-
-              </div>
-            </li>
-
-            <li class="testimonials-item">
-              <div class="content-card" data-testimonials-item>
-
-                <figure class="testimonials-avatar-box">
-                  <img src="./assets/images/avatar-3.png" alt="Emily evans" width="60" data-testimonials-avatar>
-                </figure>
-
-                <h4 class="h4 testimonials-item-title" data-testimonials-title>P3</h4>
-
-                <div class="testimonials-text" data-testimonials-text>
-                  <p>
-                   BETA
-                  </p>
-                </div>
-
-              </div>
-            </li>
-
-            <li class="testimonials-item">
-              <div class="content-card" data-testimonials-item>
-
-                <figure class="testimonials-avatar-box">
-                  <img src="./assets/images/avatar-4.png" alt="Henry william" width="60" data-testimonials-avatar>
-                </figure>
-
-                <h4 class="h4 testimonials-item-title" data-testimonials-title>P4</h4>
-
-                <div class="testimonials-text" data-testimonials-text>
-                  <p>
-                   BETA
-                  </p>
-                </div>
-
-              </div>
-            </li>
-
-          </ul>
-
-        </section>
-      -->
-
-        <!--
-          - testimonials modal
-        -->
-
-        <div class="modal-container" data-modal-container>
-
-          <div class="overlay" data-overlay></div>
-
-          <section class="testimonials-modal">
-
-            <button class="modal-close-btn" data-modal-close-btn>
-              <ion-icon name="close-outline"></ion-icon>
-            </button>
-
-            <div class="modal-img-wrapper">
-              <figure class="modal-avatar-box">
-                <img src="./assets/images/avatar-1.png" alt="Daniel lewis" width="80" data-modal-img>
-              </figure>
-
-              <img src="./assets/images/icon-quote.svg" alt="quote icon">
-            </div>
-
-            <div class="modal-content">
-
-              <h4 class="h3 modal-title" data-modal-title>NAME</h4>
-
-              <time datetime="2021-06-14">14 June, 2024</time>
-
-              <div data-modal-text>
-                <p>
-                 BETA
-                </p>
-              </div>
-
-            </div>
-
-          </section>
-
+          </div>
         </div>
 
-
-        <!--
-          - clients
-        
-
-        <section class="clients">
-
-          <h3 class="h3 clients-title">Clients</h3>
-
-          <ul class="clients-list has-scrollbar">
-
-            <li class="clients-item">
-              <a href="#">
-                <img src="./assets/images/logo-1-color.png" alt="client logo">
-              </a>
-            </li>
-
-            <li class="clients-item">
-              <a href="#">
-                <img src="./assets/images/logo-2-color.png" alt="client logo">
-              </a>
-            </li>
-
-            <li class="clients-item">
-              <a href="#">
-                <img src="./assets/images/logo-3-color.png" alt="client logo">
-              </a>
-            </li>
-
-            <li class="clients-item">
-              <a href="#">
-                <img src="./assets/images/logo-4-color.png" alt="client logo">
-              </a>
-            </li>
-
-            <li class="clients-item">
-              <a href="#">
-                <img src="./assets/images/logo-5-color.png" alt="client logo">
-              </a>
-            </li>
-
-            <li class="clients-item">
-              <a href="#">
-                <img src="./assets/images/logo-6-color.png" alt="client logo">
-              </a>
-            </li>
-
-          </ul>
-
-        </section>
-      -->
-
-
-
-      
-      </article>
-
-
-
-
-
-      <!--
-        - #RESUME
-      -->
-
-      <article class="resume" data-page="resume">
-
-        <header>
-          <h2 class="h2 article-title">Resume (BETA)</h2>
-        </header>
-
-        <section class="timeline">
-
-          <div class="title-wrapper">
-            <div class="icon-box">
-              <ion-icon name="book-outline"></ion-icon>
+        <div class="contact-form">
+          <form>
+            <div class="form-group">
+              <label for="name" class="form-label">Full Name</label>
+              <input type="text" id="name" class="form-input" placeholder="Your name" required>
             </div>
 
-            <h3 class="h3">Education</h3>
-          </div>
-
-          <ol class="timeline-list">
-
-            <li class="timeline-item">
-
-              <h4 class="h4 timeline-item-title">Sahyadri College of Enginering and Management</h4>
-
-              <span>2019 — 2024</span>
-
-              <p class="timeline-text">
-               BETA 
-              </p>
-
-            </li>
-
-            <li class="timeline-item">
-
-              <h4 class="h4 timeline-item-title">Expert Pu college</h4>
-
-              <span>2017 — 2019</span>
-
-              <p class="timeline-text">
-               BETA
-              </p>
-
-            </li>
-
-            <li class="timeline-item">
-
-              <h4 class="h4 timeline-item-title">St .Aloysius High school </h4>
-
-              <span>2015 — 2017</span>
-
-              <p class="timeline-text">
-              BETA
-              </p>
-
-            </li>
-
-          </ol>
-
-        </section>
-
-        <section class="timeline">
-
-          <div class="title-wrapper">
-            <div class="icon-box">
-              <ion-icon name="book-outline"></ion-icon>
+            <div class="form-group">
+              <label for="email" class="form-label">Email</label>
+              <input type="email" id="email" class="form-input" placeholder="your@email.com" required>
             </div>
 
-            <h3 class="h3">Experience</h3>
-          </div>
+            <div class="form-group">
+              <label for="message" class="form-label">Message</label>
+              <textarea id="message" class="form-textarea" placeholder="Your message..." required></textarea>
+            </div>
 
-          <ol class="timeline-list">
-
-            <li class="timeline-item">
-
-              <h4 class="h4 timeline-item-title">TEL</h4>
-
-              <span> October 2023 — Present</span>
-
-              <p class="timeline-text">
-                Engineer (Building)
-              </p>
-
-            </li>
-
-            <li class="timeline-item">
-
-              <h4 class="h4 timeline-item-title">E- Commerce Intern</h4>
-
-              <span> February 2023 — April 2023</span>
-
-              <p class="timeline-text">
-              E- commerce intern - BETA
-              </p>
-
-            </li>
-
-            <li class="timeline-item">
-
-              <h4 class="h4 timeline-item-title">CyberSecurity Trainee</h4>
-
-              <span>2022 — 2023</span>
-
-              <p class="timeline-text">
-                BETA
-              </p>
-
-            </li>
-
-          </ol>
-
-        </section>
-
-        <section class="skill">
-
-          <h3 class="h3 skills-title">My skills</h3>
-
-          <ul class="skills-list content-card">
-
-            <li class="skills-item">
-
-              <div class="title-wrapper">
-                <h5 class="h5">BETA</h5>
-                <data value="80">80%</data>
-              </div>
-
-              <div class="skill-progress-bg">
-                <div class="skill-progress-fill" style="width: 80%;"></div>
-              </div>
-
-            </li>
-
-            <li class="skills-item">
-
-              <div class="title-wrapper">
-                <h5 class="h5">Cyber Security</h5>
-                <data value="70">70%</data>
-              </div>
-
-              <div class="skill-progress-bg">
-                <div class="skill-progress-fill" style="width: 70%;"></div>
-              </div>
-
-            </li>
-
-            <li class="skills-item">
-
-              <div class="title-wrapper">
-                <h5 class="h5">BETA</h5>
-                <data value="90">90%</data>
-              </div>
-
-              <div class="skill-progress-bg">
-                <div class="skill-progress-fill" style="width: 90%;"></div>
-              </div>
-
-            </li>
-
-            <li class="skills-item">
-
-              <div class="title-wrapper">
-                <h5 class="h5">C++</h5>
-                <data value="50">50%</data>
-              </div>
-
-              <div class="skill-progress-bg">
-                <div class="skill-progress-fill" style="width: 50%;"></div>
-              </div>
-
-            </li>
-
-          </ul>
-
-        </section>
-
-      </article>
-
-
-
-
-
-      <!--
-        - #PORTFOLIO
-      -->
-
-      <article class="portfolio" data-page="portfolio">
-
-        <header>
-          <h2 class="h2 article-title">Portfolio</h2>
-        </header>
-
-        <section class="projects">
-
-          <ul class="filter-list">
-
-            <li class="filter-item">
-              <button class="active" data-filter-btn>All</button>
-            </li>
-
-            <li class="filter-item">
-              <button data-filter-btn>Web design</button>
-            </li>
-
-            <li class="filter-item">
-              <button data-filter-btn>Applications</button>
-            </li>
-
-            <li class="filter-item">
-              <button data-filter-btn>Web development</button>
-            </li>
-
-          </ul>
-
-          <div class="filter-select-box">
-
-            <button class="filter-select" data-select>
-
-              <div class="select-value" data-selecct-value>Select category</div>
-
-              <div class="select-icon">
-                <ion-icon name="chevron-down"></ion-icon>
-              </div>
-
+            <button type="submit" class="btn-submit">
+              Send Message
             </button>
-
-            <ul class="select-list">
-
-              <li class="select-item">
-                <button data-select-item>All</button>
-              </li>
-
-              <li class="select-item">
-                <button data-select-item>Web design</button>
-              </li>
-
-              <li class="select-item">
-                <button data-select-item>Applications</button>
-              </li>
-
-              <li class="select-item">
-                <button data-select-item>Web development</button>
-              </li>
-
-            </ul>
-
-          </div>
-
-          <ul class="project-list">
-
-            <li class="project-item  active" data-filter-item data-category="web development">
-              <a href="#">
-
-                <figure class="project-img">
-                  <div class="project-item-icon-box">
-                    <ion-icon name="eye-outline"></ion-icon>
-                  </div>
-                 
-                  <img src="./assets/images/default.png" alt="finance" loading="lazy">
-                </figure>
-
-                <h3 class="project-title">Railway Ticket Management System</h3>
-
-                <p class="project-category">Web development</p>
-
-              </a>
-            </li>
-
-            <li class="project-item  active" data-filter-item data-category="web development">
-              <a href="#">
-
-                <figure class="project-img">
-                  <div class="project-item-icon-box">
-                    <ion-icon name="eye-outline"></ion-icon>
-                  </div>
-
-                  <img src="./assets/images/default.png" alt="orizon" loading="lazy">
-                </figure>
-
-                <h3 class="project-title">Password Hashing Algorithm</h3>
-
-                <p class="project-category">CLI development</p>
-
-              </a>
-            </li>
-
-            <li class="project-item  active" data-filter-item data-category="web design">
-              <a href="#">
-
-                <figure class="project-img">
-                  <div class="project-item-icon-box">
-                    <ion-icon name="eye-outline"></ion-icon>
-                  </div>
-
-                  <img src="./assets/images/default.png" alt="fundo" loading="lazy">
-                </figure>
-
-                <h3 class="project-title">E-Waste Management System </h3>
-
-                <p class="project-category">Android Application development</p>
-
-              </a>
-            </li>
-<!-- 
-            <li class="project-item  active" data-filter-item data-category="applications">
-              <a href="#">
-
-                <figure class="project-img">
-                  <div class="project-item-icon-box">
-                    <ion-icon name="eye-outline"></ion-icon>
-                  </div>
-
-                  <img src="./assets/images/default.png" alt="brawlhalla" loading="lazy">
-                </figure>
-
-                <h3 class="project-title">BETA 4 </h3>
-
-                <p class="project-category">BETA 4</p>
-
-              </a>
-            </li>
-
-            <li class="project-item  active" data-filter-item data-category="web design">
-              <a href="#">
-
-                <figure class="project-img">
-                  <div class="project-item-icon-box">
-                    <ion-icon name="eye-outline"></ion-icon>
-                  </div>
-
-                  <img src="./assets/images/default.png" alt="dsm." loading="lazy">
-                </figure>
-
-                <h3 class="project-title">BETA 5</h3>
-
-                <p class="project-category">BETA 5 cat</p>
-
-              </a>
-            </li>
-
-            <li class="project-item  active" data-filter-item data-category="web design">
-              <a href="#">
-
-                <figure class="project-img">
-                  <div class="project-item-icon-box">
-                    <ion-icon name="eye-outline"></ion-icon>
-                  </div>
-
-                  <img src="./assets/images/default.png" alt="metaspark" loading="lazy">
-                </figure>
-
-                <h3 class="project-title">BETA 6</h3>
-
-                <p class="project-category">BETA 6 cat</p>
-
-              </a>
-            </li>
-
-            <li class="project-item  active" data-filter-item data-category="web development">
-              <a href="#">
-
-                <figure class="project-img">
-                  <div class="project-item-icon-box">
-                    <ion-icon name="eye-outline"></ion-icon>
-                  </div>
-
-                  <img src="./assets/images/default.png" alt="summary" loading="lazy">
-                </figure>
-
-                <h3 class="project-title">Summary</h3>
-
-                <p class="project-category">BETA</p>
-
-              </a>
-            </li>
-
-            <li class="project-item  active" data-filter-item data-category="applications">
-              <a href="#">
-
-                <figure class="project-img">
-                  <div class="project-item-icon-box">
-                    <ion-icon name="eye-outline"></ion-icon>
-                  </div>
-
-                  <img src="./assets/images/default.png" alt="task manager" loading="lazy">
-                </figure>
-
-                <h3 class="project-title">BETA 8</h3>
-
-                <p class="project-category">BETA 8</p>
-
-              </a>
-            </li>
-
-            <li class="project-item  active" data-filter-item data-category="web development">
-              <a href="#">
-
-                <figure class="project-img">
-                  <div class="project-item-icon-box">
-                    <ion-icon name="eye-outline"></ion-icon>
-                  </div>
-
-                  <img src="./assets/images/default.png" alt="arrival" loading="lazy">
-                </figure>
-
-                <h3 class="project-title">BETA 9</h3>
-
-                <p class="project-category">BETA </p>
-
-              </a>
-            </li>
-          -->
-          </ul>
-
-        </section>
-
-      </article>
-
-
-
-
-
-      <!--
-        - #BLOG
-      -->
-
-      <article class="blog" data-page="blog">
-
-        <header>
-          <h2 class="h2 article-title">Blog (BETA)</h2>
-        </header>
-
-        <section class="blog-posts">
-
-          <ul class="blog-posts-list">
-
-            <li class="blog-post-item">
-              <a href="#">
-
-                <figure class="blog-banner-box">
-                  <img src="./assets/images/blog-1.jpg" alt="Design conferences in 2022" loading="lazy">
-                </figure>
-
-                <div class="blog-content">
-
-                  <div class="blog-meta">
-                    <p class="blog-category">Design</p>
-
-                    <span class="dot"></span>
-
-                    <time datetime="2022-02-23">August 23, 2024</time>
-                  </div>
-
-                  <h3 class="h3 blog-item-title">BETA</h3>
-
-                  <p class="blog-text">
-                   BETA
-                  </p>
-
-                </div>
-
-              </a>
-            </li>
-
-            <li class="blog-post-item">
-              <a href="#">
-
-                <figure class="blog-banner-box">
-                  <img src="./assets/images/blog-2.jpg" alt="Best fonts every designer" loading="lazy">
-                </figure>
-
-                <div class="blog-content">
-
-                  <div class="blog-meta">
-                    <p class="blog-category">Design</p>
-
-                    <span class="dot"></span>
-
-                    <time datetime="2022-02-23">Fab 23, 2024</time>
-                  </div>
-
-                  <h3 class="h3 blog-item-title">Best fonts every designer</h3>
-
-                  <p class="blog-text">
-                   BETA
-                  </p>
-
-                </div>
-
-              </a>
-            </li>
-
-            <li class="blog-post-item">
-              <a href="#">
-
-                <figure class="blog-banner-box">
-                  <img src="./assets/images/blog-3.jpg" alt="Design digest #80" loading="lazy">
-                </figure>
-
-                <div class="blog-content">
-
-                  <div class="blog-meta">
-                    <p class="blog-category">Design</p>
-
-                    <span class="dot"></span>
-
-                    <time datetime="2022-02-23">Fab 23, 2024</time>
-                  </div>
-
-                  <h3 class="h3 blog-item-title">BETA </h3>
-
-                  <p class="blog-text">
-                   BETA 
-                  </p>
-
-                </div>
-
-              </a>
-            </li>
-
-            <li class="blog-post-item">
-              <a href="#">
-
-                <figure class="blog-banner-box">
-                  <img src="./assets/images/blog-4.jpg" alt="UI interactions of the week" loading="lazy">
-                </figure>
-
-                <div class="blog-content">
-
-                  <div class="blog-meta">
-                    <p class="blog-category">Design</p>
-
-                    <span class="dot"></span>
-
-                    <time datetime="2022-02-23">Fab 23, 2024</time>
-                  </div>
-
-                  <h3 class="h3 blog-item-title">BETA</h3>
-
-                  <p class="blog-text">
-                   BETA 
-                  </p>
-
-                </div>
-
-              </a>
-            </li>
-
-            <li class="blog-post-item">
-              <a href="#">
-
-                <figure class="blog-banner-box">
-                  <img src="./assets/images/blog-5.jpg" alt="The forgotten art of spacing" loading="lazy">
-                </figure>
-
-                <div class="blog-content">
-
-                  <div class="blog-meta">
-                    <p class="blog-category">Design</p>
-
-                    <span class="dot"></span>
-
-                    <time datetime="2022-02-23">Fab 23, 2024</time>
-                  </div>
-
-                  <h3 class="h3 blog-item-title">BETA</h3>
-
-                  <p class="blog-text">
-                    BETA 14 design
-                  </p>
-
-                </div>
-
-              </a>
-            </li>
-
-            <li class="blog-post-item">
-              <a href="#">
-
-                <figure class="blog-banner-box">
-                  <img src="./assets/images/blog-6.jpg" alt="Design digest #79" loading="lazy">
-                </figure>
-
-                <div class="blog-content">
-
-                  <div class="blog-meta">
-                    <p class="blog-category">Design</p>
-
-                    <span class="dot"></span>
-
-                    <time datetime="2022-02-23">Auguest, 2024</time>
-                  </div>
-
-                  <h3 class="h3 blog-item-title">Design digest </h3>
-
-                  <p class="blog-text">
-                   BOTT
-                  </p>
-
-                </div>
-
-              </a>
-            </li>
-
-          </ul>
-
-        </section>
-
-      </article>
-
-
-
-
-
-      <!--
-        - #CONTACT
-      -->
-
-      <article class="contact" data-page="contact">
-
-        <header>
-          <h2 class="h2 article-title">Contact</h2>
-        </header>
-
-        <section class="mapbox" data-mapbox>
-          <figure>
-            <iframe
-              src=""
-              width="400" height="300" loading="lazy"></iframe>
-          </figure>
-        </section>
-
-        <section class="contact-form">
-
-          <h3 class="h3 form-title">Contact Form</h3>
-
-          <form action="#" class="form" data-form>
-
-            <div class="input-wrapper">
-              <input type="text" name="fullname" class="form-input" placeholder="Full name" required data-form-input>
-
-              <input type="email" name="email" class="form-input" placeholder="Email address" required data-form-input>
-            </div>
-
-            <textarea name="message" class="form-input" placeholder="Your Message" required data-form-input></textarea>
-
-            <button class="form-btn" type="submit" disabled data-form-btn>
-              <ion-icon name="paper-plane"></ion-icon>
-              <span>Send Message</span>
-            </button>
-
           </form>
+        </div>
 
-        </section>
-
-      </article>
-
+      </div>
     </div>
+  </section>
 
-  </main>
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-social">
+        <a href="https://www.linkedin.com/in/adish-yermal/" target="_blank">
+          <ion-icon name="logo-linkedin"></ion-icon>
+        </a>
+        <a href="https://github.com/the-AY" target="_blank">
+          <ion-icon name="logo-github"></ion-icon>
+        </a>
+        <a href="http://g.dev/Adish_yermal" target="_blank">
+          <ion-icon name="logo-google"></ion-icon>
+        </a>
+        <a href="#" target="_blank">
+          <ion-icon name="logo-twitter"></ion-icon>
+        </a>
+        <a href="#" target="_blank">
+          <ion-icon name="logo-instagram"></ion-icon>
+        </a>
+      </div>
+      <p>&copy; 2025 Adish Yermal. All rights reserved.</p>
+    </div>
+  </footer>
 
+  <!-- JavaScript -->
+  <script>
+    // Smooth scroll navigation
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+          });
+        }
+      });
+    });
 
+    // Active nav link on scroll
+    window.addEventListener('scroll', () => {
+      let current = '';
+      const sections = document.querySelectorAll('section');
 
+      sections.forEach(section => {
+        const sectionTop = section.offsetTop;
+        const sectionHeight = section.clientHeight;
+        if (pageYOffset >= sectionTop - 100) {
+          current = section.getAttribute('id');
+        }
+      });
 
-
-
-  <!--
-    - custom js link
-  -->
-  <script src="./assets/js/script.js"></script>
-
-  <!--
-    - ionicon link
-  -->
-  <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
-  <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+      document.querySelectorAll('.nav-link').forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href') === `#${current}`) {
+          link.classList.add('active');
+        }
+      });
+    });
+  </script>
 
 </body>
 
 </html>
-
