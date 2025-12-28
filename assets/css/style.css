@@ -179,21 +179,23 @@ ol {
 
 .hero {
   padding: calc(80px + var(--spacing-2xl)) 0 var(--spacing-2xl);
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
+  background: var(--bg-white);
+  color: var(--text-primary);
   position: relative;
   overflow: hidden;
+  border-bottom: 1px solid var(--border-light);
 }
 
 .hero::before {
   content: '';
   position: absolute;
   top: 0;
-  left: 0;
   right: 0;
-  bottom: 0;
-  background: url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="2" fill="rgba(255,255,255,0.1)"/></svg>');
-  opacity: 0.3;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(26, 115, 232, 0.05) 0%, transparent 70%);
+  border-radius: 50%;
+  transform: translate(30%, -30%);
 }
 
 .hero-container {
@@ -230,12 +232,12 @@ ol {
   font-size: var(--fs-h3);
   font-weight: 400;
   margin-bottom: var(--spacing-md);
-  opacity: 0.95;
+  color: var(--primary-blue);
 }
 
 .hero-description {
   font-size: var(--fs-h4);
-  opacity: 0.9;
+  color: var(--text-secondary);
   max-width: 600px;
   margin: 0 auto var(--spacing-xl);
   line-height: 1.8;
@@ -261,25 +263,25 @@ ol {
 }
 
 .btn-primary {
-  background: white;
-  color: var(--primary-blue);
+  background: var(--primary-blue);
+  color: white;
 }
 
 .btn-primary:hover {
-  background: var(--bg-light);
+  background: var(--primary-blue-dark);
   box-shadow: var(--shadow-md);
   transform: translateY(-2px);
 }
 
 .btn-secondary {
-  background: rgba(255, 255, 255, 0.2);
-  color: white;
-  border: 2px solid rgba(255, 255, 255, 0.5);
+  background: white;
+  color: var(--primary-blue);
+  border: 2px solid var(--primary-blue);
 }
 
 .btn-secondary:hover {
-  background: rgba(255, 255, 255, 0.3);
-  border-color: white;
+  background: var(--primary-blue);
+  color: white;
   transform: translateY(-2px);
 }
 
@@ -356,42 +358,42 @@ ol {
 }
 
 .link-icon.linkedin {
-  background: linear-gradient(135deg, #0077b5, #00a0dc);
+  background: #0077b5;
   color: white;
 }
 
 .link-icon.github {
-  background: linear-gradient(135deg, #24292e, #404448);
+  background: #24292e;
   color: white;
 }
 
 .link-icon.google {
-  background: linear-gradient(135deg, #4285f4, #34a853);
+  background: #4285f4;
   color: white;
 }
 
 .link-icon.email {
-  background: linear-gradient(135deg, #ea4335, #fbbc05);
+  background: #ea4335;
   color: white;
 }
 
 .link-icon.twitter {
-  background: linear-gradient(135deg, #1da1f2, #0c85d0);
+  background: #1da1f2;
   color: white;
 }
 
 .link-icon.instagram {
-  background: linear-gradient(135deg, #e1306c, #fd1d1d, #fcaf45);
+  background: #e1306c;
   color: white;
 }
 
 .link-icon.resume {
-  background: linear-gradient(135deg, #667eea, #764ba2);
+  background: #5f6368;
   color: white;
 }
 
 .link-icon.portfolio {
-  background: linear-gradient(135deg, #f093fb, #f5576c);
+  background: var(--primary-blue);
   color: white;
 }
 
@@ -565,6 +567,34 @@ ol {
   font-size: var(--fs-body);
 }
 
+.timeline-achievements {
+  list-style: disc;
+  margin-left: var(--spacing-lg);
+  margin-top: var(--spacing-sm);
+}
+
+.timeline-achievements li {
+  color: var(--text-secondary);
+  font-size: var(--fs-small);
+  line-height: 1.8;
+  margin-bottom: var(--spacing-xs);
+}
+
+.project-section {
+  margin-top: var(--spacing-md);
+}
+
+.project-section:first-of-type {
+  margin-top: var(--spacing-lg);
+}
+
+.project-title {
+  font-size: var(--fs-body);
+  font-weight: 600;
+  color: var(--primary-blue);
+  margin-bottom: var(--spacing-xs);
+}
+
 .skills-list {
   display: flex;
   flex-wrap: wrap;
@@ -621,7 +651,8 @@ ol {
   width: 100%;
   height: 200px;
   object-fit: cover;
-  background: linear-gradient(135deg, var(--primary-blue-light), var(--accent-blue));
+  background: var(--bg-light);
+  border-bottom: 1px solid var(--border-color);
 }
 
 .project-content {
