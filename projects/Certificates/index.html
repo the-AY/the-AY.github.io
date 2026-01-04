@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Certificate Generator - Adish Yermal</title>
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="../../assets/images/logo.ico" type="image/x-icon">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <!-- Ionicons -->
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+
+    <!-- External Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-container">
+            <a href="../../index.html" class="back-link">
+                <ion-icon name="arrow-back-outline"></ion-icon>
+                <span>Back to Portfolio</span>
+            </a>
+            <h1 class="header-title">Certificate Generator</h1>
+            <p class="header-subtitle">Automated batch certificate generation with customizable templates</p>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+
+        <!-- Step 1: Upload Certificate Template -->
+        <section class="section" id="uploadSection">
+            <div class="section-header">
+                <div class="step-indicator">
+                    <span class="step-number">1</span>
+                    <div>
+                        <h2 class="section-title">Upload Certificate Template</h2>
+                        <p class="section-description">Upload your certificate design image (PNG, JPG, JPEG)</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="upload-area" id="uploadArea">
+                <input type="file" id="certificateUpload" accept="image/png,image/jpeg,image/jpg" hidden>
+                <div class="upload-content">
+                    <ion-icon name="cloud-upload-outline" class="upload-icon"></ion-icon>
+                    <h3>Click to upload or drag & drop</h3>
+                    <p>Supported formats: PNG, JPG, JPEG</p>
+                </div>
+            </div>
+
+            <div id="certificatePreview" class="certificate-preview" style="display: none;">
+                <canvas id="certificateCanvas"></canvas>
+            </div>
+        </section>
+
+        <!-- Step 2: Configure Parameters -->
+        <section class="section" id="configSection" style="display: none;">
+            <div class="section-header">
+                <div class="step-indicator">
+                    <span class="step-number">2</span>
+                    <div>
+                        <h2 class="section-title">Configure Text Parameters</h2>
+                        <p class="section-description">Add up to 5 text fields and position them on the certificate</p>
+                    </div>
+                </div>
+                <button class="btn btn-secondary" id="addParameterBtn">
+                    <ion-icon name="add-circle-outline"></ion-icon>
+                    Add Parameter
+                </button>
+            </div>
+
+            <div class="parameters-container" id="parametersContainer">
+                <!-- Parameters will be added dynamically here -->
+            </div>
+
+            <div class="info-card">
+                <ion-icon name="information-circle-outline"></ion-icon>
+                <p><strong>Tip:</strong> Drag the text labels on the certificate preview to position them. You can add
+                    up to 5 parameters (e.g., Name, Date, Course, Grade, ID).</p>
+            </div>
+        </section>
+
+        <!-- Step 3: Upload Excel Data -->
+        <section class="section" id="excelSection" style="display: none;">
+            <div class="section-header">
+                <div class="step-indicator">
+                    <span class="step-number">3</span>
+                    <div>
+                        <h2 class="section-title">Upload Excel Data</h2>
+                        <p class="section-description">Upload XLSX, ODS, or CSV file with data matching your parameters
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="upload-area secondary" id="excelUploadArea">
+                <input type="file" id="excelUpload" accept=".xlsx,.xls,.ods,.csv" hidden>
+                <div class="upload-content">
+                    <ion-icon name="document-outline" class="upload-icon"></ion-icon>
+                    <h3>Click to upload Excel file</h3>
+                    <p>Format: XLSX, XLS, ODS, or CSV</p>
+                </div>
+            </div>
+
+            <div id="excelPreview" class="excel-preview" style="display: none;">
+                <div class="excel-stats">
+                    <div class="stat-card">
+                        <ion-icon name="document-text-outline"></ion-icon>
+                        <div>
+                            <h4>Total Rows</h4>
+                            <p id="totalRows">0</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <ion-icon name="albums-outline"></ion-icon>
+                        <div>
+                            <h4>Columns Detected</h4>
+                            <p id="totalColumns">0</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <ion-icon name="checkmark-done-outline"></ion-icon>
+                        <div>
+                            <h4>Status</h4>
+                            <p id="validationStatus">Ready</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="column-mapping" id="columnMapping">
+                    <!-- Column mapping will be generated here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Step 4: Generate Certificates -->
+        <section class="section" id="generateSection" style="display: none;">
+            <div class="section-header">
+                <div class="step-indicator">
+                    <span class="step-number">4</span>
+                    <div>
+                        <h2 class="section-title">Generate Certificates</h2>
+                        <p class="section-description">Preview and generate certificates in batch</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="action-buttons">
+                <button class="btn btn-secondary" id="previewBtn">
+                    <ion-icon name="eye-outline"></ion-icon>
+                    Preview First Certificate
+                </button>
+                <button class="btn btn-primary" id="generateAllBtn">
+                    <ion-icon name="download-outline"></ion-icon>
+                    Generate All Certificates
+                </button>
+            </div>
+
+            <div id="progressContainer" class="progress-container" style="display: none;">
+                <div class="progress-header">
+                    <h3>Generating Certificates...</h3>
+                    <p id="progressText">0 / 0</p>
+                </div>
+                <div class="progress-bar-bg">
+                    <div class="progress-bar" id="progressBar"></div>
+                </div>
+                <p class="progress-status" id="progressStatus">Initializing...</p>
+            </div>
+
+            <div id="completionMessage" class="completion-message" style="display: none;">
+                <ion-icon name="checkmark-circle-outline"></ion-icon>
+                <h3>Certificates Generated Successfully!</h3>
+                <p>Your certificates have been packaged into a ZIP file.</p>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Instructions Section -->
+    <section class="instructions-section">
+        <div class="instructions-container">
+            <h2 class="instructions-title">How to Generate Certificates</h2>
+            <div class="instructions-grid">
+
+                <div class="instruction-step">
+                    <div class="instruction-number">1</div>
+                    <div class="instruction-content">
+                        <h3>Upload Template</h3>
+                        <p>Click or drag your certificate design image (PNG/JPG) to the upload area.</p>
+                    </div>
+                </div>
+
+                <div class="instruction-step">
+                    <div class="instruction-number">2</div>
+                    <div class="instruction-content">
+                        <h3>Add Parameters</h3>
+                        <p>Click "Add Parameter" to create text fields (e.g., Name, Date). Customize font, size, and
+                            color for each.</p>
+                    </div>
+                </div>
+
+                <div class="instruction-step">
+                    <div class="instruction-number">3</div>
+                    <div class="instruction-content">
+                        <h3>Position Text</h3>
+                        <p>Drag the crosshair (+) markers on the certificate to position text, or enter exact X/Y
+                            coordinates.</p>
+                    </div>
+                </div>
+
+                <div class="instruction-step">
+                    <div class="instruction-number">4</div>
+                    <div class="instruction-content">
+                        <h3>Upload Excel Data</h3>
+                        <p>Prepare a spreadsheet file (.xlsx, .xls, .ods, or .csv) with columns matching your
+                            parameters. First row = headers, remaining rows = certificate data.</p>
+                    </div>
+                </div>
+
+                <div class="instruction-step">
+                    <div class="instruction-number">5</div>
+                    <div class="instruction-content">
+                        <h3>Preview</h3>
+                        <p>Click "Preview First Certificate" to test with the first row of your Excel data.</p>
+                    </div>
+                </div>
+
+                <div class="instruction-step">
+                    <div class="instruction-number">6</div>
+                    <div class="instruction-content">
+                        <h3>Generate All</h3>
+                        <p>Click "Generate All Certificates" to create all certificates. Download the ZIP file
+                            containing all generated certificates.</p>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="instructions-note">
+                <ion-icon name="bulb-outline"></ion-icon>
+                <p><strong>Pro Tip:</strong> The first column in your Excel file will be used to name the certificate
+                    files (e.g., "John_Doe.png"). Make sure it contains unique identifiers.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2026 Adish Yermal. All rights reserved.</p>
+    </footer>
+
+    <!-- Custom JavaScript -->
+    <script src="app.js"></script>
+</body>
+
+</html>
