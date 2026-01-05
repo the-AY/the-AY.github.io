@@ -1,8 +1,7 @@
 @echo off
-setlocal enabledelayedexpansion
+setlocal
 set LOGFILE=setup-log.txt
 
-:: Initialize Log
 echo =================================================== > "%LOGFILE%"
 echo   Agent AI Local Companion Setup Log             >> "%LOGFILE%"
 echo   Date: %DATE% %TIME%                            >> "%LOGFILE%"
@@ -16,21 +15,21 @@ echo.
 :: 1. Environment Check
 echo [1/4] Checking Environment...
 where node >nul 2>nul
-if errorlevel 1 (
+if %errorlevel% neq 0 (
     echo [ERROR] Node.js not found. Please install from https://nodejs.org/
     echo [ERROR] Node.js missing. >> "%LOGFILE%"
-    goto :onerror
+    goto onerror
 )
 echo [OK] Node.js found. >> "%LOGFILE%"
 
 :: 2. Dependencies
 echo [2/4] Verifying Dependencies...
 if not exist "node_modules" (
-    echo [INFO] Installing required packages (Puppeteer, Express, etc.)...
+    echo [INFO] Installing required packages...
     call npm install >> "%LOGFILE%" 2>&1
-    if errorlevel 1 (
-        echo [ERROR] Dependency installation failed.
-        goto :onerror
+    if %errorlevel% neq 0 (
+        echo [ERROR] Dependency installation failed. Check %LOGFILE%.
+        goto onerror
     )
 )
 echo [OK] Dependencies verified. >> "%LOGFILE%"
@@ -38,7 +37,7 @@ echo [OK] Dependencies verified. >> "%LOGFILE%"
 :: 3. Local Model
 echo [3/4] Preparing Local Model...
 node download-model.js >> "%LOGFILE%" 2>&1
-if errorlevel 1 (
+if %errorlevel% neq 0 (
     echo [WARNING] Model setup issues detected. See %LOGFILE%.
 )
 

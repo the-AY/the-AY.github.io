@@ -403,19 +403,18 @@ echo.
 
 echo [1/4] Checking Environment...
 where node >nul 2>nul
-if errorlevel 1 (
+if %errorlevel% neq 0 (
     echo [ERROR] Node.js not found. Please install from https://nodejs.org/
-    exit /b 1
+    goto onerror
 )
 
 echo [2/4] Verifying Dependencies...
 if not exist "node_modules" (
     echo [INFO] Initial setup: Installing packages...
     call npm install >> "%LOGFILE%" 2>&1
-    if errorlevel 1 (
+    if %errorlevel% neq 0 (
         echo [ERROR] Installation failed. Check %LOGFILE%.
-        pause
-        exit /b 1
+        goto onerror
     )
 )
 
@@ -436,7 +435,17 @@ echo Keep the server window open.
 echo =================================================== 
 echo.
 pause
-exit /b 0`;
+exit /b 0
+
+:onerror
+echo.
+echo ===================================================
+echo   SETUP FAILED
+echo ===================================================
+echo Please check %LOGFILE% for info.
+echo.
+pause
+exit /b 1`;
 
         const success = await this.genericDownload(setupContent, 'setup.bat', 'application/x-msdos-program');
         if (success) {
