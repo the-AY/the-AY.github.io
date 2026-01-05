@@ -19,7 +19,7 @@ app.use(express.json());
 
 // CONFIGURATION
 const REPO_ROOT = path.join(__dirname, '../../');
-const LOCAL_LLM_ENDPOINT = "http://localhost:11434/api/generate"; // Ollama default
+const LOCAL_LLM_ENDPOINT = "http://127.0.0.1:11434/api/generate"; // Use IP to avoid IPv6 issues
 const DEFAULT_MODEL = "llama3"; // Change to your preferred local model
 
 // Serve static files from the repository root
