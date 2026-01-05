@@ -24,13 +24,15 @@ echo [OK] Node.js is installed. >> %LOGFILE%
 echo [2/4] Checking dependencies...
 if not exist "node_modules\" (
     echo [INFO] First time setup: Installing dependencies...
+    echo [INFO] This includes a small browser for automation (Puppeteer).
     echo [INFO] Installing dependencies... >> %LOGFILE%
-    call npm install >> %LOGFILE% 2>&1
+    call npm install
     if %errorlevel% neq 0 (
         echo [ERROR] Failed to install dependencies. Check %LOGFILE% for details.
         pause
         exit /b
     )
+    echo [OK] Dependencies installed successfully. >> %LOGFILE%
 ) else (
     echo [INFO] Dependencies found, skipping install.
     echo [INFO] Dependencies found, skipping install. >> %LOGFILE%
