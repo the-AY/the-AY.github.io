@@ -107,9 +107,25 @@ async function callLocalLLM(prompt, endpoint) {
 }
 
 // Start Server
-app.listen(port, () => {
+const server = app.listen(port, () => {
     console.log(`\n===========================================`);
     console.log(`   Agent AI Local Companion Active`);
-    console.log(`   Running at: http://localhost:${port}`);
+    console.log(`   Running at: http://127.0.0.1:${port}`);
     console.log(`===========================================\n`);
+});
+
+// Graceful Shutdown
+process.on('SIGINT', () => {
+    console.log('\nShutting down server gracefully...');
+    server.close(() => {
+        console.log('Server closed.');
+        process.exit(0);
+    });
+});
+
+process.on('SIGTERM', () => {
+    console.log('\nTerminating server...');
+    server.close(() => {
+        process.exit(0);
+    });
 });
