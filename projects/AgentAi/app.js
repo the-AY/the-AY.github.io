@@ -212,11 +212,13 @@ class AgentAI {
                 </p>
                 <p style="margin-bottom: 1rem;">Setup is required for Offline Mode & Local Automation:</p>
                 <ol style="margin-left: 1.5rem; margin-bottom: 1.5rem; line-height: 1.6;">
-                    <li><strong>Download</strong> the Setup Tool below.</li>
-                    <li>Move <code>setup.bat</code> to your <code>projects/AgentAi</code> folder.</li>
-                    <li><strong>Run it</strong> to install dependencies and <strong>download the offline model</strong>.</li>
-                    <li>Start the server with <code>npm start</code>.</li>
+                    <li><strong>Run <code>setup.bat</code></strong> in your <code>projects/AgentAi</code> folder.</li>
+                    <li>It will install dependencies and <strong>launch the server automatically</strong>.</li>
+                    <li>If your LLM (Ollama/LM Studio) uses a different port than 11434, click <strong>"Configure Local Model"</strong> in the sidebar to update it.</li>
                 </ol>
+                <div style="background: rgba(0,0,0,0.05); padding: 1rem; border-radius: 4px; margin-bottom: 1.5rem; font-size: 0.85rem;">
+                    <strong>Tip:</strong> If the companion server port (3000) is already in use, you can change it in <code>local-server.js</code> and update the connection URL in the sidebar settings.
+                </div>
                 <div style="display: flex; flex-direction: column; gap: 0.8rem;" id="offline-download-container">
                     <button class="btn btn-primary" onclick="downloadSetupScript()" style="width: 100%; justify-content: center;">
                         <ion-icon name="download-outline"></ion-icon>
@@ -399,22 +401,23 @@ if %errorlevel% neq 0 (
     exit /b
 )
 
-echo [1/3] Installing dependencies...
-echo [INFO] This might take a few minutes.
-call npm install
-echo [SECURE] Updating & fixing security vulnerabilities...
-call npm audit fix --force
+echo [1/3] Checking dependencies...
+if not exist "node_modules\" (
+    echo [INFO] First time setup: Installing dependencies...
+    call npm install
+) else (
+    echo [INFO] Dependencies found, skipping install.
+)
 
 echo.
-echo [2/3] Checking for local model (Ollama)...
-echo [INFO] Please ensure Ollama is running if you plan to use it.
-echo [INFO] Default endpoint: http://localhost:11434
+echo [2/3] Checking local model...
+node download-model.js
 
 echo.
 echo [3/3] Setup complete!
 echo.
 echo ===================================================
-echo   LAUNCHING AGENT AI
+echo   LAUNCHING AGENT AI (Zero-Config)
 echo ===================================================
 echo 1. Starting Local Companion Server...
 start "Agent AI Server" cmd /c "npm start"
@@ -426,7 +429,7 @@ echo 3. Opening Agent AI in your browser...
 start "" "http://localhost:3000/projects/AgentAi/beta.html"
 
 echo.
-echo Setup and Launch successful! 
+echo Launch successful! 
 echo Keep the "Agent AI Server" terminal window open while using the agent.
 echo ===================================================
 echo.

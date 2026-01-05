@@ -12,31 +12,24 @@ if %errorlevel% neq 0 (
     exit /b
 )
 
-echo [1/3] Installing dependencies...
-call npm install
-echo [SECURE] Running security audit fix...
-call npm audit fix --force
-
-echo.
-echo.
-echo [2/4] Checking for local model (Ollama)...
-echo [INFO] Please ensure Ollama is running if you plan to use it.
-echo [INFO] Default endpoint: http://localhost:11434
-
-echo.
-set /p download="[3/4] Would you like to download a small offline model (600MB) for local testing? (y/n): "
-if /i "%download%"=="y" (
-    echo [INFO] Starting download...
-    node download-model.js
+echo [1/3] Checking dependencies...
+if not exist "node_modules\" (
+    echo [INFO] First time setup: Installing dependencies...
+    call npm install
 ) else (
-    echo [INFO] Skipping model download.
+    echo [INFO] Dependencies found, skipping install.
 )
 
 echo.
-echo [4/4] Setup complete!
+echo [2/3] Checking local model...
+:: Run download script - it will skip automatically if model exists
+node download-model.js
+
+echo.
+echo [3/3] Setup complete!
 echo.
 echo ===================================================
-echo   LAUNCHING AGENT AI
+echo   LAUNCHING AGENT AI (Zero-Config)
 echo ===================================================
 echo 1. Starting Local Companion Server...
 start "Agent AI Server" cmd /c "npm start"
@@ -48,7 +41,7 @@ echo 3. Opening Agent AI in your browser...
 start "" "http://localhost:3000/projects/AgentAi/beta.html"
 
 echo.
-echo Setup and Launch successful! 
+echo Launch successful! 
 echo Keep the "Agent AI Server" terminal window open.
 echo ===================================================
 echo.
