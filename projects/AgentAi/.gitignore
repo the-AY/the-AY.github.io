@@ -1,0 +1,8 @@
+# Local Model Storage
+models/
+
+# Dependencies
+node_modules/
+
+# Environment
+.env

@@ -1,0 +1,17 @@
+{
+  "name": "agent-ai-companion",
+  "version": "1.0.0",
+  "description": "Local companion server for Agent AI portfolio project",
+  "main": "local-server.js",
+  "scripts": {
+    "start": "node local-server.js",
+    "setup": "npm install",
+    "download-model": "node download-model.js"
+  },
+  "dependencies": {
+    "axios": "^1.7.9",
+    "cors": "^2.8.5",
+    "express": "^4.21.2",
+    "puppeteer": "^23.11.1"
+  }
+}

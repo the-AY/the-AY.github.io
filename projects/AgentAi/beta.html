@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agent AI (Beta) - Adish Yermal</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="shortcut icon" href="../../assets/images/logo.ico" type="image/x-icon">
+    <!-- Ionicons -->
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+</head>
+
+<body>
+    <!-- NAVIGATION -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="../../index.html" class="nav-brand">Adish Yermal</a>
+            <div class="nav-menu">
+                <a href="../../index.html#home" class="nav-link">Home</a>
+                <a href="../../index.html#links" class="nav-link">Links</a>
+                <a href="../../index.html#about" class="nav-link">About</a>
+                <a href="../../index.html#resume" class="nav-link">Resume</a>
+                <a href="../../index.html#portfolio" class="nav-link">Portfolio</a>
+                <a href="../../index.html#projects" class="nav-link active">Projects</a>
+                <a href="../../index.html#contact" class="nav-link">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="agent-container">
+        <!-- Sidebar -->
+        <aside class="agent-sidebar">
+            <div class="sidebar-title">
+                <ion-icon name="hardware-chip-outline"></ion-icon>
+                <span>Multi-Modal Agent</span>
+            </div>
+
+            <div class="mode-toggle-container">
+                <span class="mode-label">Mode: <span id="currentModeDisplay">Online</span></span>
+                <div class="toggle-switch" id="modeToggle">
+                    <div class="toggle-handle"></div>
+                </div>
+            </div>
+
+            <div class="agent-type-card active" data-agent="multi">
+                <div class="agent-type-header">
+                    <ion-icon name="layers-outline" class="agent-type-icon"></ion-icon>
+                    <span class="agent-type-name">Orchestrator</span>
+                </div>
+                <p class="agent-type-desc">Coordinates between specialized agents to solve complex tasks.</p>
+            </div>
+
+            <div class="agent-type-card" data-agent="web">
+                <div class="agent-type-header">
+                    <ion-icon name="globe-outline" class="agent-type-icon"></ion-icon>
+                    <span class="agent-type-name">Web Agent</span>
+                </div>
+                <p class="agent-type-desc">Browses the web, extracts information, and performs online tasks.</p>
+            </div>
+
+            <div class="agent-type-card" data-agent="code">
+                <div class="agent-type-header">
+                    <ion-icon name="code-slash-outline" class="agent-type-icon"></ion-icon>
+                    <span class="agent-type-name">Code Agent</span>
+                </div>
+                <p class="agent-type-desc">Writes, debugs, and optimizes code across various languages.</p>
+            </div>
+
+            <div class="agent-type-card" data-agent="research">
+                <div class="agent-type-header">
+                    <ion-icon name="search-outline" class="agent-type-icon"></ion-icon>
+                    <span class="agent-type-name">Research Agent</span>
+                </div>
+                <p class="agent-type-desc">Deep dives into topics, synthesizes findings and generates reports.</p>
+            </div>
+
+            <div class="agent-type-card" data-agent="system">
+                <div class="agent-type-header">
+                    <ion-icon name="terminal-outline" class="agent-type-icon"></ion-icon>
+                    <span class="agent-type-name">System Agent</span>
+                </div>
+                <p class="agent-type-desc">Interacts with local OS (Windows/Linux) and file systems.</p>
+            </div>
+
+            <div class="sidebar-footer" style="margin-top: auto; padding-top: 1rem;">
+                <button class="btn btn-secondary" id="configBtn" onclick="handleConfigClick()" style="width: 100%;">
+                    <ion-icon name="key-outline" id="configBtnIcon"></ion-icon>
+                    <span id="configBtnText">Configure Gemini API</span>
+                </button>
+
+                <button class="btn btn-secondary" style="margin-top: 0.5rem; display: none; width: 100%;"
+                    id="offlineGuideBtn" onclick="showOfflineInstructions()">
+                    <ion-icon name="help-circle-outline"></ion-icon>
+                    <span>Offline Setup Guide</span>
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Area -->
+        <main class="agent-main">
+            <div class="chat-box" id="chatBox">
+                <div class="message agent">
+                    Hello! I'm your Multi-Modal AI Agent. I can help you with web browsing, coding, research, and system
+                    tasks. How can I assist you today?
+                </div>
+            </div>
+
+            <div class="input-area">
+                <textarea class="chat-input" id="chatInput" placeholder="Type your message here..." rows="1"></textarea>
+                <button class="send-btn" id="sendBtn">
+                    <ion-icon name="send"></ion-icon>
+                </button>
+            </div>
+        </main>
+    </div>
+
+    <!-- Local Config Modal -->
+    <div class="modal" id="localConfigModal">
+        <div class="modal-content">
+            <h2 class="modal-title">Local Model Configuration</h2>
+            <p style="margin-bottom: 1rem; color: var(--text-secondary);">Configure the endpoint for your local model
+                (e.g. Ollama, LM Studio).</p>
+            <input type="text" class="api-key-input" id="localEndpointInput" placeholder="http://localhost:11434"
+                value="http://localhost:11434">
+            <div class="modal-actions" style="flex-direction: column; gap: 0.5rem;">
+                <button class="btn btn-primary" style="width: 100%;" onclick="saveLocalConfig()">Save
+                    Configuration</button>
+                <button class="btn btn-secondary" style="width: 100%; background: #e8f5e9; border: 1px solid #a5d6a7;"
+                    onclick="downloadSetupScript()">
+                    <ion-icon name="download-outline"></ion-icon>
+                    <span>Download Setup Tool (setup.bat)</span>
+                </button>
+                <button class="btn btn-secondary" style="width: 100%;" onclick="closeLocalConfigModal()">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- API Key Modal -->
+    <div class="api-modal" id="apiModal">
+        <div class="modal-content">
+            <h3 class="modal-title">Configure Gemini API Key</h3>
+            <p class="modal-desc">Enter your Google AI API key to enable the agent. Your key is stored locally in your
+                browser and is never sent to our servers.</p>
+            <input type="password" class="api-input" id="apiKeyInput" placeholder="Enter your API key">
+            <div class="modal-btns">
+                <button class="btn btn-secondary" onclick="closeApiKeyModal()">Cancel</button>
+                <button class="btn btn-primary" onclick="saveApiKey()">Save Key</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+
+</html>
