@@ -44,6 +44,13 @@
                 </div>
             </div>
 
+            <div class="mode-toggle-container">
+                <span class="mode-label">Speech Output</span>
+                <div class="toggle-switch" id="speechToggle">
+                    <div class="toggle-handle"></div>
+                </div>
+            </div>
+
             <div class="agent-type-card active" data-agent="multi">
                 <div class="agent-type-header">
                     <ion-icon name="layers-outline" class="agent-type-icon"></ion-icon>
@@ -84,6 +91,15 @@
                 <p class="agent-type-desc">Interacts with local OS (Windows/Linux) and file systems.</p>
             </div>
 
+            <div class="agent-type-card" data-agent="voice" id="voiceAgentCard">
+                <div class="agent-type-header">
+                    <ion-icon name="mic-outline" class="agent-type-icon"></ion-icon>
+                    <span class="agent-type-name">Voice Agent</span>
+                </div>
+                <p class="agent-type-desc">Your voice-first companion for research, coding, and hands-free assistance.
+                </p>
+            </div>
+
             <div class="sidebar-footer" style="margin-top: auto; padding-top: 1rem;">
                 <button class="btn btn-secondary" id="configBtn" onclick="handleConfigClick()" style="width: 100%;">
                     <ion-icon name="key-outline" id="configBtnIcon"></ion-icon>
@@ -109,6 +125,9 @@
 
             <div class="input-area">
                 <textarea class="chat-input" id="chatInput" placeholder="Type your message here..." rows="1"></textarea>
+                <button class="icon-btn" id="micBtn" title="Speak">
+                    <ion-icon name="mic-outline"></ion-icon>
+                </button>
                 <button class="send-btn" id="sendBtn">
                     <ion-icon name="send"></ion-icon>
                 </button>

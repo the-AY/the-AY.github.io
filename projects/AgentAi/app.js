@@ -13,11 +13,19 @@ class AgentAI {
         this.isOffline = false; // Default to Online
         this.localEndpoint = localStorage.getItem('local_model_endpoint') || 'http://localhost:11434';
 
+        // Voice State
+        this.isListening = false;
+        this.isTTSEnabled = localStorage.getItem('voice_tts_enabled') === 'true';
+        this.recognition = null;
+        this.synth = window.speechSynthesis;
+
         this.init();
+        this.initVoice();
     }
 
     init() {
         this.initModeToggle();
+        this.initSpeechToggle();
         this.sendBtn.addEventListener('click', () => this.handleSendMessage());
         this.chatInput.addEventListener('keypress', (e) => {
             if (e.key === 'Enter' && !e.shiftKey) {
@@ -26,6 +34,11 @@ class AgentAI {
             }
         });
 
+        const micBtn = document.getElementById('micBtn');
+        if (micBtn) {
+            micBtn.addEventListener('click', () => this.toggleListening());
+        }
+
         // Agent Type Selection
         document.querySelectorAll('.agent-type-card').forEach(card => {
             card.addEventListener('click', () => {
@@ -33,8 +46,104 @@ class AgentAI {
                 card.classList.add('active');
                 this.currentAgent = card.dataset.agent;
                 this.addMessage(`Switching to ${this.formatAgentName(this.currentAgent)} Agent context.`, 'system');
+
+                // Auto-enable voice features if Voice Agent is selected
+                if (this.currentAgent === 'voice') {
+                    if (!this.isTTSEnabled) this.toggleSpeech(true);
+                }
             });
         });
+    }
+
+    initVoice() {
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        if (SpeechRecognition) {
+            this.recognition = new SpeechRecognition();
+            this.recognition.continuous = false;
+            this.recognition.interimResults = false;
+            this.recognition.lang = 'en-US';
+
+            this.recognition.onstart = () => {
+                this.isListening = true;
+                document.getElementById('micBtn').classList.add('active');
+                this.chatInput.placeholder = "Listening...";
+            };
+
+            this.recognition.onend = () => {
+                this.isListening = false;
+                document.getElementById('micBtn').classList.remove('active');
+                this.chatInput.placeholder = "Type your message here...";
+            };
+
+            this.recognition.onresult = (event) => {
+                const transcript = event.results[0][0].transcript;
+                this.chatInput.value = transcript;
+                this.handleSendMessage();
+            };
+
+            this.recognition.onerror = (event) => {
+                console.error('Speech recognition error:', event.error);
+                this.isListening = false;
+                document.getElementById('micBtn').classList.remove('active');
+            };
+        } else {
+            console.warn('Speech Recognition not supported in this browser.');
+            const micBtn = document.getElementById('micBtn');
+            if (micBtn) micBtn.style.display = 'none';
+        }
+
+        // Sync speech toggle UI
+        const speechToggle = document.getElementById('speechToggle');
+        if (speechToggle && this.isTTSEnabled) {
+            speechToggle.classList.add('active');
+        }
+    }
+
+    initSpeechToggle() {
+        const toggle = document.getElementById('speechToggle');
+        toggle.addEventListener('click', () => this.toggleSpeech());
+    }
+
+    toggleSpeech(forceState = null) {
+        const toggle = document.getElementById('speechToggle');
+        this.isTTSEnabled = forceState !== null ? forceState : !this.isTTSEnabled;
+
+        toggle.classList.toggle('active', this.isTTSEnabled);
+        localStorage.setItem('voice_tts_enabled', this.isTTSEnabled);
+
+        this.addMessage(`Speech Output ${this.isTTSEnabled ? 'Enabled' : 'Disabled'}.`, 'system');
+
+        if (!this.isTTSEnabled && this.synth.speaking) {
+            this.synth.cancel();
+        }
+    }
+
+    toggleListening() {
+        if (!this.recognition) return;
+
+        if (this.isListening) {
+            this.recognition.stop();
+        } else {
+            this.recognition.start();
+        }
+    }
+
+    speak(text) {
+        if (!this.isTTSEnabled || !this.synth) return;
+
+        // Cancel any ongoing speech
+        this.synth.cancel();
+
+        const utterance = new SpeechSynthesisUtterance(text);
+
+        // Find a preferred voice (e.g., Google US English)
+        const voices = this.synth.getVoices();
+        const preferredVoice = voices.find(v => v.name.includes('Google') && v.name.includes('US English')) || voices[0];
+        if (preferredVoice) utterance.voice = preferredVoice;
+
+        utterance.pitch = 1;
+        utterance.rate = 1;
+        this.synth.speak(utterance);
     }
 
     initModeToggle() {
@@ -167,6 +276,9 @@ class AgentAI {
                 response = await this.callGeminiAPI(text);
             }
             this.addMessage(response, 'agent');
+
+            // Speak the response if enabled
+            this.speak(response);
         } catch (error) {
             console.error(error);
             this.addMessage("Error: " + error.message, 'agent');
@@ -220,7 +332,8 @@ class AgentAI {
             web: "You are the Web Agent. Focus on tasks involving internet research, data extraction from URLs, and understanding web technologies.",
             code: "You are the Code Agent. Your expertise is in writing, debugging, and explaining code. Provide high-quality, secure, and efficient solutions.",
             research: "You are the Research Agent. Focus on providing deep insights, summarizing complex topics, and synthesizing information from multiple perspectives.",
-            system: "You are the System Agent. You specialize in OS-level operations (Windows/Linux), shell scripting, and local development environments. Note: You current have simulated system access."
+            system: "You are the System Agent. You specialize in OS-level operations (Windows/Linux), shell scripting, and local development environments. Note: You current have simulated system access.",
+            voice: "You are the Voice Agent. You are a conversational assistant optimized for hands-free interactions. Be concise, clear, and helpful. You excel at answering questions orally, helping with research, and explaining code snippets in an easy-to-understand way. Since you are speaking to the user, keep your responses natural and avoid long blocks of code unless explicitly asked."
         };
         return instructions[this.currentAgent] || instructions.multi;
     }
@@ -287,6 +400,7 @@ if %errorlevel% neq 0 (
 )
 
 echo [1/3] Installing dependencies...
+echo [INFO] This might take a few minutes.
 call npm install
 echo [SECURE] Updating & fixing security vulnerabilities...
 call npm audit fix --force
@@ -299,8 +413,22 @@ echo [INFO] Default endpoint: http://localhost:11434
 echo.
 echo [3/3] Setup complete!
 echo.
-echo To start the server, run: npm start
-echo Then go to the Agent AI Beta page and toggle to "Offline".
+echo ===================================================
+echo   LAUNCHING AGENT AI
+echo ===================================================
+echo 1. Starting Local Companion Server...
+start "Agent AI Server" cmd /c "npm start"
+
+echo 2. Waiting for server to initialize...
+timeout /t 3 /nobreak >nul
+
+echo 3. Opening Agent AI in your browser...
+start "" "http://localhost:3000/projects/AgentAi/beta.html"
+
+echo.
+echo Setup and Launch successful! 
+echo Keep the "Agent AI Server" terminal window open while using the agent.
+echo ===================================================
 echo.
 pause`;
 

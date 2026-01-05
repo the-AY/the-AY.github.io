@@ -35,7 +35,21 @@ if /i "%download%"=="y" (
 echo.
 echo [4/4] Setup complete!
 echo.
-echo To start the server, run: npm start
-echo Then go to the Agent AI Beta page and toggle to "Offline".
+echo ===================================================
+echo   LAUNCHING AGENT AI
+echo ===================================================
+echo 1. Starting Local Companion Server...
+start "Agent AI Server" cmd /c "npm start"
+
+echo 2. Waiting for server to initialize...
+timeout /t 3 /nobreak >nul
+
+echo 3. Opening Agent AI in your browser...
+start "" "http://localhost:3000/projects/AgentAi/beta.html"
+
+echo.
+echo Setup and Launch successful! 
+echo Keep the "Agent AI Server" terminal window open.
+echo ===================================================
 echo.
 pause

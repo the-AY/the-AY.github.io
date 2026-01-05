@@ -18,8 +18,12 @@ app.use(cors());
 app.use(express.json());
 
 // CONFIGURATION
+const REPO_ROOT = path.join(__dirname, '../../');
 const LOCAL_LLM_ENDPOINT = "http://localhost:11434/api/generate"; // Ollama default
 const DEFAULT_MODEL = "llama3"; // Change to your preferred local model
+
+// Serve static files from the repository root
+app.use(express.static(REPO_ROOT));
 
 // Status check
 app.get('/status', (req, res) => {
@@ -29,7 +33,12 @@ app.get('/status', (req, res) => {
 // Agent Orchestration Endpoint
 app.post('/agent', async (req, res) => {
     const { prompt, agent, modelEndpoint, systemInstruction } = req.body;
-    const endpoint = modelEndpoint || LOCAL_LLM_ENDPOINT;
+
+    // Ensure the endpoint has the correct path for Ollama if it's the default or missing path
+    let endpoint = modelEndpoint || LOCAL_LLM_ENDPOINT;
+    if (endpoint.includes('11434') && !endpoint.includes('/api/generate')) {
+        endpoint = endpoint.replace(/\/+$/, '') + '/api/generate';
+    }
 
     console.log(`[${agent}] Received request: ${prompt}`);
 
