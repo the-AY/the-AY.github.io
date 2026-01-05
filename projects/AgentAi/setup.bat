@@ -54,9 +54,11 @@ timeout /t 2 /nobreak >nul
 echo [INFO] Opening UI in Browser...
 start "" "http://127.0.0.1:3000/projects/AgentAi/beta.html"
 
-echo.
 echo SUCCESS: Agent AI is ready!
-echo Keep the server terminal window open.
+echo Local companion is serving the UI and handling tasks.
+echo.
+echo NOTE: Ensure your local LLM (e.g., Ollama) is running
+echo to use the Reasoning/Multi-Agent features offline.
 echo ===================================================
 echo.
 pause

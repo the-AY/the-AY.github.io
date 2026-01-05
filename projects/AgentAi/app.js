@@ -9,9 +9,13 @@ class AgentAI {
         this.chatBox = document.getElementById('chatBox');
         this.chatInput = document.getElementById('chatInput');
         this.sendBtn = document.getElementById('sendBtn');
+        // Initialize state
         this.currentAgent = 'multi';
-        this.isOffline = false; // Default to Online
         this.localEndpoint = localStorage.getItem('local_model_endpoint') || 'http://127.0.0.1:11434';
+
+        // Auto-detect local environment
+        const isLocalHost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+        this.isOffline = isLocalHost; // Default to Offline if served locally
 
         // Voice State
         this.isListening = false;
@@ -144,6 +148,12 @@ class AgentAI {
         utterance.pitch = 1;
         utterance.rate = 1;
         this.synth.speak(utterance);
+        // Initial UI Update for Mode
+        const modeToggle = document.getElementById('offlineToggle');
+        if (modeToggle) {
+            if (this.isOffline) modeToggle.classList.add('active');
+            else modeToggle.classList.remove('active');
+        }
     }
 
     initModeToggle() {
@@ -401,27 +411,38 @@ echo   Agent AI Local Companion Setup
 echo ===================================================
 echo.
 
-echo [1/4] Checking Environment...
+echo [1/5] Checking Environment...
 where node >nul 2>nul
 if %errorlevel% neq 0 (
     echo [ERROR] Node.js not found. Please install from https://nodejs.org/
     goto onerror
 )
 
-echo [2/4] Verifying Dependencies...
+echo [2/5] Verifying Dependencies...
 if not exist "node_modules" (
     echo [INFO] Initial setup: Installing packages...
-    call npm install >> "%LOGFILE%" 2>&1
+    call npm install
     if %errorlevel% neq 0 (
         echo [ERROR] Installation failed. Check %LOGFILE%.
         goto onerror
     )
 )
 
-echo [3/4] Preparing Local Model...
-node download-model.js >> "%LOGFILE%" 2>&1
+echo [3/5] Checking Ollama Service...
+curl -s http://127.0.0.1:11434/api/tags >nul 2>&1
+if %errorlevel% neq 0 (
+    echo [INFO] Ollama is not running. Attempting to start...
+    where ollama >nul 2>nul
+    if %errorlevel% equ 0 (
+        start "" ollama serve
+        timeout /t 5 /nobreak >nul
+    )
+)
 
-echo [4/4] Finalizing...
+echo [4/5] Preparing Local Model...
+node download-model.js
+
+echo [5/5] Finalizing...
 echo.
 echo ===================================================
 echo   LAUNCHING AGENT AI
@@ -431,7 +452,6 @@ timeout /t 2 /nobreak >nul
 start "" "http://127.0.0.1:3000/projects/AgentAi/beta.html"
 
 echo SUCCESS: Agent AI is ready!
-echo Keep the server window open.
 echo =================================================== 
 echo.
 pause

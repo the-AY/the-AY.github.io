@@ -102,7 +102,11 @@ async function callLocalLLM(prompt, endpoint) {
         });
         return response.data.response || response.data.content || JSON.stringify(response.data);
     } catch (e) {
-        return `Local Model Error: ${e.message}. Ensure Ollama (or your local provider) is running at ${endpoint}.`;
+        let errorMsg = e.message;
+        if (e.code === 'ECONNREFUSED') {
+            errorMsg = `Connection refused. Please ensure Ollama is running at ${endpoint}. Run 'ollama serve' in a terminal.`;
+        }
+        return `Local Model Error: ${errorMsg}`;
     }
 }
 
