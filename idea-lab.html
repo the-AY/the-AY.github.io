@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Idea Lab | Creative Journey</title>
+    <title>Idea Lab | Cinematic Journey</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
         rel="stylesheet">
     <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
@@ -17,6 +17,7 @@
             --text: #ffffff;
             --text-dim: #9494A1;
             --glass-border: rgba(255, 255, 255, 0.07);
+            --cycle-duration: 20s;
         }
 
         * {
@@ -31,6 +32,7 @@
             color: var(--text);
             height: 100vh;
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
             overflow: hidden;
@@ -83,201 +85,344 @@
             color: #fff;
         }
 
-        /* CREATIVE JOURNEY RIG */
-        .stage-rig {
+        /* RUNWAY ARCHITECTURE */
+        .runway-zone {
             position: absolute;
+            left: 0;
             width: 100%;
-            height: 100%;
+            height: 150px;
             pointer-events: none;
             z-index: 1;
         }
 
-        /* STAGE 1: PACKING */
-        .packing-zone {
+        .top-runway {
+            top: 15%;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .bottom-runway {
+            bottom: 15%;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        /* BOX COMPONENTS (VS CODE THEMED EMOJI STYLE) */
+        .box-container {
             position: absolute;
-            top: 20%;
-            left: 10%;
-            text-align: center;
+            width: 80px;
+            height: 80px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 5;
         }
 
-        .idea-bulb {
-            font-size: 80px;
+        .box-lid {
+            font-size: 40px;
+            transform-origin: bottom;
+            transition: transform 0.5s ease;
+            z-index: 2;
+        }
+
+        .box-body {
+            font-size: 60px;
+            margin-top: -15px;
+            z-index: 1;
+        }
+
+        .bulb-content {
+            position: absolute;
+            font-size: 30px;
             color: var(--accent);
-            filter: drop-shadow(0 0 30px rgba(255, 215, 0, 0.6));
-            animation: bulb-drop 4s infinite cubic-bezier(0.45, 0.05, 0.55, 0.95);
+            filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.8));
+            opacity: 0;
+            z-index: 0;
         }
 
-        .parcel-box {
-            font-size: 100px;
-            color: #8D6E63;
-            margin-top: -20px;
+        /* STAGE 1: TOP SHIPPING LOOP */
+        .shipping-actor {
+            position: absolute;
+            left: 10%;
+            top: 20%;
+            animation: shipping-cycle var(--cycle-duration) infinite linear;
+        }
+
+        @keyframes shipping-cycle {
+            0% {
+                opacity: 1;
+                transform: translateX(0);
+            }
+
+            45% {
+                opacity: 1;
+                transform: translateX(90vw);
+            }
+
+            46% {
+                opacity: 0;
+                transform: translateX(90vw);
+            }
+
+            100% {
+                opacity: 0;
+                transform: translateX(0);
+            }
+        }
+
+        .lid-anim {
+            animation: lid-action var(--cycle-duration) infinite linear;
+        }
+
+        @keyframes lid-action {
+
+            0%,
+            5% {
+                transform: translateY(0) rotate(0);
+            }
+
+            10% {
+                transform: translateY(-20px) rotate(-20deg);
+            }
+
+            /* Open */
+            20% {
+                transform: translateY(0) rotate(0);
+            }
+
+            /* Close */
+            100% {
+                transform: translateY(0) rotate(0);
+            }
+        }
+
+        .bulb-anim {
+            animation: bulb-drop var(--cycle-duration) infinite linear;
         }
 
         @keyframes bulb-drop {
-            0% {
-                transform: translateY(-100px) scale(0);
+
+            0%,
+            8% {
+                transform: translateY(-100px);
                 opacity: 0;
             }
 
-            20% {
-                transform: translateY(0) scale(1.1);
+            12% {
+                transform: translateY(-10px);
                 opacity: 1;
             }
 
-            40% {
-                transform: translateY(0) scale(1);
-            }
-
-            60% {
-                transform: translateY(40px) scale(0.5);
+            15% {
+                transform: translateY(10px);
                 opacity: 0;
             }
 
             100% {
-                transform: translateY(-100px) scale(0);
                 opacity: 0;
             }
         }
 
-        /* STAGE 2: RUNWAY */
-        .runway {
+        .plane-actor {
             position: absolute;
-            bottom: 10%;
-            left: 0;
-            width: 100%;
-            height: 4px;
-            background: rgba(255, 255, 255, 0.1);
-            overflow: visible;
-        }
-
-        .runway-lights {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background: repeating-linear-gradient(90deg, transparent, transparent 40px, var(--primary) 40px, var(--primary) 80px);
-            opacity: 0.3;
-            animation: lights-flow 2s infinite linear;
-        }
-
-        @keyframes lights-flow {
-            from {
-                background-position: 0 0;
-            }
-
-            to {
-                background-position: 120px 0;
-            }
-        }
-
-        .takeoff-plane {
-            position: absolute;
-            bottom: 0;
-            left: -100px;
-            font-size: 50px;
-            color: #fff;
-            animation: takeoff 8s infinite linear;
-        }
-
-        @keyframes takeoff {
-            0% {
-                transform: translateX(0) translateY(0) rotate(0);
-            }
-
-            30% {
-                transform: translateX(40vw) translateY(0) rotate(0);
-            }
-
-            50% {
-                transform: translateX(60vw) translateY(-100px) rotate(-15deg);
-            }
-
-            70% {
-                transform: translateX(110vw) translateY(-300px) rotate(-20deg);
-            }
-
-            100% {
-                transform: translateX(110vw) translateY(-300px);
-            }
-        }
-
-        /* STAGE 3: DELIVERY */
-        .delivery-zone {
-            position: absolute;
-            bottom: 10%;
-            right: 15%;
-            width: 200px;
-            height: 100px;
-        }
-
-        .house-icon {
-            position: absolute;
-            right: 0;
-            bottom: 0;
-            font-size: 120px;
-            color: var(--primary);
-            opacity: 0.8;
-        }
-
-        .stickman-walker {
-            position: absolute;
-            left: -50px;
-            bottom: 0;
             font-size: 40px;
             color: #fff;
-            animation: walk-deliver 8s infinite ease-in-out;
+            opacity: 0;
+            animation: plane-pickup var(--cycle-duration) infinite linear;
         }
 
-        @keyframes walk-deliver {
+        @keyframes plane-pickup {
 
             0%,
-            50% {
-                transform: translateX(-100px);
+            20% {
+                transform: translateX(-200px);
                 opacity: 0;
             }
 
-            60% {
+            25% {
                 transform: translateX(0);
                 opacity: 1;
             }
 
-            80% {
-                transform: translateX(80px);
+            45% {
+                transform: translateX(80vw);
                 opacity: 1;
             }
 
-            90% {
-                transform: translateX(80px) scale(1.2);
-                color: var(--accent);
+            46% {
+                opacity: 0;
             }
 
             100% {
-                transform: translateX(80px);
                 opacity: 0;
             }
         }
 
-        /* MAIN CONTENT */
+        /* STAGE 2: BOTTOM DELIVERY LOOP */
+        .delivery-actor {
+            position: absolute;
+            bottom: 20px;
+            left: 0;
+            width: 100%;
+            animation: delivery-phase var(--cycle-duration) infinite linear;
+            opacity: 0;
+        }
+
+        @keyframes delivery-phase {
+
+            0%,
+            48% {
+                opacity: 0;
+            }
+
+            50% {
+                opacity: 1;
+            }
+
+            95% {
+                opacity: 1;
+            }
+
+            100% {
+                opacity: 0;
+            }
+        }
+
+        .box-drop-actor {
+            position: absolute;
+            left: 10%;
+            animation: box-fall var(--cycle-duration) infinite linear;
+        }
+
+        @keyframes box-fall {
+
+            0%,
+            50% {
+                transform: translateY(-300px);
+                opacity: 0;
+            }
+
+            55% {
+                transform: translateY(0);
+                opacity: 1;
+            }
+
+            60% {
+                transform: translateY(0);
+                opacity: 0;
+            }
+
+            /* Handed over */
+            100% {
+                opacity: 0;
+            }
+        }
+
+        .stickman-actor {
+            position: absolute;
+            left: 5%;
+            font-size: 50px;
+            display: flex;
+            align-items: center;
+            animation: walk-to-door var(--cycle-duration) infinite linear;
+        }
+
+        @keyframes walk-to-door {
+
+            0%,
+            60% {
+                transform: translateX(0);
+                opacity: 0;
+            }
+
+            61% {
+                opacity: 1;
+            }
+
+            85% {
+                transform: translateX(70vw);
+                opacity: 1;
+            }
+
+            90% {
+                transform: translateX(70vw);
+                opacity: 0;
+            }
+
+            100% {
+                opacity: 0;
+            }
+        }
+
+        .house-actor {
+            position: absolute;
+            right: 15%;
+            bottom: 0;
+            font-size: 100px;
+            color: var(--primary);
+        }
+
+        .doorbell-ring {
+            position: absolute;
+            right: 14%;
+            bottom: 80px;
+            font-size: 30px;
+            color: var(--accent);
+            opacity: 0;
+            animation: ring-pulse var(--cycle-duration) infinite linear;
+        }
+
+        @keyframes ring-pulse {
+
+            0%,
+            85% {
+                opacity: 0;
+                transform: scale(0);
+            }
+
+            86% {
+                opacity: 1;
+                transform: scale(1.2);
+                filter: drop-shadow(0 0 20px gold);
+            }
+
+            88% {
+                opacity: 1;
+                transform: scale(1);
+            }
+
+            90% {
+                opacity: 0;
+            }
+
+            100% {
+                opacity: 0;
+            }
+        }
+
+        /* CONTENT CENTER */
         .lab-container {
             text-align: center;
-            z-index: 10;
+            z-index: 100;
             padding: 2rem;
             max-width: 800px;
+            background: rgba(5, 5, 7, 0.4);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 40px;
         }
 
         h1 {
-            font-size: clamp(3rem, 10vw, 5.5rem);
+            font-size: clamp(2.5rem, 8vw, 4.5rem);
             font-weight: 800;
-            letter-spacing: -3px;
+            letter-spacing: -2px;
             margin-bottom: 1rem;
-            background: linear-gradient(135deg, #fff, #888);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: #fff;
         }
 
         p {
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             color: var(--text-dim);
-            margin-bottom: 3rem;
+            margin-bottom: 2.5rem;
             line-height: 1.6;
         }
 
@@ -285,7 +430,7 @@
             display: inline-flex;
             align-items: center;
             gap: 12px;
-            padding: 18px 36px;
+            padding: 16px 32px;
             background: rgba(255, 255, 255, 0.1);
             border: 1px solid rgba(255, 255, 255, 0.2);
             border-radius: 50px;
@@ -293,8 +438,6 @@
             text-decoration: none;
             font-weight: 700;
             transition: 0.4s;
-            backdrop-filter: blur(10px);
-            pointer-events: auto;
         }
 
         .btn-back:hover {
@@ -310,7 +453,7 @@
             width: 100%;
             height: 100%;
             z-index: -2;
-            background: radial-gradient(circle at 50% 50%, rgba(26, 115, 232, 0.05), transparent 70%);
+            background: radial-gradient(circle at 50% 50%, rgba(26, 115, 232, 0.03), transparent 70%);
         }
     </style>
 </head>
@@ -333,41 +476,46 @@
 
     <div class="bg-mesh"></div>
 
-    <!-- JOURNEY STAGES -->
-    <div class="stage-rig">
-        <div class="packing-zone">
-            <div class="idea-bulb"><ion-icon name="bulb"></ion-icon></div>
-            <div class="parcel-box"><ion-icon name="cube-outline"></ion-icon></div>
-        </div>
-
-        <div class="runway">
-            <div class="runway-lights"></div>
-            <div class="takeoff-plane"><ion-icon name="paper-plane"></ion-icon></div>
-        </div>
-
-        <div class="delivery-zone">
-            <div class="house-icon"><ion-icon name="home-outline"></ion-icon></div>
-            <div class="stickman-walker"><ion-icon name="walk-outline"></ion-icon></div>
+    <!-- TOP RUNWAY: SHIPPING FACTORY -->
+    <div class="runway-zone top-runway">
+        <div class="shipping-actor">
+            <div class="box-container">
+                <div class="bulb-content bulb-anim"><ion-icon name="bulb"></ion-icon></div>
+                <div class="box-lid lid-anim">🔼</div>
+                <div class="box-body">📦</div>
+            </div>
+            <div class="plane-actor"><ion-icon name="paper-plane"></ion-icon></div>
         </div>
     </div>
 
+    <!-- MIDDLE CENTER CONTENT -->
     <div class="lab-container">
         <h1>Idea Lab</h1>
-        <p>From a glowing concept to a landed reality. Watch the journey of an idea being packed, flown, and delivered
-            to where it matters most.</p>
-
+        <p>A cinematic journey of production. Concept packed on the <b>Top Runway</b>, project delivered on the
+            <b>Bottom Runway</b>. Total continuity from thought to reality.</p>
         <a href="./index.html" class="btn-back">
             <ion-icon name="arrow-back-outline"></ion-icon>
             Return to Portfolio
         </a>
     </div>
 
-    <!-- Script for additional randomness if needed -->
+    <!-- BOTTOM RUNWAY: FINAL DELIVERY -->
+    <div class="runway-zone bottom-runway">
+        <div class="delivery-actor">
+            <div class="box-drop-actor">
+                <div class="box-body">📦</div>
+            </div>
+            <div class="stickman-actor">
+                <ion-icon name="walk-outline"></ion-icon>
+                <div class="box-body" style="font-size: 30px; margin-left: -5px;">📦</div>
+            </div>
+            <div class="house-actor"><ion-icon name="home-outline"></ion-icon></div>
+            <div class="doorbell-ring"><ion-icon name="notifications-outline"></ion-icon></div>
+        </div>
+    </div>
+
     <script>
-        // Interactive element: Clicking the container could trigger more planes
-        document.querySelector('.lab-container').addEventListener('click', () => {
-            console.log('Idea Lab Active');
-        });
+        console.log('Idea Lab Cinematic Cycle Started');
     </script>
 </body>
 
