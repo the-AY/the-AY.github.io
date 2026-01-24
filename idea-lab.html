@@ -93,7 +93,7 @@
             width: 100%;
             height: 100%;
             z-index: -1;
-            background: radial-gradient(circle at 50% 50%, rgba(255, 215, 0, 0.05), transparent 70%);
+            background: radial-gradient(circle at 50% 50%, rgba(255, 215, 0, 0.08), transparent 70%);
         }
 
         .lab-container {
@@ -116,9 +116,10 @@
         }
 
         .bulb-icon {
-            font-size: 100px;
+            font-size: 120px;
+            /* Bigger bulb */
             color: var(--accent);
-            filter: drop-shadow(0 0 30px rgba(255, 215, 0, 0.4));
+            filter: drop-shadow(0 0 50px rgba(255, 215, 0, 0.6));
             animation: bulb-pulse 2s infinite ease-in-out;
         }
 
@@ -127,20 +128,22 @@
             0%,
             100% {
                 transform: scale(1);
-                filter: drop-shadow(0 0 30px rgba(255, 215, 0, 0.4));
+                filter: drop-shadow(0 0 40px rgba(255, 215, 0, 0.4));
             }
 
             50% {
-                transform: scale(1.05);
-                filter: drop-shadow(0 0 60px rgba(255, 215, 0, 0.7));
+                transform: scale(1.1);
+                filter: drop-shadow(0 0 80px rgba(255, 215, 0, 0.8));
             }
         }
 
-        /* Paper Plane Styles */
+        /* Paper Plane Styles - MUCH BIGGER AND VISIBLE */
         .paper-plane {
             position: absolute;
-            font-size: 24px;
-            color: rgba(255, 255, 255, 0.4);
+            font-size: 48px;
+            /* Increased from 24px */
+            color: #fff;
+            filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.8));
             pointer-events: none;
             z-index: 5;
         }
@@ -152,33 +155,33 @@
                 opacity: 0;
             }
 
-            10% {
+            15% {
                 opacity: 1;
-                scale: 1;
+                scale: 1.2;
             }
 
             100% {
-                transform: translate(var(--tx), var(--ty)) rotate(var(--tr)) scale(0.5);
+                transform: translate(var(--tx), var(--ty)) rotate(var(--tr)) scale(0.6);
                 opacity: 0;
             }
         }
 
         h1 {
-            font-size: clamp(3rem, 10vw, 5rem);
+            font-size: clamp(3.5rem, 12vw, 6rem);
             font-weight: 800;
-            letter-spacing: -3px;
+            letter-spacing: -4px;
             margin-bottom: 1rem;
-            background: linear-gradient(135deg, #fff, #999);
+            background: linear-gradient(135deg, #fff, #bbb);
             background-clip: text;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
         p {
-            font-size: 1.25rem;
+            font-size: 1.4rem;
             color: var(--text-dim);
             margin-bottom: 3rem;
-            max-width: 600px;
+            max-width: 650px;
             line-height: 1.6;
         }
 
@@ -186,32 +189,34 @@
             display: inline-flex;
             align-items: center;
             gap: 12px;
-            padding: 18px 36px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 20px 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
             border-radius: 50px;
             color: #fff;
             text-decoration: none;
-            font-weight: 700;
-            backdrop-filter: blur(10px);
+            font-weight: 800;
+            backdrop-filter: blur(15px);
             transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
         }
 
         .btn-back:hover {
             background: #fff;
             color: #000;
-            transform: translateY(-5px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
         }
 
-        /* Runway Landing Plane Animation */
+        /* Runway Landing Plane Animation - MORE VISIBLE */
         .runway-plane {
             position: absolute;
-            bottom: 50px;
-            left: -100px;
-            font-size: 40px;
-            color: rgba(255, 255, 255, 0.1);
-            animation: runway-landing 8s infinite linear;
+            bottom: 80px;
+            left: -150px;
+            font-size: 60px;
+            /* Bigger */
+            color: rgba(255, 255, 255, 0.3);
+            filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.4));
+            animation: runway-landing 10s infinite linear;
         }
 
         @keyframes runway-landing {
@@ -220,16 +225,16 @@
                 opacity: 0;
             }
 
-            20% {
-                opacity: 0.3;
+            15% {
+                opacity: 1;
             }
 
-            80% {
-                opacity: 0.3;
+            85% {
+                opacity: 1;
             }
 
             100% {
-                transform: translate(120vw, 100px) rotate(5deg);
+                transform: translate(130vw, 150px) rotate(5deg);
                 opacity: 0;
             }
         }
@@ -299,8 +304,8 @@
             plane.style.setProperty('--ty', `${ty}px`);
             plane.style.setProperty('--tr', `${tr}deg`);
 
-            // Faster, diverse speeds
-            const duration = 2 + Math.random() * 3;
+            // Variable flight duration
+            const duration = 1.5 + Math.random() * 3;
             plane.style.animation = `fly-out ${duration}s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards`;
 
             document.body.appendChild(plane);
@@ -309,12 +314,12 @@
             setTimeout(() => plane.remove(), duration * 1000);
         }
 
-        // Burst of planes
-        setInterval(createPlane, 400);
+        // Faster rate of planes
+        setInterval(createPlane, 300);
 
-        // Initial burst
-        for (let i = 0; i < 10; i++) {
-            setTimeout(createPlane, i * 100);
+        // Launch initial burst
+        for (let i = 0; i < 15; i++) {
+            setTimeout(createPlane, i * 80);
         }
     </script>
 </body>

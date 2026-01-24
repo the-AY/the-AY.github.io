@@ -1148,6 +1148,8 @@ ol {
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: var(--spacing-md);
   margin-top: var(--spacing-xl);
+  align-items: start;
+  /* Prevents vertical stretching across rows */
 }
 
 .link-card {
@@ -1162,8 +1164,7 @@ ol {
   border: 1px solid var(--border-color);
   box-shadow: var(--shadow-sm);
   transition: var(--transition-normal);
-  min-height: 80px;
-  /* Consistent baseline height */
+  min-height: 90px;
 }
 
 .link-card:hover {
@@ -1182,6 +1183,8 @@ ol {
   font-size: 1.75rem;
   color: white;
   flex-shrink: 0 !important;
+  align-self: center !important;
+  /* Forces vertical centering in flex row */
 }
 
 /* Link Icon Colors */
