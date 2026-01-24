@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Idea Lab | Project Building...</title>
+    <title>Idea Lab | Creative Journey</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
         rel="stylesheet">
     <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
@@ -13,7 +13,6 @@
         :root {
             --primary: #1A73E8;
             --accent: #FFD700;
-            /* Warm Golden Yellow */
             --bg-dark: #050507;
             --text: #ffffff;
             --text-dim: #9494A1;
@@ -38,15 +37,14 @@
             position: relative;
         }
 
-        /* Navbar Refinement */
+        /* NAVIGATION BAR */
         .navbar {
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
-            background: rgba(5, 5, 7, 0.5);
+            background: rgba(5, 5, 7, 0.7);
             backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
             border-bottom: 1px solid var(--glass-border);
             z-index: 1000;
             padding: 1.2rem 0;
@@ -66,7 +64,6 @@
             font-size: 1.2rem;
             color: #fff;
             text-decoration: none;
-            letter-spacing: -0.5px;
         }
 
         .nav-menu {
@@ -79,109 +76,208 @@
             text-decoration: none;
             font-weight: 600;
             font-size: 0.9rem;
-            transition: all 0.3s ease;
+            transition: 0.3s;
         }
 
-        .nav-link:hover,
-        .nav-link.active {
+        .nav-link:hover {
             color: #fff;
         }
 
-        /* Background Glow */
-        .bg-mesh {
+        /* CREATIVE JOURNEY RIG */
+        .stage-rig {
             position: absolute;
             width: 100%;
             height: 100%;
-            z-index: -1;
-            background: radial-gradient(circle at 50% 50%, rgba(255, 215, 0, 0.08), transparent 70%);
+            pointer-events: none;
+            z-index: 1;
         }
 
-        .lab-container {
+        /* STAGE 1: PACKING */
+        .packing-zone {
+            position: absolute;
+            top: 20%;
+            left: 10%;
             text-align: center;
-            position: relative;
-            z-index: 10;
-            padding: 2rem;
-            margin-top: 80px;
         }
 
-        /* Bulb Animation - Warm Yellow */
-        .bulb-container {
-            position: relative;
-            width: 150px;
-            height: 150px;
-            margin: 0 auto 2rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .bulb-icon {
-            font-size: 120px;
-            /* Bigger bulb */
+        .idea-bulb {
+            font-size: 80px;
             color: var(--accent);
-            filter: drop-shadow(0 0 50px rgba(255, 215, 0, 0.6));
-            animation: bulb-pulse 2s infinite ease-in-out;
+            filter: drop-shadow(0 0 30px rgba(255, 215, 0, 0.6));
+            animation: bulb-drop 4s infinite cubic-bezier(0.45, 0.05, 0.55, 0.95);
         }
 
-        @keyframes bulb-pulse {
+        .parcel-box {
+            font-size: 100px;
+            color: #8D6E63;
+            margin-top: -20px;
+        }
 
-            0%,
+        @keyframes bulb-drop {
+            0% {
+                transform: translateY(-100px) scale(0);
+                opacity: 0;
+            }
+
+            20% {
+                transform: translateY(0) scale(1.1);
+                opacity: 1;
+            }
+
+            40% {
+                transform: translateY(0) scale(1);
+            }
+
+            60% {
+                transform: translateY(40px) scale(0.5);
+                opacity: 0;
+            }
+
             100% {
-                transform: scale(1);
-                filter: drop-shadow(0 0 40px rgba(255, 215, 0, 0.4));
+                transform: translateY(-100px) scale(0);
+                opacity: 0;
+            }
+        }
+
+        /* STAGE 2: RUNWAY */
+        .runway {
+            position: absolute;
+            bottom: 10%;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            overflow: visible;
+        }
+
+        .runway-lights {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(90deg, transparent, transparent 40px, var(--primary) 40px, var(--primary) 80px);
+            opacity: 0.3;
+            animation: lights-flow 2s infinite linear;
+        }
+
+        @keyframes lights-flow {
+            from {
+                background-position: 0 0;
+            }
+
+            to {
+                background-position: 120px 0;
+            }
+        }
+
+        .takeoff-plane {
+            position: absolute;
+            bottom: 0;
+            left: -100px;
+            font-size: 50px;
+            color: #fff;
+            animation: takeoff 8s infinite linear;
+        }
+
+        @keyframes takeoff {
+            0% {
+                transform: translateX(0) translateY(0) rotate(0);
+            }
+
+            30% {
+                transform: translateX(40vw) translateY(0) rotate(0);
             }
 
             50% {
-                transform: scale(1.1);
-                filter: drop-shadow(0 0 80px rgba(255, 215, 0, 0.8));
-            }
-        }
-
-        /* Paper Plane Styles - MUCH BIGGER AND VISIBLE */
-        .paper-plane {
-            position: absolute;
-            font-size: 48px;
-            /* Increased from 24px */
-            color: #fff;
-            filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.8));
-            pointer-events: none;
-            z-index: 5;
-        }
-
-        /* Animations for Planes */
-        @keyframes fly-out {
-            0% {
-                transform: translate(0, 0) rotate(0deg) scale(0);
-                opacity: 0;
+                transform: translateX(60vw) translateY(-100px) rotate(-15deg);
             }
 
-            15% {
-                opacity: 1;
-                scale: 1.2;
+            70% {
+                transform: translateX(110vw) translateY(-300px) rotate(-20deg);
             }
 
             100% {
-                transform: translate(var(--tx), var(--ty)) rotate(var(--tr)) scale(0.6);
+                transform: translateX(110vw) translateY(-300px);
+            }
+        }
+
+        /* STAGE 3: DELIVERY */
+        .delivery-zone {
+            position: absolute;
+            bottom: 10%;
+            right: 15%;
+            width: 200px;
+            height: 100px;
+        }
+
+        .house-icon {
+            position: absolute;
+            right: 0;
+            bottom: 0;
+            font-size: 120px;
+            color: var(--primary);
+            opacity: 0.8;
+        }
+
+        .stickman-walker {
+            position: absolute;
+            left: -50px;
+            bottom: 0;
+            font-size: 40px;
+            color: #fff;
+            animation: walk-deliver 8s infinite ease-in-out;
+        }
+
+        @keyframes walk-deliver {
+
+            0%,
+            50% {
+                transform: translateX(-100px);
+                opacity: 0;
+            }
+
+            60% {
+                transform: translateX(0);
+                opacity: 1;
+            }
+
+            80% {
+                transform: translateX(80px);
+                opacity: 1;
+            }
+
+            90% {
+                transform: translateX(80px) scale(1.2);
+                color: var(--accent);
+            }
+
+            100% {
+                transform: translateX(80px);
                 opacity: 0;
             }
         }
 
+        /* MAIN CONTENT */
+        .lab-container {
+            text-align: center;
+            z-index: 10;
+            padding: 2rem;
+            max-width: 800px;
+        }
+
         h1 {
-            font-size: clamp(3.5rem, 12vw, 6rem);
+            font-size: clamp(3rem, 10vw, 5.5rem);
             font-weight: 800;
-            letter-spacing: -4px;
+            letter-spacing: -3px;
             margin-bottom: 1rem;
-            background: linear-gradient(135deg, #fff, #bbb);
-            background-clip: text;
+            background: linear-gradient(135deg, #fff, #888);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
         p {
-            font-size: 1.4rem;
+            font-size: 1.2rem;
             color: var(--text-dim);
             margin-bottom: 3rem;
-            max-width: 650px;
             line-height: 1.6;
         }
 
@@ -189,60 +285,37 @@
             display: inline-flex;
             align-items: center;
             gap: 12px;
-            padding: 20px 40px;
+            padding: 18px 36px;
             background: rgba(255, 255, 255, 0.1);
             border: 1px solid rgba(255, 255, 255, 0.2);
             border-radius: 50px;
             color: #fff;
             text-decoration: none;
-            font-weight: 800;
-            backdrop-filter: blur(15px);
-            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            font-weight: 700;
+            transition: 0.4s;
+            backdrop-filter: blur(10px);
+            pointer-events: auto;
         }
 
         .btn-back:hover {
             background: #fff;
             color: #000;
-            transform: translateY(-8px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+            transform: translateY(-5px);
         }
 
-        /* Runway Landing Plane Animation - MORE VISIBLE */
-        .runway-plane {
+        .bg-mesh {
             position: absolute;
-            bottom: 80px;
-            left: -150px;
-            font-size: 60px;
-            /* Bigger */
-            color: rgba(255, 255, 255, 0.3);
-            filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.4));
-            animation: runway-landing 10s infinite linear;
-        }
-
-        @keyframes runway-landing {
-            0% {
-                transform: translate(0, 0) rotate(15deg);
-                opacity: 0;
-            }
-
-            15% {
-                opacity: 1;
-            }
-
-            85% {
-                opacity: 1;
-            }
-
-            100% {
-                transform: translate(130vw, 150px) rotate(5deg);
-                opacity: 0;
-            }
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            background: radial-gradient(circle at 50% 50%, rgba(26, 115, 232, 0.05), transparent 70%);
         }
     </style>
 </head>
 
 <body>
-    <!-- NAVIGATION -->
     <nav class="navbar">
         <div class="nav-container">
             <a href="./index.html" class="nav-brand">Adish Yermal</a>
@@ -252,7 +325,7 @@
                 <a href="./index.html#about" class="nav-link">About</a>
                 <a href="./index.html#resume" class="nav-link">Resume</a>
                 <a href="./index.html#portfolio" class="nav-link">Portfolio</a>
-                <a href="./index.html#projects" class="nav-link active">Projects</a>
+                <a href="./index.html#schedule" class="nav-link">Schedule</a>
                 <a href="./index.html#contact" class="nav-link">Contact</a>
             </div>
         </div>
@@ -260,67 +333,41 @@
 
     <div class="bg-mesh"></div>
 
-    <div class="runway-plane">
-        <ion-icon name="paper-plane"></ion-icon>
+    <!-- JOURNEY STAGES -->
+    <div class="stage-rig">
+        <div class="packing-zone">
+            <div class="idea-bulb"><ion-icon name="bulb"></ion-icon></div>
+            <div class="parcel-box"><ion-icon name="cube-outline"></ion-icon></div>
+        </div>
+
+        <div class="runway">
+            <div class="runway-lights"></div>
+            <div class="takeoff-plane"><ion-icon name="paper-plane"></ion-icon></div>
+        </div>
+
+        <div class="delivery-zone">
+            <div class="house-icon"><ion-icon name="home-outline"></ion-icon></div>
+            <div class="stickman-walker"><ion-icon name="walk-outline"></ion-icon></div>
+        </div>
     </div>
 
     <div class="lab-container">
-        <div class="bulb-container" id="bulb">
-            <ion-icon name="bulb" class="bulb-icon"></ion-icon>
-        </div>
-
         <h1>Idea Lab</h1>
-        <p>This implementation is currently taking flight. My internal brainstorming engine is running at full capacity
-            to bring this project to life.</p>
+        <p>From a glowing concept to a landed reality. Watch the journey of an idea being packed, flown, and delivered
+            to where it matters most.</p>
 
         <a href="./index.html" class="btn-back">
             <ion-icon name="arrow-back-outline"></ion-icon>
-            Back to Portfolio
+            Return to Portfolio
         </a>
     </div>
 
+    <!-- Script for additional randomness if needed -->
     <script>
-        const bulb = document.getElementById('bulb');
-
-        function createPlane() {
-            const plane = document.createElement('div');
-            plane.className = 'paper-plane';
-            plane.innerHTML = '<ion-icon name="paper-plane"></ion-icon>';
-
-            // Starting coordinates (center of bulb)
-            const rect = bulb.getBoundingClientRect();
-            const startX = rect.left + rect.width / 2;
-            const startY = rect.top + rect.height / 2;
-
-            plane.style.left = startX + 'px';
-            plane.style.top = startY + 'px';
-
-            // Random target trajectories
-            const tx = (Math.random() - 0.5) * 2000;
-            const ty = (Math.random() - 0.5) * 2000;
-            const tr = Math.random() * 360;
-
-            plane.style.setProperty('--tx', `${tx}px`);
-            plane.style.setProperty('--ty', `${ty}px`);
-            plane.style.setProperty('--tr', `${tr}deg`);
-
-            // Variable flight duration
-            const duration = 1.5 + Math.random() * 3;
-            plane.style.animation = `fly-out ${duration}s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards`;
-
-            document.body.appendChild(plane);
-
-            // Clean up
-            setTimeout(() => plane.remove(), duration * 1000);
-        }
-
-        // Faster rate of planes
-        setInterval(createPlane, 300);
-
-        // Launch initial burst
-        for (let i = 0; i < 15; i++) {
-            setTimeout(createPlane, i * 80);
-        }
+        // Interactive element: Clicking the container could trigger more planes
+        document.querySelector('.lab-container').addEventListener('click', () => {
+            console.log('Idea Lab Active');
+        });
     </script>
 </body>
 
