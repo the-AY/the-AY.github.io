@@ -1,0 +1,8 @@
+dev_meta/
+C:/Users/Super User/.gemini/antigravity/
+.DS_Store
+*.tmp
+*.bak
+node_modules/
+dist/
+build/

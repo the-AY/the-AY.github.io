@@ -8,7 +8,7 @@
   <title>Adish Yermal - Software Developer & Cybersecurity Enthusiast</title>
 
   <!-- Favicon -->
-  <link rel="shortcut icon" href="./assets/images/logo.ico" type="image/x-icon">
+  <link rel="shortcut icon" href="./assets/images/logo.svg" type="image/svg+xml">
 
   <!-- Custom CSS -->
   <link rel="stylesheet" href="./assets/css/style.css">
@@ -48,33 +48,35 @@
       <div class="shape shape-2"></div>
       <div class="shape shape-3"></div>
     </div>
-    <div class="hero-container">
-      <div class="hero-avatar-wrapper reveal-pop">
-        <div class="avatar-container">
-          <img src="./assets/images/suit-blue.jpg" alt="Adish Yermal" class="hero-avatar active">
+    <div class="hero-container split-hero">
+      <div class="hero-content">
+        <h1 class="hero-title">Adish Yermal</h1>
+        <p class="hero-subtitle">Software Developer & Cybersecurity Enthusiast</p>
+        <p class="hero-description">
+          Passionate about building secure, scalable applications with expertise in Qt and GTK development.
+          Currently working at Tata Elxsi, specializing in cross-platform development, database management,
+          localization, and security implementations.
+        </p>
+        <div class="hero-buttons">
+          <a href="#contact" class="btn btn-primary">
+            <ion-icon name="mail-outline"></ion-icon>
+            Get In Touch
+          </a>
+          <a href="#resume" class="btn btn-secondary">
+            <ion-icon name="document-text-outline"></ion-icon>
+            View Resume
+          </a>
+          <button class="btn btn-secondary" onclick="showQRCode()">
+            <ion-icon name="qr-code-outline"></ion-icon>
+            QR Code
+          </button>
         </div>
-        <div class="avatar-glow"></div>
       </div>
-      <h1 class="hero-title">Adish Yermal</h1>
-      <p class="hero-subtitle">Software Developer & Cybersecurity Enthusiast</p>
-      <p class="hero-description">
-        Passionate about building secure, scalable applications with expertise in Qt and GTK development.
-        Currently working at Tata Elxsi, specializing in cross-platform development, database management,
-        localization, and security implementations.
-      </p>
-      <div class="hero-buttons">
-        <a href="#contact" class="btn btn-primary">
-          <ion-icon name="mail-outline"></ion-icon>
-          Get In Touch
-        </a>
-        <a href="#resume" class="btn btn-secondary">
-          <ion-icon name="document-text-outline"></ion-icon>
-          View Resume
-        </a>
-        <button class="btn btn-secondary" onclick="showQRCode()">
-          <ion-icon name="qr-code-outline"></ion-icon>
-          QR Code
-        </button>
+      <div class="hero-image-wrapper reveal-pop">
+        <div class="asymmetric-avatar">
+          <img src="./assets/images/suit-blue.jpg" alt="Adish Yermal" class="full-suit-image">
+          <div class="image-mask-overlay"></div>
+        </div>
       </div>
     </div>
   </section>
@@ -626,16 +628,27 @@
       document.body.style.overflow = 'auto';
     }
 
-    // Scroll Reveal Logic
+    // Scroll Reveal & Hero Fade Logic
+    const heroImage = document.querySelector('.hero-image-wrapper');
     const revealObserver = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
           entry.target.classList.add('visible');
+
+          // Fade out hero image when reaching about/resume sections
+          if (entry.target.id === 'about' || entry.target.id === 'resume' || entry.target.id === 'portfolio') {
+            heroImage.classList.add('hide-scroll');
+          }
+        } else {
+          // Bring hero image back if scrolling up to the linktree/hero
+          if ((entry.target.id === 'about' || entry.target.id === 'resume') && entry.boundingClientRect.top > 0) {
+            heroImage.classList.remove('hide-scroll');
+          }
         }
       });
-    }, { threshold: 0.2 });
+    }, { threshold: 0.1 });
 
-    document.querySelectorAll('.reveal-pop').forEach(el => revealObserver.observe(el));
+    document.querySelectorAll('.reveal-pop, section').forEach(el => revealObserver.observe(el));
 
     // Close modal with Escape key
     document.addEventListener('keydown', (e) => {
