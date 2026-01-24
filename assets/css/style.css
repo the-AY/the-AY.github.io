@@ -1123,8 +1123,8 @@ ol {
 .blob-frame {
   position: relative;
   width: 100%;
-  max-width: 500px;
-  aspect-ratio: 1/1.1;
+  max-width: 550px;
+  aspect-ratio: 1/1.15;
   background: var(--primary-blue-light);
   border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
   overflow: hidden;
@@ -1158,7 +1158,8 @@ ol {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transform: scale(1.1) translateY(10px);
+  object-position: center 20%;
+  transform: scale(1.1);
   filter: contrast(1.05);
 }
 
@@ -1172,21 +1173,7 @@ ol {
   pointer-events: none;
 }
 
-.floating-badge {
-  position: absolute;
-  bottom: 10%;
-  left: -5%;
-  background: white;
-  padding: 1rem 1.5rem;
-  border-radius: var(--radius-md);
-  box-shadow: var(--shadow-md);
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  z-index: 10;
-  font-weight: 700;
-  color: var(--primary-blue-dark);
-}
+
 
 .floating-badge ion-icon {
   font-size: 1.5rem;
@@ -1244,7 +1231,90 @@ ol {
   border: 1px solid var(--border-color);
 }
 
-.link-card,
+
+.links-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: var(--spacing-md);
+  margin-top: var(--spacing-xl);
+}
+
+.link-card {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  text-decoration: none;
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-md) var(--spacing-lg);
+  background: white;
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition-normal);
+}
+
+.link-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--primary-blue-light);
+}
+
+.link-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  color: white;
+  flex-shrink: 0;
+}
+
+/* Link Icon Colors */
+.link-icon.linkedin {
+  background: linear-gradient(135deg, #0077B5, #00A0DC);
+}
+
+.link-icon.github {
+  background: linear-gradient(135deg, #24292E, #404448);
+}
+
+.link-icon.google {
+  background: linear-gradient(135deg, #4285F4, #34A853);
+}
+
+.link-icon.email {
+  background: linear-gradient(135deg, #EA4335, #FBBC05);
+}
+
+.link-icon.twitter {
+  background: linear-gradient(135deg, #1DA1F2, #0C85D0);
+}
+
+.link-icon.instagram {
+  background: linear-gradient(135deg, #E1306C, #FD1D1D);
+}
+
+.link-icon.portfolio {
+  background: linear-gradient(135deg, var(--accent-purple), var(--accent-pink));
+}
+
+.link-icon.resume {
+  background: linear-gradient(135deg, var(--primary-blue), var(--accent-cyan));
+}
+
+.link-content h3 {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+
+.link-content p {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
+
 .skill-card,
 .project-card {
   border-radius: var(--radius-lg);
@@ -1255,7 +1325,6 @@ ol {
   transition: var(--transition-normal);
 }
 
-.link-card:hover,
 .skill-card:hover,
 .project-card:hover {
   transform: translateY(-8px);
@@ -1266,6 +1335,9 @@ ol {
 .project-image {
   border-radius: var(--radius-md);
   margin-bottom: var(--spacing-md);
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
 }
 
 /* RESPONSIVE */

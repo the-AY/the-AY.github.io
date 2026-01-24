@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Idea Lab | Project Building...</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <style>
+        :root {
+            --primary: #1A73E8;
+            --accent: #00F2FF;
+            --bg-dark: #050507;
+            --text: #ffffff;
+            --text-dim: #9494A1;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text);
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Floating Particles */
+        .bg-mesh {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: radial-gradient(circle at 50% 50%, rgba(26, 115, 232, 0.1), transparent 70%);
+        }
+
+        .lab-container {
+            text-align: center;
+            position: relative;
+            z-index: 10;
+            padding: 2rem;
+        }
+
+        /* Bulb Animation */
+        .bulb-container {
+            position: relative;
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 2rem;
+        }
+
+        .bulb-icon {
+            font-size: 80px;
+            color: var(--accent);
+            filter: drop-shadow(0 0 20px rgba(0, 242, 255, 0.5));
+            animation: bulb-glow 3s infinite ease-in-out;
+        }
+
+        @keyframes bulb-glow {
+
+            0%,
+            100% {
+                opacity: 0.8;
+                transform: scale(1);
+                filter: drop-shadow(0 0 20px rgba(0, 242, 255, 0.5));
+            }
+
+            50% {
+                opacity: 1;
+                transform: scale(1.1);
+                filter: drop-shadow(0 0 40px rgba(0, 242, 255, 0.8));
+            }
+        }
+
+        /* Paper Plane Animation */
+        .paper-plane {
+            position: absolute;
+            font-size: 32px;
+            color: var(--text-dim);
+            animation: fly 6s infinite linear;
+            opacity: 0.6;
+        }
+
+        @keyframes fly {
+            0% {
+                transform: translate(-200px, 100px) rotate(45deg);
+                opacity: 0;
+            }
+
+            20% {
+                opacity: 1;
+            }
+
+            80% {
+                opacity: 1;
+            }
+
+            100% {
+                transform: translate(200px, -100px) rotate(45deg);
+                opacity: 0;
+            }
+        }
+
+        h1 {
+            font-size: 4rem;
+            font-weight: 800;
+            letter-spacing: -2px;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #fff, #666);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        p {
+            font-size: 1.25rem;
+            color: var(--text-dim);
+            margin-bottom: 3rem;
+            max-width: 500px;
+        }
+
+        .btn-back {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 16px 32px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 50px;
+            color: #fff;
+            text-decoration: none;
+            font-weight: 700;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .btn-back:hover {
+            background: #fff;
+            color: #000;
+            transform: translateY(-5px);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="bg-mesh"></div>
+
+    <div class="paper-plane">
+        <ion-icon name="paper-plane-outline"></ion-icon>
+    </div>
+
+    <div class="lab-container">
+        <div class="bulb-container">
+            <ion-icon name="bulb" class="bulb-icon"></ion-icon>
+        </div>
+
+        <h1>Idea Lab</h1>
+        <p>This project is currently being built with passion. Check back soon for the live implementation!</p>
+
+        <a href="./index.html" class="btn-back">
+            <ion-icon name="arrow-back-outline"></ion-icon>
+            Back to Portfolio
+        </a>
+    </div>
+
+    <script>
+        // Create random paper planes
+        function createPlanes() {
+            for (let i = 0; i < 3; i++) {
+                const plane = document.createElement('div');
+                plane.className = 'paper-plane';
+                plane.innerHTML = '<ion-icon name="paper-plane-outline"></ion-icon>';
+                plane.style.left = Math.random() * 100 + '%';
+                plane.style.top = Math.random() * 100 + '%';
+                plane.style.animationDelay = (i * 2) + 's';
+                document.body.appendChild(plane);
+            }
+        }
+        createPlanes();
+    </script>
+</body>
+
+</html>
