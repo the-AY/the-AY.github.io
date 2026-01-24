@@ -48,16 +48,16 @@
       <div class="shape shape-2"></div>
       <div class="shape shape-3"></div>
     </div>
-    <div class="hero-container split-hero">
+    <div class="hero-container fluid-split">
       <div class="hero-content">
-        <h1 class="hero-title">Adish Yermal</h1>
-        <p class="hero-subtitle">Software Developer & Cybersecurity Enthusiast</p>
-        <p class="hero-description">
+        <h1 class="hero-title reveal-pop">Adish<br>Yermal</h1>
+        <p class="hero-subtitle reveal-pop">Software Developer & Cybersecurity Enthusiast</p>
+        <p class="hero-description reveal-pop">
           Passionate about building secure, scalable applications with expertise in Qt and GTK development.
           Currently working at Tata Elxsi, specializing in cross-platform development, database management,
           localization, and security implementations.
         </p>
-        <div class="hero-buttons">
+        <div class="hero-buttons reveal-pop">
           <a href="#contact" class="btn btn-primary">
             <ion-icon name="mail-outline"></ion-icon>
             Get In Touch
@@ -72,10 +72,15 @@
           </button>
         </div>
       </div>
-      <div class="hero-image-wrapper reveal-pop">
-        <div class="asymmetric-avatar">
-          <img src="./assets/images/suit-blue.jpg" alt="Adish Yermal" class="full-suit-image">
-          <div class="image-mask-overlay"></div>
+
+      <div class="hero-image-v2 reveal-pop">
+        <div class="blob-frame">
+          <img src="./assets/images/suit-blue.jpg" alt="Adish Yermal" class="portrait-photo">
+          <div class="blob-gradient-overlay"></div>
+        </div>
+        <div class="floating-badge reveal-pop">
+          <ion-icon name="shield-checkmark-outline"></ion-icon>
+          <span>C++ Developer</span>
         </div>
       </div>
     </div>
@@ -629,14 +634,14 @@
     }
 
     // Scroll Reveal & Hero Fade Logic
-    const heroImage = document.querySelector('.hero-image-wrapper');
+    const heroImage = document.querySelector('.hero-image-v2');
     const revealObserver = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
           entry.target.classList.add('visible');
 
           // Fade out hero image when reaching about/resume sections
-          if (entry.target.id === 'about' || entry.target.id === 'resume' || entry.target.id === 'portfolio') {
+          if (entry.target.id === 'about' || entry.target.id === 'resume' || entry.target.id === 'portfolio' || entry.target.id === 'projects') {
             heroImage.classList.add('hide-scroll');
           }
         } else {
