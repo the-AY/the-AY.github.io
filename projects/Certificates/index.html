@@ -72,12 +72,34 @@
                 </div>
             </div>
 
+            <div class="template-toggle">
+                <button class="btn btn-secondary active" id="useOwnTemplateBtn">Upload Own</button>
+                <button class="btn btn-secondary" id="usePremadeBtn">Pre-made Templates</button>
+            </div>
+
             <div class="upload-area" id="uploadArea">
                 <input type="file" id="certificateUpload" accept="image/png,image/jpeg,image/jpg" hidden>
                 <div class="upload-content">
                     <ion-icon name="cloud-upload-outline" class="upload-icon"></ion-icon>
                     <h3>Click to upload or drag & drop</h3>
                     <p>Supported formats: PNG, JPG, JPEG</p>
+                </div>
+            </div>
+
+            <div class="premade-templates" id="premadeTemplates" style="display: none;">
+                <div class="templates-grid">
+                    <div class="template-item" data-src="templates/classic.png">
+                        <img src="templates/classic.png" alt="Classic Template">
+                        <span>Classic Gold</span>
+                    </div>
+                    <div class="template-item" data-src="templates/modern.png">
+                        <img src="templates/modern.png" alt="Modern Template">
+                        <span>Modern Teal</span>
+                    </div>
+                    <div class="template-item" data-src="templates/luxurious.png">
+                        <img src="templates/luxurious.png" alt="Luxurious Template">
+                        <span>Luxurious Black</span>
+                    </div>
                 </div>
             </div>
 

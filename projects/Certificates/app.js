@@ -76,6 +76,49 @@ function setupEventListeners() {
     state.canvas.addEventListener('mousemove', handleCanvasMouseMove);
     state.canvas.addEventListener('mouseup', handleCanvasMouseUp);
     state.canvas.addEventListener('mouseleave', handleCanvasMouseUp);
+
+    // Template Toggle & Selection
+    const useOwnBtn = document.getElementById('useOwnTemplateBtn');
+    const usePremadeBtn = document.getElementById('usePremadeBtn');
+    const uploadArea = document.getElementById('uploadArea');
+    const premadeTemplates = document.getElementById('premadeTemplates');
+
+    useOwnBtn.addEventListener('click', () => {
+        useOwnBtn.classList.add('active');
+        usePremadeBtn.classList.remove('active');
+        uploadArea.style.display = 'block';
+        premadeTemplates.style.display = 'none';
+    });
+
+    usePremadeBtn.addEventListener('click', () => {
+        usePremadeBtn.classList.add('active');
+        useOwnBtn.classList.remove('active');
+        uploadArea.style.display = 'none';
+        premadeTemplates.style.display = 'block';
+    });
+
+    document.querySelectorAll('.template-item').forEach(item => {
+        item.addEventListener('click', () => {
+            document.querySelectorAll('.template-item').forEach(i => i.classList.remove('selected'));
+            item.classList.add('selected');
+            loadTemplateFromPath(item.getAttribute('data-src'));
+        });
+    });
+}
+
+function loadTemplateFromPath(path) {
+    const img = new Image();
+    img.onload = () => {
+        state.certificateImage = img;
+        setupCanvas(img);
+        showSection('configSection');
+        document.getElementById('certificatePreview').style.display = 'block';
+
+        if (state.parameters.length === 0) {
+            addParameter();
+        }
+    };
+    img.src = path;
 }
 
 // ===========================

@@ -142,6 +142,9 @@ Added new styling for project subsections:
 2. MAC ID generation & validation (macOS/Linux, OTA compatibility)
 3. Qt QMap structure conversion (multi-language automation)
 4. Translation workflow automation (60% efficiency improvement)
+5.Zeromq based GTK communication bus
+6. Aes Encryption of the database
+
 
 ### **Project 2: GTK-Based Platform (4 achievements)**
 1. AES encryption with salted hashing (password security)

@@ -804,6 +804,63 @@ input[type="color"] {
     color: var(--text-primary);
 }
 
+/* Template Selection Styles */
+.template-toggle {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.premade-templates {
+    margin-top: 1rem;
+    padding: 1rem;
+    background: var(--bg-tertiary);
+    border-radius: var(--border-radius);
+    border: 1px solid var(--border-color);
+}
+
+.templates-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1rem;
+}
+
+.template-item {
+    cursor: pointer;
+    border: 3px solid transparent;
+    border-radius: var(--border-radius-sm);
+    overflow: hidden;
+    transition: var(--transition);
+    background: white;
+    padding: 5px;
+    text-align: center;
+}
+
+.template-item img {
+    width: 100%;
+    height: auto;
+    border-radius: 4px;
+    margin-bottom: 5px;
+    display: block;
+}
+
+.template-item span {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+}
+
+.template-item:hover {
+    border-color: var(--primary-light);
+    transform: translateY(-2px);
+}
+
+.template-item.selected {
+    border-color: var(--primary-color);
+    background: rgba(37, 99, 235, 0.05);
+}
+
 /* Footer */
 .footer {
     text-align: center;
