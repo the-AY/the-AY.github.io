@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>InstaCheck | Premium Instagram Analytics</title>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
             --primary: #FF3B8E;
@@ -20,7 +21,7 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Outfit', sans-serif;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
         }
 
         body {
@@ -32,7 +33,7 @@
             align-items: center;
             overflow-x: hidden;
             background: radial-gradient(circle at top right, rgba(255, 59, 142, 0.15), transparent),
-                        radial-gradient(circle at bottom left, rgba(106, 17, 203, 0.15), transparent);
+                radial-gradient(circle at bottom left, rgba(106, 17, 203, 0.15), transparent);
         }
 
         .container {
@@ -52,6 +53,7 @@
             font-weight: 600;
             margin-bottom: 10px;
             background: linear-gradient(135deg, #fff 0%, #aaa 100%);
+            background-clip: text;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
@@ -86,7 +88,8 @@
             position: relative;
         }
 
-        .drop-zone:hover, .drop-zone.dragover {
+        .drop-zone:hover,
+        .drop-zone.dragover {
             border-color: var(--primary);
             background: rgba(255, 59, 142, 0.05);
         }
@@ -245,24 +248,55 @@
         }
 
         @keyframes fadeInDown {
-            from { opacity: 0; transform: translateY(-20px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         @keyframes scaleIn {
-            from { opacity: 0; transform: scale(0.9); }
-            to { opacity: 1; transform: scale(1); }
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
         }
 
-        .user-list::-webkit-scrollbar { width: 6px; }
-        .user-list::-webkit-scrollbar-thumb { background: var(--glass-border); border-radius: 10px; }
+        .user-list::-webkit-scrollbar {
+            width: 6px;
+        }
 
-        .loading { display: none; margin: 20px 0; }
+        .user-list::-webkit-scrollbar-thumb {
+            background: var(--glass-border);
+            border-radius: 10px;
+        }
+
+        .loading {
+            display: none;
+            margin: 20px 0;
+        }
+
         .spinner {
             width: 40px;
             height: 40px;
@@ -273,7 +307,11 @@
             margin: 0 auto;
         }
 
-        @keyframes spin { to { transform: rotate(360deg); } }
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
 
         .btn-download {
             background: linear-gradient(135deg, var(--primary), var(--secondary));
@@ -287,7 +325,9 @@
             transition: opacity 0.2s;
         }
 
-        .btn-download:hover { opacity: 0.9; }
+        .btn-download:hover {
+            opacity: 0.9;
+        }
 
         footer {
             margin-top: 50px;
@@ -297,209 +337,226 @@
         }
     </style>
 </head>
+
 <body>
 
-<div class="container">
-    <header>
-        <h1>InstaCheck</h1>
-        <p class="subtitle">Premium Instagram Connection Analytics</p>
-    </header>
+    <div class="container">
+        <header>
+            <h1>InstaCheck</h1>
+            <p class="subtitle">Premium Instagram Connection Analytics</p>
+        </header>
 
-    <div class="upload-section">
-        <div class="drop-zone" id="dropZone">
-            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom: 20px; color: var(--primary)">
-                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                <polyline points="17 8 12 3 7 8"></polyline>
-                <line x1="12" y1="3" x2="12" y2="15"></line>
-            </svg>
-            <p style="font-size: 1.2rem; margin-bottom: 5px;">Drop your JSON files here</p>
-            <p style="font-size: 0.9rem; color: var(--text-dim);">Select <b>followers_1.json</b> and <b>following_1.json</b></p>
-            <p style="font-size: 0.75rem; color: var(--text-dim); margin-top: 15px; opacity: 0.6;">(Single file uploads also supported)</p>
-            <input type="file" id="fileInput" multiple accept=".json">
-        </div>
-
-        <div class="loading" id="loading">
-            <div class="spinner"></div>
-            <p style="margin-top: 20px; font-weight: 300; letter-spacing: 1px;">ANALYZING DATA...</p>
-        </div>
-    </div>
-
-    <div class="stats-grid" id="statsGrid">
-        <div class="stat-card">
-            <h3>Followers</h3>
-            <div class="value" id="countFollowers">0</div>
-        </div>
-        <div class="stat-card">
-            <h3>Following</h3>
-            <div class="value" id="countFollowing">0</div>
-        </div>
-        <div class="stat-card">
-            <h3>Unfollowers</h3>
-            <div class="value" id="countUnfollowers" style="color: #ff4d4d; text-shadow: 0 0 20px rgba(255, 77, 77, 0.3);">0</div>
-        </div>
-        <div class="stat-card">
-            <h3>Fans</h3>
-            <div class="value" id="countNotFollowingBack" style="color: #4da6ff; text-shadow: 0 0 20px rgba(77, 166, 255, 0.3);">0</div>
-        </div>
-    </div>
-
-    <div class="results-container" id="resultsContainer">
-        <div class="result-panel">
-            <div class="panel-header">
-                <span style="font-weight: 600; font-size: 0.9rem; letter-spacing: 0.5px;">NOT FOLLOWING YOU BACK</span>
-                <button class="btn-download" onclick="downloadList('unfollowers')">EXPORT TXT</button>
+        <div class="upload-section">
+            <div class="drop-zone" id="dropZone">
+                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round" style="margin-bottom: 20px; color: var(--primary)">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                    <polyline points="17 8 12 3 7 8"></polyline>
+                    <line x1="12" y1="3" x2="12" y2="15"></line>
+                </svg>
+                <p style="font-size: 1.2rem; margin-bottom: 5px;">Drop your JSON files here</p>
+                <p style="font-size: 0.9rem; color: var(--text-dim);">Select <b>followers_1.json</b> and
+                    <b>following_1.json</b>
+                </p>
+                <p style="font-size: 0.75rem; color: var(--text-dim); margin-top: 15px; opacity: 0.6;">(Single file
+                    uploads also supported)</p>
+                <input type="file" id="fileInput" multiple accept=".json">
             </div>
-            <div class="user-list" id="unfollowersList"></div>
-        </div>
 
-        <div class="result-panel">
-            <div class="panel-header">
-                <span style="font-weight: 600; font-size: 0.9rem; letter-spacing: 0.5px;">YOU DON'T FOLLOW BACK</span>
-                <button class="btn-download" onclick="downloadList('fans')">EXPORT TXT</button>
+            <div class="loading" id="loading">
+                <div class="spinner"></div>
+                <p style="margin-top: 20px; font-weight: 300; letter-spacing: 1px;">ANALYZING DATA...</p>
             </div>
-            <div class="user-list" id="notFollowingBackList"></div>
         </div>
+
+        <div class="stats-grid" id="statsGrid">
+            <div class="stat-card">
+                <h3>Followers</h3>
+                <div class="value" id="countFollowers">0</div>
+            </div>
+            <div class="stat-card">
+                <h3>Following</h3>
+                <div class="value" id="countFollowing">0</div>
+            </div>
+            <div class="stat-card">
+                <h3>Unfollowers</h3>
+                <div class="value" id="countUnfollowers"
+                    style="color: #ff4d4d; text-shadow: 0 0 20px rgba(255, 77, 77, 0.3);">0</div>
+            </div>
+            <div class="stat-card">
+                <h3>Fans</h3>
+                <div class="value" id="countNotFollowingBack"
+                    style="color: #4da6ff; text-shadow: 0 0 20px rgba(77, 166, 255, 0.3);">0</div>
+            </div>
+        </div>
+
+        <div class="results-container" id="resultsContainer">
+            <div class="result-panel">
+                <div class="panel-header">
+                    <span style="font-weight: 600; font-size: 0.9rem; letter-spacing: 0.5px;">NOT FOLLOWING YOU
+                        BACK</span>
+                    <button class="btn-download" onclick="downloadList('unfollowers')">EXPORT TXT</button>
+                </div>
+                <div class="user-list" id="unfollowersList"></div>
+            </div>
+
+            <div class="result-panel">
+                <div class="panel-header">
+                    <span style="font-weight: 600; font-size: 0.9rem; letter-spacing: 0.5px;">YOU DON'T FOLLOW
+                        BACK</span>
+                    <button class="btn-download" onclick="downloadList('fans')">EXPORT TXT</button>
+                </div>
+                <div class="user-list" id="notFollowingBackList"></div>
+            </div>
+        </div>
+
+        <div class="instructions">
+            <h2>Process Guide</h2>
+            <ol>
+                <li>Open Instagram <b>Settings</b> > <b>Accounts Center</b>.</li>
+                <li>Select <b>Your information and permissions</b> > <b>Download your information</b>.</li>
+                <li>Choose <b>Download or transfer information</b> > <b>Some of your information</b>.</li>
+                <li>Scroll down to find and select <b>Followers and following</b>.</li>
+                <li>Select <b>Format: JSON</b> and Date Range: <b>All time</b>.</li>
+                <li>Download the ZIP when ready, extract it, and find the JSON files in
+                    <b>connections/followers_and_following/</b>.
+                </li>
+            </ol>
+            <div
+                style="margin-top: 30px; padding: 20px; background: rgba(255,255,255,0.03); border-radius: 12px; border-left: 4px solid var(--primary);">
+                <p style="font-size: 0.85rem;"><b>Privacy First:</b> All processing happens locally in your browser.
+                    Your data never leaves your device and is not sent to any server. This tool is open-source and
+                    secure.</p>
+            </div>
+        </div>
+
+        <footer>
+            &copy; 2026 Adish Yermal. All rights reserved.
+            <p style="margin-top: 15px; font-size: 0.75rem; opacity: 0.6; line-height: 1.4;">Disclaimer: This tool is
+                not affiliated with, authorized, maintained, sponsored or endorsed by Instagram or Meta. All product
+                names, logos, and brands are property of their respective owners.</p>
+        </footer>
     </div>
 
-    <div class="instructions">
-        <h2>Process Guide</h2>
-        <ol>
-            <li>Open Instagram <b>Settings</b> > <b>Accounts Center</b>.</li>
-            <li>Select <b>Your information and permissions</b> > <b>Download your information</b>.</li>
-            <li>Choose <b>Download or transfer information</b> > <b>Some of your information</b>.</li>
-            <li>Scroll down to find and select <b>Followers and following</b>.</li>
-            <li>Select <b>Format: JSON</b> and Date Range: <b>All time</b>.</li>
-            <li>Download the ZIP when ready, extract it, and find the JSON files in <b>connections/followers_and_following/</b>.</li>
-        </ol>
-        <div style="margin-top: 30px; padding: 20px; background: rgba(255,255,255,0.03); border-radius: 12px; border-left: 4px solid var(--primary);">
-            <p style="font-size: 0.85rem;"><b>Privacy First:</b> All processing happens locally in your browser. Your data never leaves your device and is not sent to any server. This tool is open-source and secure.</p>
-        </div>
-    </div>
+    <script>
+        const fileInput = document.getElementById('fileInput');
+        const dropZone = document.getElementById('dropZone');
+        const loading = document.getElementById('loading');
+        const statsGrid = document.getElementById('statsGrid');
+        const resultsContainer = document.getElementById('resultsContainer');
 
-    <footer>
-        &copy; 2026 Premium Portfolio Tools
-    </footer>
-</div>
+        let followers = new Set();
+        let following = new Set();
+        let unfollowers = [];
+        let fans = [];
 
-<script>
-    const fileInput = document.getElementById('fileInput');
-    const dropZone = document.getElementById('dropZone');
-    const loading = document.getElementById('loading');
-    const statsGrid = document.getElementById('statsGrid');
-    const resultsContainer = document.getElementById('resultsContainer');
+        fileInput.addEventListener('change', (e) => handleFiles(e.target.files));
+        dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.classList.add('dragover'); });
+        dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
+        dropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropZone.classList.remove('dragover');
+            handleFiles(e.dataTransfer.files);
+        });
 
-    let followers = new Set();
-    let following = new Set();
-    let unfollowers = [];
-    let fans = [];
+        async function handleFiles(files) {
+            if (files.length === 0) return;
 
-    fileInput.addEventListener('change', (e) => handleFiles(e.target.files));
-    dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.classList.add('dragover'); });
-    dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
-    dropZone.addEventListener('drop', (e) => {
-        e.preventDefault();
-        dropZone.classList.remove('dragover');
-        handleFiles(e.dataTransfer.files);
-    });
+            loading.style.display = 'block';
+            statsGrid.style.display = 'none';
+            resultsContainer.style.display = 'none';
 
-    async function handleFiles(files) {
-        if (files.length === 0) return;
+            followers.clear();
+            following.clear();
 
-        loading.style.display = 'block';
-        statsGrid.style.display = 'none';
-        resultsContainer.style.display = 'none';
-
-        followers.clear();
-        following.clear();
-
-        for (const file of files) {
-            try {
-                const text = await file.text();
-                const json = JSON.parse(text);
-                processJSON(json);
-            } catch (err) {
-                console.error("Error parsing file:", err);
-            }
-        }
-
-        analyze();
-    }
-
-    function processJSON(data) {
-        // Smart Check: Instagram schema changes but usually follows these patterns:
-        
-        // 1. Recursive search for 'string_list_data'
-        function findLists(obj, parentKey = '') {
-            if (Array.isArray(obj)) {
-                obj.forEach(item => {
-                    if (item.string_list_data && item.string_list_data[0]) {
-                        const val = item.string_list_data[0].value;
-                        // Determine if it belongs to followers or following
-                        if (parentKey.includes('following') || JSON.stringify(data).includes('relationships_following')) {
-                            following.add(val);
-                        } else {
-                            followers.add(val);
-                        }
-                    }
-                });
-            } else if (typeof obj === 'object' && obj !== null) {
-                for (const key in obj) {
-                    findLists(obj[key], key);
+            for (const file of files) {
+                try {
+                    const text = await file.text();
+                    const json = JSON.parse(text);
+                    processJSON(json);
+                } catch (err) {
+                    console.error("Error parsing file:", err);
                 }
             }
+
+            analyze();
         }
 
-        // Specifically handle the main keys if they exist for better accuracy
-        if (data.relationships_followers) {
-            data.relationships_followers.forEach(item => {
-                if (item.string_list_data?.[0]?.value) followers.add(item.string_list_data[0].value);
-            });
-        } else if (data.relationships_following) {
-            data.relationships_following.forEach(item => {
-                if (item.string_list_data?.[0]?.value) following.add(item.string_list_data[0].value);
-            } );
-        } else {
-            // Generic deep search
-            findLists(data);
-        }
-    }
+        function processJSON(data) {
+            // Smart Check: Instagram schema changes but usually follows these patterns:
 
-    function analyze() {
-        // Calculate
-        unfollowers = [...following].filter(u => !followers.has(u));
-        fans = [...followers].filter(u => !following.has(u));
+            // 1. Recursive search for 'string_list_data'
+            function findLists(obj, parentKey = '') {
+                if (Array.isArray(obj)) {
+                    obj.forEach(item => {
+                        if (item.string_list_data && item.string_list_data[0]) {
+                            const val = item.string_list_data[0].value;
+                            // Determine if it belongs to followers or following
+                            if (parentKey.includes('following') || JSON.stringify(data).includes('relationships_following')) {
+                                following.add(val);
+                            } else {
+                                followers.add(val);
+                            }
+                        }
+                    });
+                } else if (typeof obj === 'object' && obj !== null) {
+                    for (const key in obj) {
+                        findLists(obj[key], key);
+                    }
+                }
+            }
 
-        // Sort alphabetically
-        unfollowers.sort();
-        fans.sort();
-
-        setTimeout(() => {
-            loading.style.display = 'none';
-            statsGrid.style.display = 'grid';
-            resultsContainer.style.display = 'grid';
-
-            document.getElementById('countFollowers').textContent = followers.size;
-            document.getElementById('countFollowing').textContent = following.size;
-            document.getElementById('countUnfollowers').textContent = unfollowers.length;
-            document.getElementById('countNotFollowingBack').textContent = fans.length;
-
-            renderList('unfollowersList', unfollowers);
-            renderList('notFollowingBackList', fans);
-        }, 800);
-    }
-
-    function renderList(id, list) {
-        const div = document.getElementById(id);
-        div.innerHTML = '';
-        if (list.length === 0) {
-            div.innerHTML = '<p style="padding: 40px; text-align: center; color: var(--text-dim); font-size: 0.9rem;">Clean list! No users found.</p>';
-            return;
+            // Specifically handle the main keys if they exist for better accuracy
+            if (data.relationships_followers) {
+                data.relationships_followers.forEach(item => {
+                    if (item.string_list_data?.[0]?.value) followers.add(item.string_list_data[0].value);
+                });
+            } else if (data.relationships_following) {
+                data.relationships_following.forEach(item => {
+                    if (item.string_list_data?.[0]?.value) following.add(item.string_list_data[0].value);
+                });
+            } else {
+                // Generic deep search
+                findLists(data);
+            }
         }
 
-        list.forEach(user => {
-            const item = document.createElement('div');
-            item.className = 'user-item';
-            item.innerHTML = `
+        function analyze() {
+            // Calculate
+            unfollowers = [...following].filter(u => !followers.has(u));
+            fans = [...followers].filter(u => !following.has(u));
+
+            // Sort alphabetically
+            unfollowers.sort();
+            fans.sort();
+
+            setTimeout(() => {
+                loading.style.display = 'none';
+                statsGrid.style.display = 'grid';
+                resultsContainer.style.display = 'grid';
+
+                document.getElementById('countFollowers').textContent = followers.size;
+                document.getElementById('countFollowing').textContent = following.size;
+                document.getElementById('countUnfollowers').textContent = unfollowers.length;
+                document.getElementById('countNotFollowingBack').textContent = fans.length;
+
+                renderList('unfollowersList', unfollowers);
+                renderList('notFollowingBackList', fans);
+            }, 800);
+        }
+
+        function renderList(id, list) {
+            const div = document.getElementById(id);
+            div.innerHTML = '';
+            if (list.length === 0) {
+                div.innerHTML = '<p style="padding: 40px; text-align: center; color: var(--text-dim); font-size: 0.9rem;">Clean list! No users found.</p>';
+                return;
+            }
+
+            list.forEach(user => {
+                const item = document.createElement('div');
+                item.className = 'user-item';
+                item.innerHTML = `
                 <div class="user-info">
                     <div class="user-avatar" style="background: ${getRandomColor()}">${user.charAt(0).toUpperCase()}</div>
                     <a href="https://instagram.com/${user}" target="_blank" class="user-link">${user}</a>
@@ -510,27 +567,28 @@
                     <line x1="10" y1="14" x2="21" y2="3"></line>
                 </svg>
             `;
-            div.appendChild(item);
-        });
-    }
+                div.appendChild(item);
+            });
+        }
 
-    function getRandomColor() {
-        const colors = ['#FF3B8E', '#6A11CB', '#2575FC', '#FF8C00', '#00C853', '#AA00FF'];
-        return colors[Math.floor(Math.random() * colors.length)];
-    }
+        function getRandomColor() {
+            const colors = ['#FF3B8E', '#6A11CB', '#2575FC', '#FF8C00', '#00C853', '#AA00FF'];
+            return colors[Math.floor(Math.random() * colors.length)];
+        }
 
-    function downloadList(type) {
-        const list = type === 'unfollowers' ? unfollowers : fans;
-        const text = list.join('\n');
-        const blob = new Blob([text], { type: 'text/plain' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = `instagram_${type}.txt`;
-        a.click();
-        URL.revokeObjectURL(url);
-    }
-</script>
+        function downloadList(type) {
+            const list = type === 'unfollowers' ? unfollowers : fans;
+            const text = list.join('\n');
+            const blob = new Blob([text], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `instagram_${type}.txt`;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+    </script>
 
 </body>
+
 </html>

@@ -43,8 +43,23 @@
 
   <!-- HERO SECTION  track-->
   <section id="home" class="hero">
+    <div class="hero-bg-shapes">
+      <div class="shape shape-1"></div>
+      <div class="shape shape-2"></div>
+      <div class="shape shape-3"></div>
+    </div>
     <div class="hero-container">
-      <img src="./assets/images/my-avatar.png" alt="Adish Yermal" class="hero-avatar">
+      <div class="hero-avatar-wrapper">
+        <div class="suit-pills">
+          <div class="suit-pill active" onclick="switchSuit('blue')">Blue</div>
+          <div class="suit-pill" onclick="switchSuit('grey')">Grey</div>
+        </div>
+        <div class="avatar-container">
+          <img src="./assets/images/suit-blue.jpg" alt="Adish Yermal" class="hero-avatar suit-blue active">
+          <img src="./assets/images/suit-grey.jpg" alt="Adish Yermal" class="hero-avatar suit-grey">
+        </div>
+        <div class="avatar-glow"></div>
+      </div>
       <h1 class="hero-title">Adish Yermal</h1>
       <p class="hero-subtitle">Software Developer & Cybersecurity Enthusiast</p>
       <p class="hero-description">
@@ -446,6 +461,28 @@
           </div>
         </a>
 
+        <div class="project-card">
+          <img src="./assets/images/project-5.png" alt="Digital Wellbeing" class="project-image">
+          <div class="project-content">
+            <p class="project-category">Android Development</p>
+            <h3>Digital Wellbeing Application</h3>
+            <p>Track device usage, set goals, and improve focus. Features task chunking into 5, 10, and 30-minute
+              intervals to make productivity effortless.</p>
+            <span class="badge">In Development</span>
+          </div>
+        </div>
+
+        <div class="project-card">
+          <img src="./assets/images/project-6.png" alt="Qt HMI Device" class="project-image">
+          <div class="project-content">
+            <p class="project-category">Embedded Systems</p>
+            <h3>Qt-based HMI Device</h3>
+            <p>Custom Human-Machine Interface designed for Raspberry Pi Zero W. Built using Qt for high-performance
+              specialized device control.</p>
+            <span class="badge">In Development</span>
+          </div>
+        </div>
+
       </div>
     </div>
   </section>
@@ -537,7 +574,12 @@
           <ion-icon name="logo-instagram"></ion-icon>
         </a>
       </div>
-      <p>&copy; 2025 Adish Yermal. All rights reserved.</p>
+      <p>&copy; 2026 Adish Yermal. All rights reserved.</p>
+      <p class="brand-disclaimer"
+        style="margin-top: 20px; font-size: 0.75rem; color: #80868b; max-width: 800px; margin-left: auto; margin-right: auto; line-height: 1.5;">
+        Disclaimer: All product names, logos, and brands are property of their respective owners. All company, product
+        and service names used in this website are for identification purposes only. This portfolio is a showcase of my
+        personal skills and projects.</p>
     </div>
   </footer>
 
@@ -587,6 +629,25 @@
     function hideQRCode() {
       document.getElementById('qrModal').style.display = 'none';
       document.body.style.overflow = 'auto';
+    }
+
+    // Suit Switcher logic
+    function switchSuit(suit) {
+      const blue = document.querySelector('.suit-blue');
+      const grey = document.querySelector('.suit-grey');
+      const pills = document.querySelectorAll('.suit-pill');
+
+      if (suit === 'blue') {
+        blue.classList.add('active');
+        grey.classList.remove('active');
+        pills[0].classList.add('active');
+        pills[1].classList.remove('active');
+      } else {
+        grey.classList.add('active');
+        blue.classList.remove('active');
+        pills[1].classList.add('active');
+        pills[0].classList.remove('active');
+      }
     }
 
     // Close modal with Escape key

@@ -80,7 +80,6 @@ function setupEventListeners() {
     // Template Toggle & Selection
     const useOwnBtn = document.getElementById('useOwnTemplateBtn');
     const usePremadeBtn = document.getElementById('usePremadeBtn');
-    const uploadArea = document.getElementById('uploadArea');
     const premadeTemplates = document.getElementById('premadeTemplates');
 
     useOwnBtn.addEventListener('click', () => {
@@ -162,7 +161,13 @@ function setupCanvas(img) {
     state.canvas.width = img.width * scale;
     state.canvas.height = img.height * scale;
 
-    redrawCanvas();
+    // Ensure context is updated if canvas was resized
+    state.ctx = state.canvas.getContext('2d');
+
+    // Small delay to ensure browser has processed canvas resize
+    requestAnimationFrame(() => {
+        redrawCanvas();
+    });
 }
 
 function redrawCanvas() {

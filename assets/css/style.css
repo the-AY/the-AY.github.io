@@ -1006,3 +1006,171 @@ ol {
     max-width: 250px;
   }
 }
+
+/*-----------------------------------*\
+  #DYNAMIC HERO & ENHANCEMENTS
+\*-----------------------------------*/
+
+.hero-bg-shapes {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.shape {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.4;
+  animation: float 20s infinite alternate ease-in-out;
+}
+
+.shape-1 {
+  width: 300px;
+  height: 300px;
+  background: var(--primary-blue-light);
+  top: -10%;
+  right: -5%;
+  animation-duration: 25s;
+}
+
+.shape-2 {
+  width: 400px;
+  height: 400px;
+  background: var(--accent-blue);
+  bottom: -10%;
+  left: -5%;
+  animation-delay: -5s;
+}
+
+.shape-3 {
+  width: 250px;
+  height: 250px;
+  background: var(--primary-blue);
+  top: 40%;
+  left: 20%;
+  animation-duration: 18s;
+  animation-delay: -10s;
+}
+
+@keyframes float {
+  0% {
+    transform: translate(0, 0) scale(1);
+  }
+
+  100% {
+    transform: translate(50px, 50px) scale(1.1);
+  }
+}
+
+.hero-avatar-wrapper {
+  position: relative;
+  display: inline-block;
+  margin-bottom: var(--spacing-lg);
+}
+
+.avatar-container {
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  position: relative;
+  overflow: hidden;
+  border: 5px solid white;
+  box-shadow: var(--shadow-lg);
+  z-index: 2;
+  background: white;
+}
+
+.hero-avatar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+  opacity: 0;
+  transform: scale(1.1);
+}
+
+.hero-avatar.active {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.suit-pills {
+  position: absolute;
+  top: -10px;
+  right: -60px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  z-index: 10;
+}
+
+.suit-pill {
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  background: rgba(255, 255, 255, 0.9);
+  color: var(--text-secondary);
+  box-shadow: var(--shadow-sm);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 1px solid var(--border-color);
+}
+
+.suit-pill.active {
+  background: var(--primary-blue);
+  color: white;
+  border-color: var(--primary-blue);
+}
+
+.avatar-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 130%;
+  height: 130%;
+  background: radial-gradient(circle, var(--primary-blue) 0%, transparent 70%);
+  opacity: 0.3;
+  border-radius: 50%;
+  z-index: 1;
+  animation: pulse 4s infinite ease-in-out;
+}
+
+@keyframes pulse {
+
+  0%,
+  100% {
+    opacity: 0.2;
+    transform: translate(-50%, -50%) scale(1);
+  }
+
+  50% {
+    opacity: 0.4;
+    transform: translate(-50%, -50%) scale(1.1);
+  }
+}
+
+.project-card {
+  position: relative;
+}
+
+.badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  background: var(--primary-blue-dark);
+  color: white;
+  margin-top: 10px;
+  box-shadow: var(--shadow-sm);
+}
