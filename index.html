@@ -50,7 +50,7 @@
                 <p class="hero-description reveal-pop">
                     Passionate about building secure, scalable applications with expertise in Qt and GTK development.
                     Currently working at Tata Elxsi, specializing in cross-platform development, database management,
-                    and security implementations.
+                    localization, and security implementations.
                 </p>
                 <div class="hero-buttons reveal-pop">
                     <a href="#contact" class="btn btn-primary">
@@ -61,10 +61,6 @@
                         <ion-icon name="document-text-outline"></ion-icon>
                         View Resume
                     </a>
-                    <button class="btn btn-secondary" onclick="showQRCode()">
-                        <ion-icon name="qr-code-outline"></ion-icon>
-                        QR Code
-                    </button>
                 </div>
             </div>
 
@@ -157,7 +153,7 @@
 
                 <a href="#resume" class="link-card reveal-pop">
                     <div class="link-icon resume">
-                        <ion-icon name="document-attach"></ion-icon>
+                        <ion-icon name="document-text"></ion-icon>
                     </div>
                     <div class="link-content">
                         <h3>Resume</h3>
@@ -228,13 +224,6 @@
                             <span class="timeline-date">October 2023 — Present</span>
                         </div>
                         <p>Focused on database management, security, and multi-platform platform development.</p>
-                    </div>
-                    <div class="timeline-item">
-                        <div class="timeline-item-header">
-                            <h4>E-Commerce Intern</h4>
-                            <span class="timeline-date">2023</span>
-                        </div>
-                        <p>Maintained features, improving user experience and backend efficiency.</p>
                     </div>
                 </div>
             </div>
@@ -361,21 +350,8 @@
         </div>
     </footer>
 
-    <!-- QR CODE MODAL -->
-    <div id="qrModal" class="qr-modal" onclick="hideQRCode()">
-        <div class="qr-modal-content" onclick="event.stopPropagation()">
-            <button class="qr-close" onclick="hideQRCode()"><ion-icon name="close-outline"></ion-icon></button>
-            <h3>Scan to Connect</h3>
-            <img src="./assets/images/qr-code.png" alt="QR" class="qr-code-image">
-            <p class="qr-url">the-AY.github.io/links</p>
-        </div>
-    </div>
-
     <!-- JavaScript -->
     <script>
-        function showQRCode() { document.getElementById('qrModal').style.display = 'flex'; document.body.style.overflow = 'hidden'; }
-        function hideQRCode() { document.getElementById('qrModal').style.display = 'none'; document.body.style.overflow = 'auto'; }
-
         const heroImage = document.querySelector('.hero-image-v2');
         const revealObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
