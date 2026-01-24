@@ -339,42 +339,44 @@ ol {
 }
 
 .link-card {
-  display: flex !important;
-  align-items: center !important;
-  justify-content: flex-start !important;
-  gap: var(--spacing-md) !important;
-  text-decoration: none !important;
-  border-radius: var(--radius-lg) !important;
-  padding: 12px 24px !important;
-  background: white !important;
-  border: 1px solid var(--border-color) !important;
-  box-shadow: var(--shadow-sm) !important;
-  transition: var(--transition-normal) !important;
-  height: auto !important;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: var(--spacing-md);
+  text-decoration: none;
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-md) var(--spacing-lg);
+  background: white;
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition-normal);
+  min-height: 80px;
 }
 
 .link-card:hover {
-  transform: translateY(-5px) !important;
-  box-shadow: var(--shadow-md) !important;
-  border-color: var(--primary-blue-light) !important;
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--primary-blue-light);
 }
 
 .link-icon {
-  width: 56px !important;
-  height: 56px !important;
-  min-width: 56px !important;
-  min-height: 56px !important;
-  max-width: 56px !important;
-  max-height: 56px !important;
-  aspect-ratio: 1/1 !important;
-  border-radius: var(--radius-sm) !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  font-size: 1.5rem !important;
-  color: white !important;
-  flex-shrink: 0 !important;
-  margin: 0 !important;
+  width: 56px;
+  height: 56px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  color: white;
+  flex-shrink: 0;
+}
+
+/* Targeted Fix for Portfolio and Resume to prevent stretching */
+.link-icon.portfolio,
+.link-icon.resume {
+  min-width: 56px;
+  min-height: 56px;
+  aspect-ratio: 1 / 1;
 }
 
 /* Link Icon Colors */
