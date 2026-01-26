@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:background="@drawable/gradient_call"
+    android:padding="32dp">
+
+    <ImageView
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:background="@drawable/circle_icon"
+        android:padding="30dp"
+        android:src="@android:drawable/ic_dialog_dialer"
+        app:tint="#FFF"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_marginBottom="32dp"/>
+
+    <TextView
+        android:id="@+id/callTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Focus Reminder"
+        android:textSize="32sp"
+        android:textStyle="bold"
+        android:textColor="#FFF"
+        android:layout_marginBottom="12dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="It's time to get things done!"
+        android:textSize="18sp"
+        android:textColor="#CCC"
+        android:layout_marginBottom="80dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:gap="60dp">
+
+        <ImageButton
+            android:id="@+id/btnDecline"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:background="@drawable/circle_red"
+            android:src="@android:drawable/ic_menu_close_clear_cancel"
+            app:tint="#FFF"/>
+            
+        <android.widget.Space
+            android:layout_width="60dp"
+            android:layout_height="1dp"/>
+
+        <ImageButton
+            android:id="@+id/btnAccept"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:background="@drawable/circle_green"
+            android:src="@android:drawable/ic_input_add"
+            app:tint="#FFF"/>
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -96,6 +96,8 @@
                 height: 100%;
                 overflow: hidden;
                 position: relative;
+                transform: translateZ(0);
+                /* Contains fixed elements! */
             }
 
             /* Scrollable area inside phone */
@@ -1175,6 +1177,83 @@
                             </div>
                             <div id="remindersList"></div>
                         </div>
+
+                        <!-- Settings Section -->
+                        <div id="settingsSection" style="display: none;">
+                            <div class="section-header">
+                                <h2 class="section-title">⚙️ Settings</h2>
+                            </div>
+
+                            <div class="settings-group" style="margin-bottom: 24px;">
+                                <h4
+                                    style="font-size: 12px; color: var(--text-dim); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 1px;">
+                                    Permissions</h4>
+
+                                <div class="task-card"
+                                    style="padding: 12px; display: flex; align-items: center; gap: 12px; margin-bottom: 8px;"
+                                    onclick="togglePermission('usage')">
+                                    <div
+                                        style="width: 40px; height: 40px; background: rgba(99, 102, 241, 0.2); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 20px;">
+                                        📊</div>
+                                    <div style="flex: 1;">
+                                        <h4 style="font-size: 14px; margin-bottom: 2px;">Usage Access</h4>
+                                        <p id="permUsageStatus" style="font-size: 11px; color: var(--text-dim);">
+                                            Required for tracking stats</p>
+                                    </div>
+                                    <div class="focus-toggle active" id="toggleUsage"></div>
+                                </div>
+
+                                <div class="task-card"
+                                    style="padding: 12px; display: flex; align-items: center; gap: 12px; margin-bottom: 8px;"
+                                    onclick="togglePermission('overlay')">
+                                    <div
+                                        style="width: 40px; height: 40px; background: rgba(6, 182, 212, 0.2); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 20px;">
+                                        🔛</div>
+                                    <div style="flex: 1;">
+                                        <h4 style="font-size: 14px; margin-bottom: 2px;">Display Overlay</h4>
+                                        <p id="permOverlayStatus" style="font-size: 11px; color: var(--text-dim);">
+                                            For full-screen calls</p>
+                                    </div>
+                                    <div class="focus-toggle active" id="toggleOverlay"></div>
+                                </div>
+
+                                <div class="task-card"
+                                    style="padding: 12px; display: flex; align-items: center; gap: 12px; margin-bottom: 8px;"
+                                    onclick="togglePermission('battery')">
+                                    <div
+                                        style="width: 40px; height: 40px; background: rgba(34, 197, 94, 0.2); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 20px;">
+                                        🔋</div>
+                                    <div style="flex: 1;">
+                                        <h4 style="font-size: 14px; margin-bottom: 2px;">Ignore Battery Opt</h4>
+                                        <p id="permBatteryStatus" style="font-size: 11px; color: var(--text-dim);">
+                                            Run in background</p>
+                                    </div>
+                                    <div class="focus-toggle active" id="toggleBattery"></div>
+                                </div>
+                            </div>
+
+                            <div class="settings-group">
+                                <h4
+                                    style="font-size: 12px; color: var(--text-dim); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 1px;">
+                                    Features</h4>
+
+                                <div class="task-card"
+                                    style="padding: 12px; display: flex; align-items: center; gap: 12px; margin-bottom: 8px;">
+                                    <div
+                                        style="width: 40px; height: 40px; background: rgba(139, 92, 246, 0.2); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 20px;">
+                                        📱</div>
+                                    <div style="flex: 1;">
+                                        <h4 style="font-size: 14px; margin-bottom: 2px;">Flip to DND</h4>
+                                        <p style="font-size: 11px; color: var(--text-dim);">Sensor enabled</p>
+                                    </div>
+                                    <div class="focus-toggle active" onclick="this.classList.toggle('active')"></div>
+                                </div>
+                            </div>
+
+                            <div style="margin-top: 30px; text-align: center; opacity: 0.5;">
+                                <p style="font-size: 11px;">Version 1.0.0 (Beta)</p>
+                            </div>
+                        </div>
                     </div>
 
                     <!-- Floating Action Button -->
@@ -1227,6 +1306,8 @@
                                         placeholder="Add details (optional)">
                                 </div>
 
+
+
                                 <div class="form-row">
                                     <div class="form-group">
                                         <label class="form-label">Date</label>
@@ -1235,6 +1316,24 @@
                                     <div class="form-group">
                                         <label class="form-label">Time</label>
                                         <input type="time" class="form-input" id="itemTime">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label">Link or Document (Optional)</label>
+                                    <div style="display: flex; gap: 8px;">
+                                        <input type="text" class="form-input" id="itemAttachment"
+                                            placeholder="Paste link or file name">
+                                        <button type="button" class="nav-btn"
+                                            onclick="document.getElementById('fileInput').click()"
+                                            style="width: 46px; border-radius: 12px; border: 1px solid var(--border);">
+                                            <ion-icon name="attach"></ion-icon>
+                                        </button>
+                                        <input type="file" id="fileInput" hidden onchange="handleFileSelect(event)">
+                                    </div>
+                                    <div id="attachmentPreview"
+                                        style="font-size: 11px; color: var(--accent); margin-top: 4px; display: none;">
+                                        <ion-icon name="document"></ion-icon> <span id="fileName">doc.pdf</span>
                                     </div>
                                 </div>
 
@@ -1404,12 +1503,19 @@
             document.getElementById('tasksSection').style.display = tab === 'tasks' ? 'block' : 'none';
             document.getElementById('scheduleSection').style.display = tab === 'schedule' ? 'block' : 'none';
             document.getElementById('remindersSection').style.display = tab === 'reminders' ? 'block' : 'none';
+            document.getElementById('settingsSection').style.display = tab === 'settings' ? 'block' : 'none';
+
+            // Special case logic for settings header if needed
+            if (tab === 'settings') {
+                // Settings specific initialization can go here
+            }
         }
 
         function navTo(section) {
             document.querySelectorAll('.bottom-nav-item').forEach(n => n.classList.remove('active'));
             event.target.closest('.bottom-nav-item').classList.add('active');
-            if (section === 'tasks') switchTab('tasks');
+            // Allow navTo to switch to any section
+            switchTab(section);
         }
 
         // Modal Functions
@@ -1459,6 +1565,8 @@
                 description: document.getElementById('itemDesc').value,
                 date: document.getElementById('itemDate').value,
                 time: document.getElementById('itemTime').value,
+                attachment: document.getElementById('itemAttachment').value, // Capture attachment
+                attachment: document.getElementById('itemAttachment').value,
                 reminderType: selectedReminder,
                 recurring: selectedDays.length > 0 ? [...selectedDays] : null,
                 completed: false,
@@ -1510,6 +1618,11 @@
                         ${item.time ? `<span class="task-time">${formatTime(item.time)}</span>` : ''}
                     </div>
                     ${item.description ? `<div class="task-desc">${item.description}</div>` : ''}
+                    ${item.attachment ? `
+                        <div class="task-desc" style="display: flex; align-items: center; gap: 4px; color: var(--primary-light);">
+                            <ion-icon name="attach"></ion-icon> ${item.attachment}
+                        </div>
+                    ` : ''}
                     <div class="task-meta">
                         ${item.date ? `<span class="task-tag">${formatDate(item.date)}</span>` : ''}
                         <span class="task-tag reminder">
@@ -1659,6 +1772,63 @@
             focusActive = !focusActive;
             document.getElementById('focusToggle').classList.toggle('active', focusActive);
             showToast(focusActive ? '🎯 Focus Mode ON' : 'Focus Mode OFF');
+        }
+
+        // Settings Toggles
+        function togglePermission(type) {
+            const toggle = document.getElementById('toggle' + type.charAt(0).toUpperCase() + type.slice(1));
+            toggle.classList.toggle('active');
+            const isActive = toggle.classList.contains('active');
+
+            const statusMap = {
+                usage: document.getElementById('permUsageStatus'),
+                overlay: document.getElementById('permOverlayStatus')
+            };
+
+            if (statusMap[type]) {
+                statusMap[type].textContent = isActive ? "Granted" : "Denied";
+                statusMap[type].style.color = isActive ? "var(--text-dim)" : "var(--danger)";
+            }
+
+            showToast((isActive ? 'Enabled ' : 'Disabled ') + type + ' permission');
+        }
+
+        function handleFileSelect(event) {
+            const file = event.target.files[0];
+            if (file) {
+                document.getElementById('itemAttachment').value = file.name;
+                document.getElementById('fileName').textContent = file.name;
+                document.getElementById('attachmentPreview').style.display = 'block';
+            }
+        }
+
+        // Settings Toggles
+        function togglePermission(type) {
+            const toggle = document.getElementById('toggle' + type.charAt(0).toUpperCase() + type.slice(1));
+            toggle.classList.toggle('active');
+            const isActive = toggle.classList.contains('active');
+
+            const statusMap = {
+                usage: document.getElementById('permUsageStatus'),
+                overlay: document.getElementById('permOverlayStatus'),
+                battery: document.getElementById('permBatteryStatus')
+            };
+
+            if (statusMap[type]) {
+                statusMap[type].textContent = isActive ? "Granted" : "Denied";
+                statusMap[type].style.color = isActive ? "var(--text-dim)" : "var(--danger)";
+            }
+
+            showToast((isActive ? 'Enabled ' : 'Disabled ') + type + ' permission');
+        }
+
+        function handleFileSelect(event) {
+            const file = event.target.files[0];
+            if (file) {
+                document.getElementById('itemAttachment').value = file.name;
+                document.getElementById('fileName').textContent = file.name;
+                document.getElementById('attachmentPreview').style.display = 'block';
+            }
         }
 
         function startTimer(minutes) {
