@@ -1,0 +1,1510 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Mindful | Digital Wellbeing App</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+    <link rel="manifest" href="data:application/json,{}">
+    <meta name="theme-color" content="#6366f1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --primary-light: #818cf8;
+            --secondary: #06b6d4;
+            --accent: #f59e0b;
+            --success: #22c55e;
+            --danger: #ef4444;
+            --warning: #eab308;
+            --bg-dark: #0a0a0a;
+            --bg-card: #141414;
+            --bg-elevated: #1a1a1a;
+            --text: #fafafa;
+            --text-dim: #a3a3a3;
+            --text-muted: #525252;
+            --border: rgba(255, 255, 255, 0.08);
+            --glass: rgba(255, 255, 255, 0.03);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background: var(--bg-dark);
+            color: var(--text);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Navbar - Blends In */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to bottom, var(--bg-dark) 0%, transparent 100%);
+            z-index: 100;
+            padding: 1rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-brand {
+            font-weight: 800;
+            font-size: 1.25rem;
+            color: var(--primary-light);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-brand span {
+            font-size: 1.5rem;
+        }
+
+        .nav-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .nav-btn {
+            background: var(--glass);
+            border: 1px solid var(--border);
+            color: var(--text-dim);
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .nav-btn:hover {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .nav-btn ion-icon {
+            font-size: 20px;
+        }
+
+        /* Main Container */
+        .app-container {
+            max-width: 480px;
+            margin: 0 auto;
+            min-height: 100vh;
+            padding: 80px 16px 100px;
+        }
+
+        /* Hero Stats */
+        .hero-stats {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            border-radius: 28px;
+            padding: 28px;
+            margin-bottom: 24px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-stats::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -30%;
+            width: 200px;
+            height: 200px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+        }
+
+        .hero-greeting {
+            font-size: 14px;
+            opacity: 0.8;
+            margin-bottom: 4px;
+        }
+
+        .hero-title {
+            font-size: 24px;
+            font-weight: 800;
+            margin-bottom: 20px;
+        }
+
+        .stats-row {
+            display: flex;
+            gap: 16px;
+        }
+
+        .stat-box {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 16px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 28px;
+            font-weight: 800;
+        }
+
+        .stat-label {
+            font-size: 11px;
+            opacity: 0.8;
+        }
+
+        /* Section Headers */
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .section-action {
+            background: var(--primary);
+            border: none;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* Mini Goals */
+        .goals-container {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 24px;
+            overflow-x: auto;
+            padding-bottom: 8px;
+        }
+
+        .goal-card {
+            flex-shrink: 0;
+            width: 100px;
+            background: var(--bg-card);
+            border: 2px solid var(--border);
+            border-radius: 20px;
+            padding: 20px 16px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .goal-card:hover,
+        .goal-card.active {
+            border-color: var(--success);
+            background: rgba(34, 197, 94, 0.1);
+        }
+
+        .goal-card.active::after {
+            content: '✓';
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            color: var(--success);
+        }
+
+        .goal-time {
+            font-size: 32px;
+            font-weight: 800;
+            color: var(--success);
+        }
+
+        .goal-unit {
+            font-size: 11px;
+            color: var(--text-dim);
+        }
+
+        /* Task/Schedule Card */
+        .task-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 18px;
+            margin-bottom: 12px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+
+        .task-card::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: var(--primary);
+        }
+
+        .task-card.urgent::before {
+            background: var(--danger);
+        }
+
+        .task-card.completed::before {
+            background: var(--success);
+        }
+
+        .task-card.completed {
+            opacity: 0.6;
+        }
+
+        .task-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 8px;
+        }
+
+        .task-title {
+            font-size: 15px;
+            font-weight: 600;
+        }
+
+        .task-time {
+            font-size: 12px;
+            color: var(--accent);
+            font-weight: 600;
+            background: rgba(245, 158, 11, 0.1);
+            padding: 4px 10px;
+            border-radius: 20px;
+        }
+
+        .task-desc {
+            font-size: 12px;
+            color: var(--text-dim);
+            margin-bottom: 12px;
+        }
+
+        .task-meta {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .task-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 10px;
+            padding: 4px 10px;
+            border-radius: 20px;
+            background: var(--glass);
+            border: 1px solid var(--border);
+            color: var(--text-dim);
+        }
+
+        .task-tag.reminder {
+            background: rgba(99, 102, 241, 0.1);
+            border-color: var(--primary);
+            color: var(--primary-light);
+        }
+
+        .task-tag.recurring {
+            background: rgba(6, 182, 212, 0.1);
+            border-color: var(--secondary);
+            color: var(--secondary);
+        }
+
+        .task-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 12px;
+        }
+
+        .task-action-btn {
+            flex: 1;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
+            color: var(--text-dim);
+            padding: 10px;
+            border-radius: 12px;
+            font-size: 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            transition: all 0.3s;
+        }
+
+        .task-action-btn:hover {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .task-action-btn.complete {
+            background: var(--success);
+            border-color: var(--success);
+            color: white;
+        }
+
+        .task-action-btn.delete {
+            background: transparent;
+        }
+
+        .task-action-btn.delete:hover {
+            background: var(--danger);
+            border-color: var(--danger);
+        }
+
+        /* Focus Mode Banner */
+        .focus-banner {
+            background: linear-gradient(135deg, #1e1e1e 0%, #252525 100%);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .focus-icon-box {
+            width: 56px;
+            height: 56px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+        }
+
+        .focus-info {
+            flex: 1;
+        }
+
+        .focus-title {
+            font-size: 15px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .focus-desc {
+            font-size: 12px;
+            color: var(--text-dim);
+        }
+
+        .focus-toggle {
+            width: 56px;
+            height: 32px;
+            background: var(--bg-dark);
+            border-radius: 16px;
+            position: relative;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .focus-toggle.active {
+            background: var(--success);
+        }
+
+        .focus-toggle::after {
+            content: '';
+            width: 26px;
+            height: 26px;
+            background: white;
+            border-radius: 50%;
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            transition: left 0.3s;
+        }
+
+        .focus-toggle.active::after {
+            left: 27px;
+        }
+
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            display: none;
+            align-items: flex-end;
+            justify-content: center;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--bg-card);
+            border-radius: 28px 28px 0 0;
+            width: 100%;
+            max-width: 480px;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 24px;
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(100%);
+            }
+
+            to {
+                transform: translateY(0);
+            }
+        }
+
+        .modal-handle {
+            width: 40px;
+            height: 4px;
+            background: var(--text-muted);
+            border-radius: 2px;
+            margin: 0 auto 20px;
+        }
+
+        .modal-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-label {
+            font-size: 12px;
+            color: var(--text-dim);
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .form-input {
+            width: 100%;
+            background: var(--bg-dark);
+            border: 1px solid var(--border);
+            color: var(--text);
+            padding: 14px 16px;
+            border-radius: 12px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .form-row {
+            display: flex;
+            gap: 12px;
+        }
+
+        .form-row .form-group {
+            flex: 1;
+        }
+
+        .reminder-options {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .reminder-option {
+            background: var(--bg-dark);
+            border: 2px solid var(--border);
+            color: var(--text-dim);
+            padding: 12px 16px;
+            border-radius: 12px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .reminder-option:hover,
+        .reminder-option.active {
+            border-color: var(--primary);
+            background: rgba(99, 102, 241, 0.1);
+            color: var(--primary-light);
+        }
+
+        .recurring-options {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 8px;
+        }
+
+        .day-option {
+            background: var(--bg-dark);
+            border: 2px solid var(--border);
+            color: var(--text-dim);
+            padding: 12px 8px;
+            border-radius: 10px;
+            font-size: 11px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .day-option:hover,
+        .day-option.active {
+            border-color: var(--secondary);
+            background: rgba(6, 182, 212, 0.1);
+            color: var(--secondary);
+        }
+
+        .submit-btn {
+            width: 100%;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            border: none;
+            color: white;
+            padding: 16px;
+            border-radius: 14px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        /* Call Modal */
+        .call-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, #1a1a2e 0%, #0f0f0f 100%);
+            z-index: 2000;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .call-modal.active {
+            display: flex;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        .call-icon {
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 50px;
+            margin-bottom: 30px;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.5);
+            }
+
+            50% {
+                transform: scale(1.05);
+                box-shadow: 0 0 0 20px rgba(99, 102, 241, 0);
+            }
+        }
+
+        .call-title {
+            font-size: 28px;
+            font-weight: 800;
+            margin-bottom: 10px;
+        }
+
+        .call-desc {
+            font-size: 16px;
+            color: var(--text-dim);
+            margin-bottom: 50px;
+        }
+
+        .call-actions {
+            display: flex;
+            gap: 40px;
+        }
+
+        .call-btn {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .call-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .call-btn.accept {
+            background: var(--success);
+            color: white;
+        }
+
+        .call-btn.decline {
+            background: var(--danger);
+            color: white;
+        }
+
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--bg-card);
+            border-top: 1px solid var(--border);
+            display: flex;
+            padding: 12px 0;
+            z-index: 50;
+        }
+
+        .bottom-nav-item {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            cursor: pointer;
+            color: var(--text-muted);
+            transition: color 0.3s;
+        }
+
+        .bottom-nav-item.active {
+            color: var(--primary);
+        }
+
+        .bottom-nav-item ion-icon {
+            font-size: 24px;
+        }
+
+        .bottom-nav-item span {
+            font-size: 10px;
+            font-weight: 600;
+        }
+
+        /* Floating Add Button */
+        .fab {
+            position: fixed;
+            bottom: 90px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            border-radius: 50%;
+            border: none;
+            color: white;
+            font-size: 28px;
+            cursor: pointer;
+            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 40;
+            transition: transform 0.3s;
+        }
+
+        .fab:hover {
+            transform: scale(1.1);
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text-muted);
+        }
+
+        .empty-state ion-icon {
+            font-size: 60px;
+            margin-bottom: 16px;
+            color: var(--text-dim);
+        }
+
+        .empty-state h3 {
+            font-size: 16px;
+            margin-bottom: 8px;
+            color: var(--text-dim);
+        }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            bottom: 120px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
+            color: var(--text);
+            padding: 14px 24px;
+            border-radius: 50px;
+            font-size: 14px;
+            font-weight: 500;
+            opacity: 0;
+            transition: all 0.3s;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 4px;
+            margin-bottom: 20px;
+        }
+
+        .tab {
+            flex: 1;
+            padding: 12px;
+            text-align: center;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-dim);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .tab.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* Live Clock */
+        .live-clock {
+            font-size: 11px;
+            color: var(--text-muted);
+            text-align: center;
+            margin-bottom: 8px;
+        }
+
+        /* PWA Install Banner */
+        .pwa-banner {
+            background: linear-gradient(135deg, var(--accent) 0%, #d97706 100%);
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 20px;
+            display: none;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .pwa-banner.show {
+            display: flex;
+        }
+
+        .pwa-icon {
+            font-size: 32px;
+        }
+
+        .pwa-info {
+            flex: 1;
+        }
+
+        .pwa-info h4 {
+            font-size: 14px;
+            margin-bottom: 2px;
+        }
+
+        .pwa-info p {
+            font-size: 11px;
+            opacity: 0.8;
+        }
+
+        .pwa-close {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <a href="../../index.html" class="nav-brand">
+            <span>🧘</span>
+            Mindful
+        </a>
+        <div class="nav-actions">
+            <button class="nav-btn" onclick="showStats()">
+                <ion-icon name="stats-chart-outline"></ion-icon>
+            </button>
+            <button class="nav-btn" onclick="location.href='../../index.html'">
+                <ion-icon name="home-outline"></ion-icon>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Main App Container -->
+    <div class="app-container">
+        <!-- Live Clock -->
+        <div class="live-clock" id="liveClock"></div>
+
+        <!-- Hero Stats -->
+        <div class="hero-stats">
+            <div class="hero-greeting">Good <span id="timeOfDay">Morning</span>,</div>
+            <div class="hero-title">Stay Focused Today 💪</div>
+            <div class="stats-row">
+                <div class="stat-box">
+                    <div class="stat-value" id="taskCount">0</div>
+                    <div class="stat-label">Tasks Today</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value" id="completedCount">0</div>
+                    <div class="stat-label">Completed</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value" id="focusTime">0m</div>
+                    <div class="stat-label">Focus Time</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PWA Install Banner -->
+        <div class="pwa-banner" id="pwaBanner">
+            <span class="pwa-icon">📲</span>
+            <div class="pwa-info">
+                <h4>Install App</h4>
+                <p>Add to home screen for offline use</p>
+            </div>
+            <button class="pwa-close" onclick="hidePwaBanner()">×</button>
+        </div>
+
+        <!-- Focus Mode Banner -->
+        <div class="focus-banner">
+            <div class="focus-icon-box">🎯</div>
+            <div class="focus-info">
+                <div class="focus-title">Focus Mode</div>
+                <div class="focus-desc">Block distractions instantly</div>
+            </div>
+            <div class="focus-toggle" id="focusToggle" onclick="toggleFocus()"></div>
+        </div>
+
+        <!-- Mini Goals -->
+        <div class="section-header">
+            <h2 class="section-title">⏱️ Quick Focus</h2>
+        </div>
+        <div class="goals-container">
+            <div class="goal-card" onclick="startTimer(5)">
+                <div class="goal-time">5</div>
+                <div class="goal-unit">minutes</div>
+            </div>
+            <div class="goal-card" onclick="startTimer(10)">
+                <div class="goal-time">10</div>
+                <div class="goal-unit">minutes</div>
+            </div>
+            <div class="goal-card" onclick="startTimer(25)">
+                <div class="goal-time">25</div>
+                <div class="goal-unit">pomodoro</div>
+            </div>
+            <div class="goal-card" onclick="startTimer(30)">
+                <div class="goal-time">30</div>
+                <div class="goal-unit">minutes</div>
+            </div>
+            <div class="goal-card" onclick="startTimer(60)">
+                <div class="goal-time">60</div>
+                <div class="goal-unit">minutes</div>
+            </div>
+        </div>
+
+        <!-- Tabs -->
+        <div class="tabs">
+            <div class="tab active" onclick="switchTab('tasks')">Tasks</div>
+            <div class="tab" onclick="switchTab('schedule')">Schedule</div>
+            <div class="tab" onclick="switchTab('reminders')">Reminders</div>
+        </div>
+
+        <!-- Tasks Section -->
+        <div id="tasksSection">
+            <div class="section-header">
+                <h2 class="section-title">📋 Today's Tasks</h2>
+            </div>
+            <div id="tasksList"></div>
+        </div>
+
+        <!-- Schedule Section -->
+        <div id="scheduleSection" style="display: none;">
+            <div class="section-header">
+                <h2 class="section-title">📅 Scheduled</h2>
+            </div>
+            <div id="scheduleList"></div>
+        </div>
+
+        <!-- Reminders Section -->
+        <div id="remindersSection" style="display: none;">
+            <div class="section-header">
+                <h2 class="section-title">🔔 Reminders</h2>
+            </div>
+            <div id="remindersList"></div>
+        </div>
+    </div>
+
+    <!-- Floating Action Button -->
+    <button class="fab" onclick="openAddModal()">
+        <ion-icon name="add"></ion-icon>
+    </button>
+
+    <!-- Bottom Navigation -->
+    <div class="bottom-nav">
+        <div class="bottom-nav-item active" onclick="navTo('home')">
+            <ion-icon name="home"></ion-icon>
+            <span>Home</span>
+        </div>
+        <div class="bottom-nav-item" onclick="navTo('tasks')">
+            <ion-icon name="checkbox-outline"></ion-icon>
+            <span>Tasks</span>
+        </div>
+        <div class="bottom-nav-item" onclick="navTo('focus')">
+            <ion-icon name="flash"></ion-icon>
+            <span>Focus</span>
+        </div>
+        <div class="bottom-nav-item" onclick="navTo('settings')">
+            <ion-icon name="settings-outline"></ion-icon>
+            <span>Settings</span>
+        </div>
+    </div>
+
+    <!-- Add Task/Schedule Modal -->
+    <div class="modal-overlay" id="addModal">
+        <div class="modal-content">
+            <div class="modal-handle"></div>
+            <h2 class="modal-title" id="modalTitle">Add Task</h2>
+
+            <div class="tabs" style="margin-bottom: 20px;">
+                <div class="tab active" onclick="setModalType('task')">Task</div>
+                <div class="tab" onclick="setModalType('schedule')">Schedule</div>
+                <div class="tab" onclick="setModalType('reminder')">Reminder</div>
+            </div>
+
+            <form id="addForm" onsubmit="saveItem(event)">
+                <div class="form-group">
+                    <label class="form-label">Title *</label>
+                    <input type="text" class="form-input" id="itemTitle" placeholder="What do you need to do?" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Description</label>
+                    <input type="text" class="form-input" id="itemDesc" placeholder="Add details (optional)">
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Date</label>
+                        <input type="date" class="form-input" id="itemDate">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Time</label>
+                        <input type="time" class="form-input" id="itemTime">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Reminder Type</label>
+                    <div class="reminder-options">
+                        <div class="reminder-option" onclick="selectReminder(this, 'notification')">
+                            <ion-icon name="notifications-outline"></ion-icon>
+                            Notification
+                        </div>
+                        <div class="reminder-option active" onclick="selectReminder(this, 'alarm')">
+                            <ion-icon name="alarm-outline"></ion-icon>
+                            Alarm
+                        </div>
+                        <div class="reminder-option" onclick="selectReminder(this, 'call')">
+                            <ion-icon name="call-outline"></ion-icon>
+                            Call-style
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Repeat (Optional)</label>
+                    <div class="recurring-options">
+                        <div class="day-option" onclick="toggleDay(this)" data-day="0">S</div>
+                        <div class="day-option" onclick="toggleDay(this)" data-day="1">M</div>
+                        <div class="day-option" onclick="toggleDay(this)" data-day="2">T</div>
+                        <div class="day-option" onclick="toggleDay(this)" data-day="3">W</div>
+                        <div class="day-option" onclick="toggleDay(this)" data-day="4">T</div>
+                        <div class="day-option" onclick="toggleDay(this)" data-day="5">F</div>
+                        <div class="day-option" onclick="toggleDay(this)" data-day="6">S</div>
+                    </div>
+                </div>
+
+                <button type="submit" class="submit-btn">
+                    <ion-icon name="add-circle-outline"></ion-icon>
+                    Save
+                </button>
+            </form>
+
+            <button class="submit-btn"
+                style="background: transparent; border: 1px solid var(--border); margin-top: 10px;"
+                onclick="closeModal()">
+                Cancel
+            </button>
+        </div>
+    </div>
+
+    <!-- Call-style Reminder Modal -->
+    <div class="call-modal" id="callModal">
+        <div class="call-icon">📞</div>
+        <h2 class="call-title" id="callTitle">Time for Focus!</h2>
+        <p class="call-desc" id="callDesc">Your scheduled reminder is here</p>
+        <div class="call-actions">
+            <button class="call-btn decline" onclick="dismissCall()">
+                <ion-icon name="close"></ion-icon>
+            </button>
+            <button class="call-btn accept" onclick="acceptCall()">
+                <ion-icon name="checkmark"></ion-icon>
+            </button>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div class="toast" id="toast"></div>
+
+    <script>
+        // Data Storage
+        let items = JSON.parse(localStorage.getItem('mindful_items') || '[]');
+        let currentType = 'task';
+        let selectedReminder = 'alarm';
+        let selectedDays = [];
+        let focusActive = false;
+        let focusMinutes = 0;
+        let activeTimers = [];
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            updateClock();
+            setInterval(updateClock, 1000);
+            updateTimeOfDay();
+            setDefaultDate();
+            renderItems();
+            checkReminders();
+            setInterval(checkReminders, 10000); // Check every 10 seconds
+            requestNotificationPermission();
+        });
+
+        function updateClock() {
+            const now = new Date();
+            document.getElementById('liveClock').textContent = now.toLocaleString('en-US', {
+                weekday: 'long',
+                month: 'short',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit'
+            });
+        }
+
+        function updateTimeOfDay() {
+            const hour = new Date().getHours();
+            let greeting = 'Morning';
+            if (hour >= 12 && hour < 17) greeting = 'Afternoon';
+            else if (hour >= 17) greeting = 'Evening';
+            document.getElementById('timeOfDay').textContent = greeting;
+        }
+
+        function setDefaultDate() {
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('itemDate').value = today;
+        }
+
+        function requestNotificationPermission() {
+            if ('Notification' in window && Notification.permission !== 'granted') {
+                Notification.requestPermission();
+            }
+        }
+
+        // Tab Navigation
+        function switchTab(tab) {
+            document.querySelectorAll('.tabs .tab').forEach((t, i) => {
+                t.classList.toggle('active', i === ['tasks', 'schedule', 'reminders'].indexOf(tab));
+            });
+            document.getElementById('tasksSection').style.display = tab === 'tasks' ? 'block' : 'none';
+            document.getElementById('scheduleSection').style.display = tab === 'schedule' ? 'block' : 'none';
+            document.getElementById('remindersSection').style.display = tab === 'reminders' ? 'block' : 'none';
+        }
+
+        function navTo(section) {
+            document.querySelectorAll('.bottom-nav-item').forEach(n => n.classList.remove('active'));
+            event.target.closest('.bottom-nav-item').classList.add('active');
+            if (section === 'tasks') switchTab('tasks');
+        }
+
+        // Modal Functions
+        function openAddModal() {
+            document.getElementById('addModal').classList.add('active');
+            setDefaultDate();
+        }
+
+        function closeModal() {
+            document.getElementById('addModal').classList.remove('active');
+            document.getElementById('addForm').reset();
+            setDefaultDate();
+        }
+
+        function setModalType(type) {
+            currentType = type;
+            document.querySelectorAll('#addModal .tabs .tab').forEach((t, i) => {
+                t.classList.toggle('active', i === ['task', 'schedule', 'reminder'].indexOf(type));
+            });
+            document.getElementById('modalTitle').textContent = 'Add ' + type.charAt(0).toUpperCase() + type.slice(1);
+        }
+
+        function selectReminder(element, type) {
+            document.querySelectorAll('.reminder-option').forEach(o => o.classList.remove('active'));
+            element.classList.add('active');
+            selectedReminder = type;
+        }
+
+        function toggleDay(element) {
+            element.classList.toggle('active');
+            const day = parseInt(element.dataset.day);
+            if (selectedDays.includes(day)) {
+                selectedDays = selectedDays.filter(d => d !== day);
+            } else {
+                selectedDays.push(day);
+            }
+        }
+
+        // Save Item
+        function saveItem(e) {
+            e.preventDefault();
+
+            const item = {
+                id: Date.now(),
+                type: currentType,
+                title: document.getElementById('itemTitle').value,
+                description: document.getElementById('itemDesc').value,
+                date: document.getElementById('itemDate').value,
+                time: document.getElementById('itemTime').value,
+                reminderType: selectedReminder,
+                recurring: selectedDays.length > 0 ? [...selectedDays] : null,
+                completed: false,
+                skipped: false,
+                createdAt: new Date().toISOString()
+            };
+
+            items.push(item);
+            saveItems();
+            renderItems();
+            closeModal();
+            showToast('✅ ' + currentType.charAt(0).toUpperCase() + currentType.slice(1) + ' added!');
+
+            // Schedule reminder
+            if (item.time) {
+                scheduleReminder(item);
+            }
+        }
+
+        function saveItems() {
+            localStorage.setItem('mindful_items', JSON.stringify(items));
+            updateStats();
+        }
+
+        function renderItems() {
+            const tasksList = document.getElementById('tasksList');
+            const scheduleList = document.getElementById('scheduleList');
+            const remindersList = document.getElementById('remindersList');
+
+            const tasks = items.filter(i => i.type === 'task');
+            const schedules = items.filter(i => i.type === 'schedule');
+            const reminders = items.filter(i => i.type === 'reminder');
+
+            tasksList.innerHTML = tasks.length ? tasks.map(renderItem).join('') : emptyState('No tasks yet');
+            scheduleList.innerHTML = schedules.length ? schedules.map(renderItem).join('') : emptyState('No schedules yet');
+            remindersList.innerHTML = reminders.length ? reminders.map(renderItem).join('') : emptyState('No reminders yet');
+
+            updateStats();
+        }
+
+        function renderItem(item) {
+            const reminderIcons = { notification: 'notifications', alarm: 'alarm', call: 'call' };
+            const recurringText = item.recurring ? '🔁 Recurring' : '';
+
+            return `
+                <div class="task-card ${item.completed ? 'completed' : ''} ${item.skipped ? 'urgent' : ''}">
+                    <div class="task-header">
+                        <span class="task-title">${item.title}</span>
+                        ${item.time ? `<span class="task-time">${formatTime(item.time)}</span>` : ''}
+                    </div>
+                    ${item.description ? `<div class="task-desc">${item.description}</div>` : ''}
+                    <div class="task-meta">
+                        ${item.date ? `<span class="task-tag">${formatDate(item.date)}</span>` : ''}
+                        <span class="task-tag reminder">
+                            <ion-icon name="${reminderIcons[item.reminderType]}-outline"></ion-icon>
+                            ${item.reminderType}
+                        </span>
+                        ${item.recurring ? `<span class="task-tag recurring">🔁 Recurring</span>` : ''}
+                        ${item.skipped ? `<span class="task-tag" style="background: rgba(239,68,68,0.1); color: #ef4444;">⚠️ Skipped</span>` : ''}
+                    </div>
+                    <div class="task-actions">
+                        ${!item.completed ? `
+                            <button class="task-action-btn complete" onclick="completeItem(${item.id})">
+                                <ion-icon name="checkmark-outline"></ion-icon>
+                                Complete
+                            </button>
+                        ` : ''}
+                        <button class="task-action-btn delete" onclick="deleteItem(${item.id})">
+                            <ion-icon name="trash-outline"></ion-icon>
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function emptyState(text) {
+            return `
+                <div class="empty-state">
+                    <ion-icon name="clipboard-outline"></ion-icon>
+                    <h3>${text}</h3>
+                    <p>Tap + to add one</p>
+                </div>
+            `;
+        }
+
+        function formatTime(time) {
+            const [h, m] = time.split(':');
+            const hour = parseInt(h);
+            const ampm = hour >= 12 ? 'PM' : 'AM';
+            const hour12 = hour % 12 || 12;
+            return `${hour12}:${m} ${ampm}`;
+        }
+
+        function formatDate(dateStr) {
+            const date = new Date(dateStr);
+            return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+        }
+
+        function completeItem(id) {
+            const item = items.find(i => i.id === id);
+            if (item) {
+                item.completed = true;
+                saveItems();
+                renderItems();
+                showToast('🎉 Great job!');
+            }
+        }
+
+        function deleteItem(id) {
+            items = items.filter(i => i.id !== id);
+            saveItems();
+            renderItems();
+            showToast('🗑️ Deleted');
+        }
+
+        function updateStats() {
+            const today = new Date().toISOString().split('T')[0];
+            const todayItems = items.filter(i => i.date === today);
+            const completed = todayItems.filter(i => i.completed);
+
+            document.getElementById('taskCount').textContent = todayItems.length;
+            document.getElementById('completedCount').textContent = completed.length;
+            document.getElementById('focusTime').textContent = focusMinutes + 'm';
+        }
+
+        // Reminder System
+        function scheduleReminder(item) {
+            if (!item.time || !item.date) return;
+
+            const now = new Date();
+            const reminderTime = new Date(item.date + 'T' + item.time);
+            const delay = reminderTime - now;
+
+            if (delay > 0) {
+                const timerId = setTimeout(() => triggerReminder(item), delay);
+                activeTimers.push({ id: item.id, timerId });
+            }
+        }
+
+        function checkReminders() {
+            const now = new Date();
+            const currentTime = now.toTimeString().slice(0, 5);
+            const currentDate = now.toISOString().split('T')[0];
+
+            items.forEach(item => {
+                if (!item.completed && item.time && item.date === currentDate) {
+                    if (item.time === currentTime) {
+                        triggerReminder(item);
+                    }
+                }
+            });
+        }
+
+        function triggerReminder(item) {
+            if (item.reminderType === 'call') {
+                showCallModal(item);
+            } else if (item.reminderType === 'alarm') {
+                showCallModal(item); // Use call modal for alarm too, more impactful
+            } else {
+                showNotification(item);
+            }
+        }
+
+        function showNotification(item) {
+            if ('Notification' in window && Notification.permission === 'granted') {
+                new Notification('🧘 Mindful Reminder', {
+                    body: item.title,
+                    icon: '🔔'
+                });
+            }
+            showToast('🔔 ' + item.title);
+        }
+
+        function showCallModal(item) {
+            document.getElementById('callTitle').textContent = item.title;
+            document.getElementById('callDesc').textContent = item.description || 'Your reminder is here!';
+            document.getElementById('callModal').classList.add('active');
+
+            // Vibrate if supported
+            if ('vibrate' in navigator) {
+                navigator.vibrate([200, 100, 200, 100, 200]);
+            }
+        }
+
+        function acceptCall() {
+            document.getElementById('callModal').classList.remove('active');
+            showToast('✅ Let\'s do this!');
+        }
+
+        function dismissCall() {
+            document.getElementById('callModal').classList.remove('active');
+            // Mark as skipped
+            showToast('⚠️ Reminder skipped - will remind again!');
+        }
+
+        // Focus Features
+        function toggleFocus() {
+            focusActive = !focusActive;
+            document.getElementById('focusToggle').classList.toggle('active', focusActive);
+            showToast(focusActive ? '🎯 Focus Mode ON' : 'Focus Mode OFF');
+        }
+
+        function startTimer(minutes) {
+            document.querySelectorAll('.goal-card').forEach(c => c.classList.remove('active'));
+            event.target.closest('.goal-card').classList.add('active');
+
+            showToast(`⏱️ ${minutes} minute focus started!`);
+            focusActive = true;
+            document.getElementById('focusToggle').classList.add('active');
+
+            setTimeout(() => {
+                focusMinutes += minutes;
+                updateStats();
+                showCallModal({ title: '🎉 Focus Complete!', description: `You focused for ${minutes} minutes!` });
+            }, minutes * 60 * 1000);
+        }
+
+        // Toast
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 3000);
+        }
+
+        // PWA
+        function hidePwaBanner() {
+            document.getElementById('pwaBanner').classList.remove('show');
+        }
+
+        function showStats() {
+            showToast('📊 Stats: ' + items.length + ' total items');
+        }
+
+        // Close modal on overlay click
+        document.getElementById('addModal').addEventListener('click', (e) => {
+            if (e.target === document.getElementById('addModal')) {
+                closeModal();
+            }
+        });
+
+        // Keyboard shortcut
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeModal();
+            if (e.key === 'n' && e.ctrlKey) {
+                e.preventDefault();
+                openAddModal();
+            }
+        });
+    </script>
+</body>
+
+</html>
