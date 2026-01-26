@@ -1052,247 +1052,295 @@
 </head>
 
 <body>
-    <!-- Navbar -->
-    <nav class="navbar">
-        <a href="../../index.html" class="nav-brand">
-            <span>🧘</span>
-            Mindful
-        </a>
-        <div class="nav-actions">
-            <button class="nav-btn" onclick="showStats()">
-                <ion-icon name="stats-chart-outline"></ion-icon>
-            </button>
-            <button class="nav-btn" onclick="location.href='../../index.html'">
-                <ion-icon name="home-outline"></ion-icon>
-            </button>
-        </div>
-    </nav>
-
-    <!-- Main App Container -->
-    <div class="app-container">
-        <!-- Live Clock -->
-        <div class="live-clock" id="liveClock"></div>
-
-        <!-- Hero Stats -->
-        <div class="hero-stats">
-            <div class="hero-greeting">Good <span id="timeOfDay">Morning</span>,</div>
-            <div class="hero-title">Stay Focused Today 💪</div>
-            <div class="stats-row">
-                <div class="stat-box">
-                    <div class="stat-value" id="taskCount">0</div>
-                    <div class="stat-label">Tasks Today</div>
-                </div>
-                <div class="stat-box">
-                    <div class="stat-value" id="completedCount">0</div>
-                    <div class="stat-label">Completed</div>
-                </div>
-                <div class="stat-box">
-                    <div class="stat-value" id="focusTime">0m</div>
-                    <div class="stat-label">Focus Time</div>
-                </div>
-            </div>
-        </div>
-
-        <!-- PWA Install Banner -->
-        <div class="pwa-banner" id="pwaBanner">
-            <span class="pwa-icon">📲</span>
-            <div class="pwa-info">
-                <h4>Install App</h4>
-                <p>Add to home screen for offline use</p>
-            </div>
-            <button class="pwa-close" onclick="hidePwaBanner()">×</button>
-        </div>
-
-        <!-- Focus Mode Banner -->
-        <div class="focus-banner">
-            <div class="focus-icon-box">🎯</div>
-            <div class="focus-info">
-                <div class="focus-title">Focus Mode</div>
-                <div class="focus-desc">Block distractions instantly</div>
-            </div>
-            <div class="focus-toggle" id="focusToggle" onclick="toggleFocus()"></div>
-        </div>
-
-        <!-- Mini Goals -->
-        <div class="section-header">
-            <h2 class="section-title">⏱️ Quick Focus</h2>
-        </div>
-        <div class="goals-container">
-            <div class="goal-card" onclick="startTimer(5)">
-                <div class="goal-time">5</div>
-                <div class="goal-unit">minutes</div>
-            </div>
-            <div class="goal-card" onclick="startTimer(10)">
-                <div class="goal-time">10</div>
-                <div class="goal-unit">minutes</div>
-            </div>
-            <div class="goal-card" onclick="startTimer(25)">
-                <div class="goal-time">25</div>
-                <div class="goal-unit">pomodoro</div>
-            </div>
-            <div class="goal-card" onclick="startTimer(30)">
-                <div class="goal-time">30</div>
-                <div class="goal-unit">minutes</div>
-            </div>
-            <div class="goal-card" onclick="startTimer(60)">
-                <div class="goal-time">60</div>
-                <div class="goal-unit">minutes</div>
-            </div>
-        </div>
-
-        <!-- Tabs -->
-        <div class="tabs">
-            <div class="tab active" onclick="switchTab('tasks')">Tasks</div>
-            <div class="tab" onclick="switchTab('schedule')">Schedule</div>
-            <div class="tab" onclick="switchTab('reminders')">Reminders</div>
-        </div>
-
-        <!-- Tasks Section -->
-        <div id="tasksSection">
-            <div class="section-header">
-                <h2 class="section-title">📋 Today's Tasks</h2>
-            </div>
-            <div id="tasksList"></div>
-        </div>
-
-        <!-- Schedule Section -->
-        <div id="scheduleSection" style="display: none;">
-            <div class="section-header">
-                <h2 class="section-title">📅 Scheduled</h2>
-            </div>
-            <div id="scheduleList"></div>
-        </div>
-
-        <!-- Reminders Section -->
-        <div id="remindersSection" style="display: none;">
-            <div class="section-header">
-                <h2 class="section-title">🔔 Reminders</h2>
-            </div>
-            <div id="remindersList"></div>
-        </div>
-    </div>
-
-    <!-- Floating Action Button -->
-    <button class="fab" onclick="openAddModal()">
-        <ion-icon name="add"></ion-icon>
-    </button>
-
-    <!-- Bottom Navigation -->
-    <div class="bottom-nav">
-        <div class="bottom-nav-item active" onclick="navTo('home')">
-            <ion-icon name="home"></ion-icon>
-            <span>Home</span>
-        </div>
-        <div class="bottom-nav-item" onclick="navTo('tasks')">
-            <ion-icon name="checkbox-outline"></ion-icon>
-            <span>Tasks</span>
-        </div>
-        <div class="bottom-nav-item" onclick="navTo('focus')">
-            <ion-icon name="flash"></ion-icon>
-            <span>Focus</span>
-        </div>
-        <div class="bottom-nav-item" onclick="navTo('settings')">
-            <ion-icon name="settings-outline"></ion-icon>
-            <span>Settings</span>
-        </div>
-    </div>
-
-    <!-- Add Task/Schedule Modal -->
-    <div class="modal-overlay" id="addModal">
-        <div class="modal-content">
-            <div class="modal-handle"></div>
-            <h2 class="modal-title" id="modalTitle">Add Task</h2>
-
-            <div class="tabs" style="margin-bottom: 20px;">
-                <div class="tab active" onclick="setModalType('task')">Task</div>
-                <div class="tab" onclick="setModalType('schedule')">Schedule</div>
-                <div class="tab" onclick="setModalType('reminder')">Reminder</div>
-            </div>
-
-            <form id="addForm" onsubmit="saveItem(event)">
-                <div class="form-group">
-                    <label class="form-label">Title *</label>
-                    <input type="text" class="form-input" id="itemTitle" placeholder="What do you need to do?" required>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">Description</label>
-                    <input type="text" class="form-input" id="itemDesc" placeholder="Add details (optional)">
-                </div>
-
-                <div class="form-row">
-                    <div class="form-group">
-                        <label class="form-label">Date</label>
-                        <input type="date" class="form-input" id="itemDate">
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Time</label>
-                        <input type="time" class="form-input" id="itemTime">
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">Reminder Type</label>
-                    <div class="reminder-options">
-                        <div class="reminder-option" onclick="selectReminder(this, 'notification')">
-                            <ion-icon name="notifications-outline"></ion-icon>
-                            Notification
+    <div class="desktop-wrapper">
+        <div class="phone-frame">
+            <div class="phone-screen">
+                <div class="app-scroll-container">
+                    <!-- Navbar -->
+                    <nav class="navbar">
+                        <a href="../../index.html" class="nav-brand">
+                            <span>🧘</span>
+                            Mindful
+                        </a>
+                        <div class="nav-actions">
+                            <button class="nav-btn" onclick="showStats()">
+                                <ion-icon name="stats-chart-outline"></ion-icon>
+                            </button>
+                            <button class="nav-btn" onclick="location.href='../../index.html'">
+                                <ion-icon name="home-outline"></ion-icon>
+                            </button>
                         </div>
-                        <div class="reminder-option active" onclick="selectReminder(this, 'alarm')">
-                            <ion-icon name="alarm-outline"></ion-icon>
-                            Alarm
+                    </nav>
+
+                    <!-- Main App Container -->
+                    <div class="app-container">
+                        <!-- Live Clock -->
+                        <div class="live-clock" id="liveClock"></div>
+
+                        <!-- Hero Stats -->
+                        <div class="hero-stats">
+                            <div class="hero-greeting">Good <span id="timeOfDay">Morning</span>,</div>
+                            <div class="hero-title">Stay Focused Today 💪</div>
+                            <div class="stats-row">
+                                <div class="stat-box">
+                                    <div class="stat-value" id="taskCount">0</div>
+                                    <div class="stat-label">Tasks Today</div>
+                                </div>
+                                <div class="stat-box">
+                                    <div class="stat-value" id="completedCount">0</div>
+                                    <div class="stat-label">Completed</div>
+                                </div>
+                                <div class="stat-box">
+                                    <div class="stat-value" id="focusTime">0m</div>
+                                    <div class="stat-label">Focus Time</div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="reminder-option" onclick="selectReminder(this, 'call')">
-                            <ion-icon name="call-outline"></ion-icon>
-                            Call-style
+
+                        <!-- PWA Install Banner -->
+                        <div class="pwa-banner" id="pwaBanner">
+                            <span class="pwa-icon">📲</span>
+                            <div class="pwa-info">
+                                <h4>Install App</h4>
+                                <p>Add to home screen for offline use</p>
+                            </div>
+                            <button class="pwa-close" onclick="hidePwaBanner()">×</button>
+                        </div>
+
+                        <!-- Focus Mode Banner -->
+                        <div class="focus-banner">
+                            <div class="focus-icon-box">🎯</div>
+                            <div class="focus-info">
+                                <div class="focus-title">Focus Mode</div>
+                                <div class="focus-desc">Block distractions instantly</div>
+                            </div>
+                            <div class="focus-toggle" id="focusToggle" onclick="toggleFocus()"></div>
+                        </div>
+
+                        <!-- Mini Goals -->
+                        <div class="section-header">
+                            <h2 class="section-title">⏱️ Quick Focus</h2>
+                        </div>
+                        <div class="goals-container">
+                            <div class="goal-card" onclick="startTimer(5)">
+                                <div class="goal-time">5</div>
+                                <div class="goal-unit">minutes</div>
+                            </div>
+                            <div class="goal-card" onclick="startTimer(10)">
+                                <div class="goal-time">10</div>
+                                <div class="goal-unit">minutes</div>
+                            </div>
+                            <div class="goal-card" onclick="startTimer(25)">
+                                <div class="goal-time">25</div>
+                                <div class="goal-unit">pomodoro</div>
+                            </div>
+                            <div class="goal-card" onclick="startTimer(30)">
+                                <div class="goal-time">30</div>
+                                <div class="goal-unit">minutes</div>
+                            </div>
+                            <div class="goal-card" onclick="startTimer(60)">
+                                <div class="goal-time">60</div>
+                                <div class="goal-unit">minutes</div>
+                            </div>
+                        </div>
+
+                        <!-- Tabs -->
+                        <div class="tabs">
+                            <div class="tab active" onclick="switchTab('tasks')">Tasks</div>
+                            <div class="tab" onclick="switchTab('schedule')">Schedule</div>
+                            <div class="tab" onclick="switchTab('reminders')">Reminders</div>
+                        </div>
+
+                        <!-- Tasks Section -->
+                        <div id="tasksSection">
+                            <div class="section-header">
+                                <h2 class="section-title">📋 Today's Tasks</h2>
+                            </div>
+                            <div id="tasksList"></div>
+                        </div>
+
+                        <!-- Schedule Section -->
+                        <div id="scheduleSection" style="display: none;">
+                            <div class="section-header">
+                                <h2 class="section-title">📅 Scheduled</h2>
+                            </div>
+                            <div id="scheduleList"></div>
+                        </div>
+
+                        <!-- Reminders Section -->
+                        <div id="remindersSection" style="display: none;">
+                            <div class="section-header">
+                                <h2 class="section-title">🔔 Reminders</h2>
+                            </div>
+                            <div id="remindersList"></div>
                         </div>
                     </div>
-                </div>
 
-                <div class="form-group">
-                    <label class="form-label">Repeat (Optional)</label>
-                    <div class="recurring-options">
-                        <div class="day-option" onclick="toggleDay(this)" data-day="0">S</div>
-                        <div class="day-option" onclick="toggleDay(this)" data-day="1">M</div>
-                        <div class="day-option" onclick="toggleDay(this)" data-day="2">T</div>
-                        <div class="day-option" onclick="toggleDay(this)" data-day="3">W</div>
-                        <div class="day-option" onclick="toggleDay(this)" data-day="4">T</div>
-                        <div class="day-option" onclick="toggleDay(this)" data-day="5">F</div>
-                        <div class="day-option" onclick="toggleDay(this)" data-day="6">S</div>
+                    <!-- Floating Action Button -->
+                    <button class="fab" onclick="openAddModal()">
+                        <ion-icon name="add"></ion-icon>
+                    </button>
+
+                    <!-- Bottom Navigation -->
+                    <div class="bottom-nav">
+                        <div class="bottom-nav-item active" onclick="navTo('home')">
+                            <ion-icon name="home"></ion-icon>
+                            <span>Home</span>
+                        </div>
+                        <div class="bottom-nav-item" onclick="navTo('tasks')">
+                            <ion-icon name="checkbox-outline"></ion-icon>
+                            <span>Tasks</span>
+                        </div>
+                        <div class="bottom-nav-item" onclick="navTo('focus')">
+                            <ion-icon name="flash"></ion-icon>
+                            <span>Focus</span>
+                        </div>
+                        <div class="bottom-nav-item" onclick="navTo('settings')">
+                            <ion-icon name="settings-outline"></ion-icon>
+                            <span>Settings</span>
+                        </div>
+                    </div>
+
+                    <!-- Add Task/Schedule Modal -->
+                    <div class="modal-overlay" id="addModal">
+                        <div class="modal-content">
+                            <div class="modal-handle"></div>
+                            <h2 class="modal-title" id="modalTitle">Add Task</h2>
+
+                            <div class="tabs" style="margin-bottom: 20px;">
+                                <div class="tab active" onclick="setModalType('task')">Task</div>
+                                <div class="tab" onclick="setModalType('schedule')">Schedule</div>
+                                <div class="tab" onclick="setModalType('reminder')">Reminder</div>
+                            </div>
+
+                            <form id="addForm" onsubmit="saveItem(event)">
+                                <div class="form-group">
+                                    <label class="form-label">Title *</label>
+                                    <input type="text" class="form-input" id="itemTitle"
+                                        placeholder="What do you need to do?" required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label">Description</label>
+                                    <input type="text" class="form-input" id="itemDesc"
+                                        placeholder="Add details (optional)">
+                                </div>
+
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label class="form-label">Date</label>
+                                        <input type="date" class="form-input" id="itemDate">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Time</label>
+                                        <input type="time" class="form-input" id="itemTime">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label">Reminder Type</label>
+                                    <div class="reminder-options">
+                                        <div class="reminder-option" onclick="selectReminder(this, 'notification')">
+                                            <ion-icon name="notifications-outline"></ion-icon>
+                                            Notification
+                                        </div>
+                                        <div class="reminder-option active" onclick="selectReminder(this, 'alarm')">
+                                            <ion-icon name="alarm-outline"></ion-icon>
+                                            Alarm
+                                        </div>
+                                        <div class="reminder-option" onclick="selectReminder(this, 'call')">
+                                            <ion-icon name="call-outline"></ion-icon>
+                                            Call-style
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label">Repeat (Optional)</label>
+                                    <div class="recurring-options">
+                                        <div class="day-option" onclick="toggleDay(this)" data-day="0">S</div>
+                                        <div class="day-option" onclick="toggleDay(this)" data-day="1">M</div>
+                                        <div class="day-option" onclick="toggleDay(this)" data-day="2">T</div>
+                                        <div class="day-option" onclick="toggleDay(this)" data-day="3">W</div>
+                                        <div class="day-option" onclick="toggleDay(this)" data-day="4">T</div>
+                                        <div class="day-option" onclick="toggleDay(this)" data-day="5">F</div>
+                                        <div class="day-option" onclick="toggleDay(this)" data-day="6">S</div>
+                                    </div>
+                                </div>
+
+                                <button type="submit" class="submit-btn">
+                                    <ion-icon name="add-circle-outline"></ion-icon>
+                                    Save
+                                </button>
+                            </form>
+
+                            <button class="submit-btn"
+                                style="background: transparent; border: 1px solid var(--border); margin-top: 10px;"
+                                onclick="closeModal()">
+                                Cancel
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Call-style Reminder Modal -->
+                    <div class="call-modal" id="callModal">
+                        <div class="call-icon">📞</div>
+                        <h2 class="call-title" id="callTitle">Time for Focus!</h2>
+                        <p class="call-desc" id="callDesc">Your scheduled reminder is here</p>
+                        <div class="call-actions">
+                            <button class="call-btn decline" onclick="dismissCall()">
+                                <ion-icon name="close"></ion-icon>
+                            </button>
+                            <button class="call-btn accept" onclick="acceptCall()">
+                                <ion-icon name="checkmark"></ion-icon>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Toast -->
+                    <div class="toast" id="toast"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Desktop Info Panel -->
+        <div class="desktop-info">
+            <h1>Mindful</h1>
+            <span class="tagline">Your Digital Wellbeing Companion</span>
+            <p>Experience the future of digital health. Track usage, set focus goals, and build better habits with our
+                intelligent monitoring system.</p>
+
+            <div class="feature-list">
+                <div class="feature-item">
+                    <div class="feature-icon"><ion-icon name="phone-portrait-outline"></ion-icon></div>
+                    <div class="feature-text">
+                        <h4>Mobile First Design</h4>
+                        <span>Optimized for all devices</span>
                     </div>
                 </div>
+                <div class="feature-item">
+                    <div class="feature-icon"><ion-icon name="notifications-outline"></ion-icon></div>
+                    <div class="feature-text">
+                        <h4>Smart Reminders</h4>
+                        <span>Call-style notifications</span>
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon"><ion-icon name="flash-outline"></ion-icon></div>
+                    <div class="feature-text">
+                        <h4>Focus Mode</h4>
+                        <span>Eliminate distractions</span>
+                    </div>
+                </div>
+            </div>
 
-                <button type="submit" class="submit-btn">
-                    <ion-icon name="add-circle-outline"></ion-icon>
-                    Save
-                </button>
-            </form>
-
-            <button class="submit-btn"
-                style="background: transparent; border: 1px solid var(--border); margin-top: 10px;"
-                onclick="closeModal()">
-                Cancel
-            </button>
+            <a href="../../index.html" class="back-link"
+                style="margin-top: 2rem; display: inline-flex; align-items: center; gap: 8px; color: #a3a3a3; text-decoration: none;">
+                <ion-icon name="arrow-back"></ion-icon>
+                Back to Portfolio
+            </a>
         </div>
     </div>
-
-    <!-- Call-style Reminder Modal -->
-    <div class="call-modal" id="callModal">
-        <div class="call-icon">📞</div>
-        <h2 class="call-title" id="callTitle">Time for Focus!</h2>
-        <p class="call-desc" id="callDesc">Your scheduled reminder is here</p>
-        <div class="call-actions">
-            <button class="call-btn decline" onclick="dismissCall()">
-                <ion-icon name="close"></ion-icon>
-            </button>
-            <button class="call-btn accept" onclick="acceptCall()">
-                <ion-icon name="checkmark"></ion-icon>
-            </button>
-        </div>
-    </div>
-
-    <!-- Toast -->
-    <div class="toast" id="toast"></div>
 
     <script>
         // Data Storage
