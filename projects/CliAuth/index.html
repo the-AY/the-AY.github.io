@@ -1,0 +1,878 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CLI Password Authentication | Double Hashing Demo</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+    <style>
+        :root {
+            --terminal-bg: #1e1e1e;
+            --terminal-text: #d4d4d4;
+            --terminal-green: #4ec9b0;
+            --terminal-yellow: #dcdcaa;
+            --terminal-blue: #569cd6;
+            --terminal-purple: #c586c0;
+            --terminal-red: #f44747;
+            --terminal-orange: #ce9178;
+            --terminal-cyan: #9cdcfe;
+            --terminal-comment: #6a9955;
+            --success: #4ec9b0;
+            --error: #f44747;
+            --warning: #dcdcaa;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Fira Code', monospace;
+            background: #0d1117;
+            color: var(--terminal-text);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--terminal-cyan);
+            text-decoration: none;
+            font-size: 0.875rem;
+            margin-bottom: 1.5rem;
+            transition: color 0.3s;
+        }
+
+        .back-btn:hover {
+            color: var(--terminal-green);
+        }
+
+        .page-title {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--terminal-green);
+        }
+
+        .page-subtitle {
+            color: var(--terminal-comment);
+            margin-bottom: 2rem;
+            font-size: 0.9rem;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        @media (max-width: 1024px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Terminal Window */
+        .terminal-window {
+            background: var(--terminal-bg);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+
+        .terminal-header {
+            background: #323232;
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .terminal-btn {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .terminal-btn.close {
+            background: #f44747;
+        }
+
+        .terminal-btn.minimize {
+            background: #dcdcaa;
+        }
+
+        .terminal-btn.maximize {
+            background: #4ec9b0;
+        }
+
+        .terminal-title {
+            margin-left: 12px;
+            color: #888;
+            font-size: 0.75rem;
+        }
+
+        .terminal-body {
+            padding: 20px;
+            min-height: 400px;
+            max-height: 600px;
+            overflow-y: auto;
+        }
+
+        .terminal-line {
+            margin-bottom: 8px;
+            line-height: 1.6;
+            font-size: 0.875rem;
+        }
+
+        .prompt {
+            color: var(--terminal-green);
+        }
+
+        .prompt::before {
+            content: '$ ';
+            color: var(--terminal-purple);
+        }
+
+        .output {
+            color: var(--terminal-text);
+            padding-left: 16px;
+        }
+
+        .success {
+            color: var(--success);
+        }
+
+        .error {
+            color: var(--error);
+        }
+
+        .warning {
+            color: var(--warning);
+        }
+
+        .info {
+            color: var(--terminal-cyan);
+        }
+
+        .comment {
+            color: var(--terminal-comment);
+        }
+
+        .highlight {
+            color: var(--terminal-orange);
+        }
+
+        .cursor {
+            display: inline-block;
+            width: 8px;
+            height: 16px;
+            background: var(--terminal-text);
+            animation: blink 1s infinite;
+            vertical-align: middle;
+        }
+
+        @keyframes blink {
+
+            0%,
+            50% {
+                opacity: 1;
+            }
+
+            51%,
+            100% {
+                opacity: 0;
+            }
+        }
+
+        /* Input Area */
+        .terminal-input-area {
+            display: flex;
+            align-items: center;
+            padding: 15px 20px;
+            border-top: 1px solid #333;
+            background: #252526;
+        }
+
+        .terminal-input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: var(--terminal-text);
+            font-family: 'Fira Code', monospace;
+            font-size: 0.875rem;
+            outline: none;
+        }
+
+        .terminal-input::placeholder {
+            color: #666;
+        }
+
+        /* Hash Visualization */
+        .hash-box {
+            background: #252526;
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 10px 0;
+            overflow-x: auto;
+        }
+
+        .hash-label {
+            color: var(--terminal-comment);
+            font-size: 0.75rem;
+            margin-bottom: 5px;
+        }
+
+        .hash-value {
+            color: var(--terminal-orange);
+            word-break: break-all;
+            font-size: 0.8rem;
+        }
+
+        /* Diagram Section */
+        .diagram-section {
+            background: var(--terminal-bg);
+            border-radius: 12px;
+            padding: 24px;
+        }
+
+        .diagram-title {
+            color: var(--terminal-green);
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .flow-diagram {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .flow-step {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .flow-box {
+            background: #252526;
+            border: 1px solid #444;
+            border-radius: 8px;
+            padding: 12px 16px;
+            min-width: 150px;
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .flow-box.active {
+            border-color: var(--terminal-green);
+            box-shadow: 0 0 20px rgba(78, 201, 176, 0.2);
+        }
+
+        .flow-box.highlight {
+            border-color: var(--terminal-orange);
+            background: rgba(206, 145, 120, 0.1);
+        }
+
+        .flow-box .label {
+            font-size: 0.7rem;
+            color: var(--terminal-comment);
+            margin-bottom: 4px;
+        }
+
+        .flow-box .value {
+            font-size: 0.85rem;
+            color: var(--terminal-cyan);
+            word-break: break-all;
+        }
+
+        .flow-arrow {
+            color: var(--terminal-purple);
+            font-size: 1.5rem;
+        }
+
+        .flow-arrow.vertical {
+            text-align: center;
+            padding: 5px 0;
+        }
+
+        /* Code Explanation */
+        .code-block {
+            background: #1a1a1a;
+            border-radius: 8px;
+            padding: 16px;
+            margin-top: 1.5rem;
+            overflow-x: auto;
+        }
+
+        .code-block pre {
+            margin: 0;
+            font-size: 0.8rem;
+            line-height: 1.6;
+        }
+
+        .keyword {
+            color: var(--terminal-purple);
+        }
+
+        .function {
+            color: var(--terminal-yellow);
+        }
+
+        .string {
+            color: var(--terminal-orange);
+        }
+
+        .variable {
+            color: var(--terminal-cyan);
+        }
+
+        .comment-code {
+            color: var(--terminal-comment);
+        }
+
+        /* Control Buttons */
+        .control-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 1.5rem;
+        }
+
+        .control-btn {
+            background: #333;
+            border: 1px solid #555;
+            color: var(--terminal-text);
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-family: 'Fira Code', monospace;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.85rem;
+        }
+
+        .control-btn:hover {
+            background: #444;
+            border-color: var(--terminal-green);
+        }
+
+        .control-btn.primary {
+            background: var(--terminal-green);
+            color: #000;
+            border-color: var(--terminal-green);
+        }
+
+        .control-btn.primary:hover {
+            background: #3ba892;
+        }
+
+        /* Database Table */
+        .db-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+            font-size: 0.8rem;
+        }
+
+        .db-table th,
+        .db-table td {
+            border: 1px solid #333;
+            padding: 10px;
+            text-align: left;
+        }
+
+        .db-table th {
+            background: #252526;
+            color: var(--terminal-purple);
+        }
+
+        .db-table td {
+            color: var(--terminal-cyan);
+        }
+
+        .db-table td.hash-cell {
+            color: var(--terminal-orange);
+            font-size: 0.7rem;
+            max-width: 200px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+    </style>
+</head>
+
+<body>
+    <a href="../../index.html" class="back-btn">
+        <ion-icon name="arrow-back"></ion-icon>
+        Back to Portfolio
+    </a>
+
+    <h1 class="page-title">🔐 CLI Password Authentication System</h1>
+    <p class="page-subtitle">// Demonstrating double hashing (salt + hash) for secure password storage</p>
+
+    <div class="container">
+        <!-- Terminal Simulation -->
+        <div>
+            <div class="terminal-window">
+                <div class="terminal-header">
+                    <div class="terminal-btn close"></div>
+                    <div class="terminal-btn minimize"></div>
+                    <div class="terminal-btn maximize"></div>
+                    <span class="terminal-title">password_auth.py — bash</span>
+                </div>
+                <div class="terminal-body" id="terminal">
+                    <div class="terminal-line prompt">python password_auth.py</div>
+                    <div class="terminal-line output comment">// Secure Password Authentication System</div>
+                    <div class="terminal-line output comment">// Using: SHA-256 + PBKDF2 with Salt</div>
+                    <div class="terminal-line output">&nbsp;</div>
+                    <div class="terminal-line output info">═══════════════════════════════════════</div>
+                    <div class="terminal-line output info"> PASSWORD AUTHENTICATION SYSTEM</div>
+                    <div class="terminal-line output info">═══════════════════════════════════════</div>
+                    <div class="terminal-line output">&nbsp;</div>
+                    <div class="terminal-line output">[1] Register New User</div>
+                    <div class="terminal-line output">[2] Login</div>
+                    <div class="terminal-line output">[3] View Database (Demo)</div>
+                    <div class="terminal-line output">[4] Exit</div>
+                    <div class="terminal-line output">&nbsp;</div>
+                    <div class="terminal-line output">Select option: <span class="cursor"></span></div>
+                </div>
+                <div class="terminal-input-area">
+                    <span style="color: var(--terminal-green);">$ </span>
+                    <input type="text" class="terminal-input" id="terminalInput" placeholder="Type command or option..."
+                        autofocus>
+                </div>
+            </div>
+
+            <div class="control-buttons">
+                <button class="control-btn primary" onclick="runDemo()">▶ Run Full Demo</button>
+                <button class="control-btn" onclick="resetTerminal()">↺ Reset</button>
+                <button class="control-btn" onclick="showRegistration()">Demo Registration</button>
+                <button class="control-btn" onclick="showLogin()">Demo Login</button>
+            </div>
+        </div>
+
+        <!-- Hash Flow Diagram -->
+        <div>
+            <div class="diagram-section">
+                <h3 class="diagram-title">
+                    <ion-icon name="git-branch-outline"></ion-icon>
+                    Double Hashing Flow
+                </h3>
+
+                <div class="flow-diagram">
+                    <div class="flow-step">
+                        <div class="flow-box" id="step1">
+                            <div class="label">USER INPUT</div>
+                            <div class="value" id="inputPassword">MySecretPass123</div>
+                        </div>
+                    </div>
+
+                    <div class="flow-arrow vertical">↓</div>
+
+                    <div class="flow-step">
+                        <div class="flow-box" id="step2">
+                            <div class="label">GENERATE SALT (Random)</div>
+                            <div class="value" id="saltValue">a7f3b9c2e1d4...</div>
+                        </div>
+                    </div>
+
+                    <div class="flow-arrow vertical">↓</div>
+
+                    <div class="flow-step">
+                        <div class="flow-box highlight" id="step3">
+                            <div class="label">FIRST HASH (SHA-256)</div>
+                            <div class="value" id="hash1Value">hash(password + salt)</div>
+                        </div>
+                    </div>
+
+                    <div class="flow-arrow vertical">↓</div>
+
+                    <div class="flow-step">
+                        <div class="flow-box highlight" id="step4">
+                            <div class="label">SECOND HASH (PBKDF2)</div>
+                            <div class="value" id="hash2Value">pbkdf2(hash1, salt, 100000)</div>
+                        </div>
+                    </div>
+
+                    <div class="flow-arrow vertical">↓</div>
+
+                    <div class="flow-step">
+                        <div class="flow-box active" id="step5">
+                            <div class="label">STORED IN DATABASE</div>
+                            <div class="value" id="finalHash">salt:final_hash</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="code-block">
+                    <pre><span class="comment-code"># Double Hashing Implementation</span>
+<span class="keyword">import</span> hashlib
+<span class="keyword">import</span> os
+
+<span class="keyword">def</span> <span class="function">hash_password</span>(<span class="variable">password</span>):
+    <span class="comment-code"># Step 1: Generate random salt (16 bytes)</span>
+    <span class="variable">salt</span> = os.<span class="function">urandom</span>(<span class="string">16</span>)
+    
+    <span class="comment-code"># Step 2: First hash - SHA-256(password + salt)</span>
+    <span class="variable">first_hash</span> = hashlib.<span class="function">sha256</span>(
+        <span class="variable">password</span>.encode() + <span class="variable">salt</span>
+    ).<span class="function">hexdigest</span>()
+    
+    <span class="comment-code"># Step 3: Second hash - PBKDF2 with 100,000 iterations</span>
+    <span class="variable">final_hash</span> = hashlib.<span class="function">pbkdf2_hmac</span>(
+        <span class="string">'sha256'</span>,
+        <span class="variable">first_hash</span>.encode(),
+        <span class="variable">salt</span>,
+        <span class="string">100000</span>
+    )
+    
+    <span class="comment-code"># Store: salt + final_hash in database</span>
+    <span class="keyword">return</span> <span class="variable">salt</span>.hex() + <span class="string">":"</span> + <span class="variable">final_hash</span>.hex()</pre>
+                </div>
+            </div>
+
+            <!-- Database View -->
+            <div class="diagram-section" style="margin-top: 1.5rem;">
+                <h3 class="diagram-title">
+                    <ion-icon name="server-outline"></ion-icon>
+                    Database Storage (users table)
+                </h3>
+
+                <table class="db-table">
+                    <thead>
+                        <tr>
+                            <th>username</th>
+                            <th>salt</th>
+                            <th>password_hash</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>admin</td>
+                            <td class="hash-cell">a7f3b9c2e1d4f6...</td>
+                            <td class="hash-cell">9c4a8d09fbe...</td>
+                        </tr>
+                        <tr>
+                            <td>john_doe</td>
+                            <td class="hash-cell">b8e2c7d1f5a3...</td>
+                            <td class="hash-cell">7d2f3e8b1c9...</td>
+                        </tr>
+                        <tr>
+                            <td>adish</td>
+                            <td class="hash-cell">c9d4e8f2a7b1...</td>
+                            <td class="hash-cell">3a8b2c5d1e7...</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="code-block" style="margin-top: 1rem;">
+                    <pre><span class="comment-code"># Login Verification Process</span>
+<span class="keyword">def</span> <span class="function">verify_password</span>(<span class="variable">username</span>, <span class="variable">password</span>):
+    <span class="comment-code"># 1. Retrieve salt and stored hash from database</span>
+    <span class="variable">stored_data</span> = db.<span class="function">get_user</span>(<span class="variable">username</span>)
+    <span class="variable">salt</span> = bytes.fromhex(<span class="variable">stored_data</span>[<span class="string">'salt'</span>])
+    <span class="variable">stored_hash</span> = <span class="variable">stored_data</span>[<span class="string">'password_hash'</span>]
+    
+    <span class="comment-code"># 2. Apply same double hashing with stored salt</span>
+    <span class="variable">first_hash</span> = hashlib.<span class="function">sha256</span>(
+        <span class="variable">password</span>.encode() + <span class="variable">salt</span>
+    ).<span class="function">hexdigest</span>()
+    
+    <span class="variable">computed_hash</span> = hashlib.<span class="function">pbkdf2_hmac</span>(
+        <span class="string">'sha256'</span>, <span class="variable">first_hash</span>.encode(),
+        <span class="variable">salt</span>, <span class="string">100000</span>
+    ).<span class="function">hex</span>()
+    
+    <span class="comment-code"># 3. Compare hashes (constant-time comparison)</span>
+    <span class="keyword">return</span> hmac.<span class="function">compare_digest</span>(<span class="variable">computed_hash</span>, <span class="variable">stored_hash</span>)</pre>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const terminal = document.getElementById('terminal');
+        const input = document.getElementById('terminalInput');
+
+        let state = 'menu';
+        let currentUser = '';
+
+        function addLine(text, className = 'output') {
+            const line = document.createElement('div');
+            line.className = `terminal-line ${className}`;
+            line.innerHTML = text;
+            terminal.appendChild(line);
+            terminal.scrollTop = terminal.scrollHeight;
+        }
+
+        function addPrompt(text) {
+            addLine(text, 'prompt');
+        }
+
+        function sleep(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+
+        // Simulated SHA-256 hash (shortened for display)
+        function fakeHash(str) {
+            let hash = 0;
+            for (let i = 0; i < str.length; i++) {
+                const char = str.charCodeAt(i);
+                hash = ((hash << 5) - hash) + char;
+                hash = hash & hash;
+            }
+            return Math.abs(hash).toString(16).padStart(12, '0').slice(0, 64).padEnd(64, 'a1b2c3d4e5f6');
+        }
+
+        function generateSalt() {
+            return Array.from({ length: 32 }, () => Math.floor(Math.random() * 16).toString(16)).join('');
+        }
+
+        async function typeEffect(element, text, speed = 30) {
+            for (let char of text) {
+                element.textContent += char;
+                await sleep(speed);
+            }
+        }
+
+        input.addEventListener('keydown', async (e) => {
+            if (e.key === 'Enter') {
+                const cmd = input.value.trim();
+                input.value = '';
+
+                if (state === 'menu') {
+                    handleMenuOption(cmd);
+                } else if (state === 'register_user') {
+                    currentUser = cmd;
+                    addPrompt(`Username: ${cmd}`);
+                    addLine('Enter password: <span class="cursor"></span>');
+                    state = 'register_pass';
+                } else if (state === 'register_pass') {
+                    await showRegistrationProcess(currentUser, cmd);
+                    state = 'menu';
+                } else if (state === 'login_user') {
+                    currentUser = cmd;
+                    addPrompt(`Username: ${cmd}`);
+                    addLine('Enter password: <span class="cursor"></span>');
+                    state = 'login_pass';
+                } else if (state === 'login_pass') {
+                    await showLoginProcess(currentUser, cmd);
+                    state = 'menu';
+                }
+            }
+        });
+
+        async function handleMenuOption(option) {
+            if (option === '1') {
+                addPrompt('1');
+                addLine('&nbsp;');
+                addLine('<span class="info">━━━ USER REGISTRATION ━━━</span>');
+                addLine('Enter username: <span class="cursor"></span>');
+                state = 'register_user';
+            } else if (option === '2') {
+                addPrompt('2');
+                addLine('&nbsp;');
+                addLine('<span class="info">━━━ USER LOGIN ━━━</span>');
+                addLine('Enter username: <span class="cursor"></span>');
+                state = 'login_user';
+            } else if (option === '3') {
+                addPrompt('3');
+                await showDatabase();
+                showMenu();
+            } else if (option === '4') {
+                addPrompt('4');
+                addLine('<span class="warning">Goodbye! Session terminated.</span>');
+            }
+        }
+
+        async function showRegistrationProcess(username, password) {
+            addPrompt('Password: ' + '*'.repeat(password.length));
+            addLine('&nbsp;');
+            addLine('<span class="info">Processing registration...</span>');
+
+            await sleep(300);
+
+            const salt = generateSalt();
+            addLine('<span class="comment">→ Generating random salt...</span>');
+            addLine(`  Salt: <span class="highlight">${salt.slice(0, 16)}...</span>`);
+
+            await sleep(400);
+            document.getElementById('saltValue').textContent = salt.slice(0, 12) + '...';
+            document.getElementById('step2').classList.add('active');
+
+            addLine('<span class="comment">→ Computing first hash (SHA-256)...</span>');
+            const hash1 = fakeHash(password + salt);
+            addLine(`  Hash1: <span class="highlight">${hash1.slice(0, 16)}...</span>`);
+
+            await sleep(400);
+            document.getElementById('hash1Value').textContent = hash1.slice(0, 12) + '...';
+            document.getElementById('step3').classList.add('active');
+
+            addLine('<span class="comment">→ Computing second hash (PBKDF2, 100k iterations)...</span>');
+            const hash2 = fakeHash(hash1 + salt + 'pbkdf2');
+            addLine(`  Hash2: <span class="highlight">${hash2.slice(0, 16)}...</span>`);
+
+            await sleep(400);
+            document.getElementById('hash2Value').textContent = hash2.slice(0, 12) + '...';
+            document.getElementById('step4').classList.add('active');
+
+            addLine('<span class="comment">→ Storing in database...</span>');
+            addLine(`  Format: <span class="highlight">salt:final_hash</span>`);
+
+            await sleep(300);
+            document.getElementById('finalHash').textContent = salt.slice(0, 8) + ':' + hash2.slice(0, 8) + '...';
+            document.getElementById('step5').classList.add('active');
+
+            addLine('&nbsp;');
+            addLine(`<span class="success">✓ User "${username}" registered successfully!</span>`);
+            addLine('<span class="success">✓ Password securely stored with double hashing</span>');
+            addLine('&nbsp;');
+
+            showMenu();
+        }
+
+        async function showLoginProcess(username, password) {
+            addPrompt('Password: ' + '*'.repeat(password.length));
+            addLine('&nbsp;');
+            addLine('<span class="info">Verifying credentials...</span>');
+
+            await sleep(300);
+            addLine('<span class="comment">→ Retrieving stored salt from database...</span>');
+            const salt = generateSalt();
+            addLine(`  Salt: <span class="highlight">${salt.slice(0, 16)}...</span>`);
+
+            await sleep(300);
+            addLine('<span class="comment">→ Computing first hash with input password...</span>');
+            const hash1 = fakeHash(password + salt);
+            addLine(`  Hash1: <span class="highlight">${hash1.slice(0, 16)}...</span>`);
+
+            await sleep(300);
+            addLine('<span class="comment">→ Computing second hash (PBKDF2)...</span>');
+            const hash2 = fakeHash(hash1 + salt + 'pbkdf2');
+            addLine(`  Computed: <span class="highlight">${hash2.slice(0, 16)}...</span>`);
+
+            await sleep(300);
+            addLine('<span class="comment">→ Comparing with stored hash...</span>');
+            addLine(`  Stored:   <span class="highlight">${hash2.slice(0, 16)}...</span>`);
+
+            await sleep(500);
+
+            // Simulate success (50% chance for demo)
+            const success = Math.random() > 0.3;
+
+            if (success) {
+                addLine('&nbsp;');
+                addLine('<span class="success">╔════════════════════════════════════╗</span>');
+                addLine('<span class="success">║    ✓ AUTHENTICATION SUCCESSFUL    ║</span>');
+                addLine('<span class="success">╚════════════════════════════════════╝</span>');
+                addLine(`<span class="success">Welcome back, ${username}!</span>`);
+            } else {
+                addLine('&nbsp;');
+                addLine('<span class="error">╔════════════════════════════════════╗</span>');
+                addLine('<span class="error">║    ✗ AUTHENTICATION FAILED        ║</span>');
+                addLine('<span class="error">╚════════════════════════════════════╝</span>');
+                addLine('<span class="error">Invalid username or password.</span>');
+            }
+
+            addLine('&nbsp;');
+            showMenu();
+        }
+
+        async function showDatabase() {
+            addLine('&nbsp;');
+            addLine('<span class="info">━━━ DATABASE: users TABLE ━━━</span>');
+            addLine('&nbsp;');
+            addLine('┌─────────────┬──────────────────┬──────────────────────────┐');
+            addLine('│ <span class="variable">username</span>    │ <span class="variable">salt</span>             │ <span class="variable">password_hash</span>            │');
+            addLine('├─────────────┼──────────────────┼──────────────────────────┤');
+            addLine('│ admin       │ <span class="highlight">a7f3b9c2e1d4...</span> │ <span class="highlight">9c4a8d09fbe2c7d1...</span>     │');
+            addLine('│ john_doe    │ <span class="highlight">b8e2c7d1f5a3...</span> │ <span class="highlight">7d2f3e8b1c9a4e5f...</span>     │');
+            addLine('│ adish       │ <span class="highlight">c9d4e8f2a7b1...</span> │ <span class="highlight">3a8b2c5d1e7f9g2h...</span>     │');
+            addLine('└─────────────┴──────────────────┴──────────────────────────┘');
+            addLine('&nbsp;');
+            addLine('<span class="comment">// Note: Original passwords are NEVER stored!</span>');
+            addLine('<span class="comment">// Only salt + double-hashed values are saved.</span>');
+            addLine('&nbsp;');
+        }
+
+        function showMenu() {
+            addLine('<span class="info">═══════════════════════════════════════</span>');
+            addLine('[1] Register New User');
+            addLine('[2] Login');
+            addLine('[3] View Database (Demo)');
+            addLine('[4] Exit');
+            addLine('&nbsp;');
+            addLine('Select option: <span class="cursor"></span>');
+        }
+
+        function resetTerminal() {
+            terminal.innerHTML = `
+                <div class="terminal-line prompt">python password_auth.py</div>
+                <div class="terminal-line output comment">// Secure Password Authentication System</div>
+                <div class="terminal-line output comment">// Using: SHA-256 + PBKDF2 with Salt</div>
+                <div class="terminal-line output">&nbsp;</div>
+                <div class="terminal-line output info">═══════════════════════════════════════</div>
+                <div class="terminal-line output info">    PASSWORD AUTHENTICATION SYSTEM</div>
+                <div class="terminal-line output info">═══════════════════════════════════════</div>
+                <div class="terminal-line output">&nbsp;</div>
+                <div class="terminal-line output">[1] Register New User</div>
+                <div class="terminal-line output">[2] Login</div>
+                <div class="terminal-line output">[3] View Database (Demo)</div>
+                <div class="terminal-line output">[4] Exit</div>
+                <div class="terminal-line output">&nbsp;</div>
+                <div class="terminal-line output">Select option: <span class="cursor"></span></div>
+            `;
+            state = 'menu';
+
+            // Reset diagram
+            document.querySelectorAll('.flow-box').forEach(box => box.classList.remove('active'));
+            document.getElementById('saltValue').textContent = 'a7f3b9c2e1d4...';
+            document.getElementById('hash1Value').textContent = 'hash(password + salt)';
+            document.getElementById('hash2Value').textContent = 'pbkdf2(hash1, salt, 100000)';
+            document.getElementById('finalHash').textContent = 'salt:final_hash';
+        }
+
+        async function runDemo() {
+            resetTerminal();
+            await sleep(500);
+
+            // Auto-run registration demo
+            addPrompt('1');
+            addLine('&nbsp;');
+            addLine('<span class="info">━━━ USER REGISTRATION ━━━</span>');
+            addLine('Enter username: <span class="cursor"></span>');
+
+            await sleep(500);
+            addPrompt('Username: demo_user');
+            addLine('Enter password: <span class="cursor"></span>');
+
+            await sleep(500);
+            await showRegistrationProcess('demo_user', 'MySecretPass123');
+        }
+
+        async function showRegistration() {
+            resetTerminal();
+            await sleep(300);
+            handleMenuOption('1');
+        }
+
+        async function showLogin() {
+            resetTerminal();
+            await sleep(300);
+            handleMenuOption('2');
+        }
+    </script>
+</body>
+
+</html>

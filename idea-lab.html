@@ -17,7 +17,7 @@
             --text: #ffffff;
             --text-dim: #9494A1;
             --glass-border: rgba(255, 255, 255, 0.07);
-            --cycle-duration: 20s;
+            --cycle-duration: 12s;
         }
 
         * {
@@ -85,24 +85,94 @@
             color: #fff;
         }
 
-        /* RUNWAY ARCHITECTURE */
+        /* RUNWAY ARCHITECTURE - REALISTIC AIRPORT RUNWAY */
         .runway-zone {
             position: absolute;
             left: 0;
             width: 100%;
-            height: 150px;
+            height: 120px;
             pointer-events: none;
             z-index: 1;
         }
 
         .top-runway {
-            top: 15%;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            top: 18%;
         }
 
         .bottom-runway {
-            bottom: 15%;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            bottom: 18%;
+        }
+
+        /* Runway Surface */
+        .runway-surface {
+            position: absolute;
+            left: 0;
+            width: 100%;
+            height: 80px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: linear-gradient(180deg,
+                    #1a1a1a 0%,
+                    #2a2a2a 50%,
+                    #1a1a1a 100%);
+            border-top: 3px solid #444;
+            border-bottom: 3px solid #444;
+        }
+
+        /* Center Line - Dashed White */
+        .runway-center-line {
+            position: absolute;
+            left: 0;
+            width: 100%;
+            top: 50%;
+            transform: translateY(-50%);
+            height: 6px;
+            background: repeating-linear-gradient(90deg,
+                    #ffffff 0px,
+                    #ffffff 40px,
+                    transparent 40px,
+                    transparent 80px);
+        }
+
+        /* Edge Lines */
+        .runway-edge-top,
+        .runway-edge-bottom {
+            position: absolute;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: #ffffff;
+        }
+
+        .runway-edge-top {
+            top: calc(50% - 35px);
+        }
+
+        .runway-edge-bottom {
+            top: calc(50% + 31px);
+        }
+
+        /* Threshold Markings */
+        .runway-threshold {
+            position: absolute;
+            display: flex;
+            gap: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .runway-threshold.left {
+            left: 20px;
+        }
+
+        .runway-threshold.right {
+            right: 20px;
+        }
+
+        .threshold-bar {
+            width: 8px;
+            height: 50px;
+            background: #ffffff;
         }
 
         /* BOX COMPONENTS (VS CODE THEMED EMOJI STYLE) */
@@ -118,59 +188,61 @@
         }
 
         .box-lid {
-            font-size: 40px;
-            transform-origin: bottom;
-            transition: transform 0.5s ease;
+            font-size: 35px;
+            transform-origin: bottom center;
             z-index: 2;
+            position: absolute;
+            top: -25px;
         }
 
         .box-body {
-            font-size: 60px;
-            margin-top: -15px;
+            font-size: 55px;
             z-index: 1;
         }
 
         .bulb-content {
             position: absolute;
-            font-size: 30px;
+            font-size: 28px;
             color: var(--accent);
             filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.8));
             opacity: 0;
             z-index: 0;
+            top: -30px;
         }
 
         /* STAGE 1: TOP SHIPPING LOOP */
         .shipping-actor {
             position: absolute;
-            left: 10%;
-            top: 20%;
-            animation: shipping-cycle var(--cycle-duration) infinite linear;
+            left: 5%;
+            top: 50%;
+            transform: translateY(-50%);
+            animation: shipping-cycle var(--cycle-duration) infinite ease-in-out;
         }
 
         @keyframes shipping-cycle {
             0% {
                 opacity: 1;
-                transform: translateX(0);
+                transform: translateY(-50%) translateX(0);
             }
 
-            45% {
+            40% {
                 opacity: 1;
-                transform: translateX(90vw);
+                transform: translateY(-50%) translateX(70vw);
             }
 
-            46% {
+            41% {
                 opacity: 0;
-                transform: translateX(90vw);
+                transform: translateY(-50%) translateX(70vw);
             }
 
             100% {
                 opacity: 0;
-                transform: translateX(0);
+                transform: translateY(-50%) translateX(0);
             }
         }
 
         .lid-anim {
-            animation: lid-action var(--cycle-duration) infinite linear;
+            animation: lid-action var(--cycle-duration) infinite ease-in-out;
         }
 
         @keyframes lid-action {
@@ -178,42 +250,44 @@
             0%,
             5% {
                 transform: translateY(0) rotate(0);
+                opacity: 1;
             }
 
-            10% {
-                transform: translateY(-20px) rotate(-20deg);
+            12% {
+                transform: translateY(-30px) rotate(-45deg);
+                opacity: 1;
             }
 
-            /* Open */
-            20% {
-                transform: translateY(0) rotate(0);
+            18% {
+                transform: translateY(-35px) rotate(-60deg);
+                opacity: 0;
             }
 
-            /* Close */
             100% {
-                transform: translateY(0) rotate(0);
+                transform: translateY(-35px) rotate(-60deg);
+                opacity: 0;
             }
         }
 
         .bulb-anim {
-            animation: bulb-drop var(--cycle-duration) infinite linear;
+            animation: bulb-drop var(--cycle-duration) infinite ease-in-out;
         }
 
         @keyframes bulb-drop {
 
             0%,
-            8% {
-                transform: translateY(-100px);
+            5% {
+                transform: translateY(-80px);
                 opacity: 0;
             }
 
-            12% {
-                transform: translateY(-10px);
+            10% {
+                transform: translateY(-20px);
                 opacity: 1;
             }
 
             15% {
-                transform: translateY(10px);
+                transform: translateY(0);
                 opacity: 0;
             }
 
@@ -222,33 +296,42 @@
             }
         }
 
+        /* PLANE TAKEOFF ANIMATION */
         .plane-actor {
             position: absolute;
-            font-size: 40px;
-            color: #fff;
+            font-size: 45px;
+            left: 0;
+            top: -10px;
             opacity: 0;
-            animation: plane-pickup var(--cycle-duration) infinite linear;
+            z-index: 10;
+            animation: plane-takeoff var(--cycle-duration) infinite ease-in-out;
         }
 
-        @keyframes plane-pickup {
+        @keyframes plane-takeoff {
 
             0%,
-            20% {
-                transform: translateX(-200px);
+            15% {
+                transform: translateX(0) translateY(0) rotate(0deg);
                 opacity: 0;
             }
 
+            18% {
+                transform: translateX(0) translateY(-5px) rotate(0deg);
+                opacity: 1;
+            }
+
             25% {
-                transform: translateX(0);
+                transform: translateX(10vw) translateY(-20px) rotate(-15deg);
                 opacity: 1;
             }
 
-            45% {
-                transform: translateX(80vw);
+            40% {
+                transform: translateX(75vw) translateY(-60px) rotate(-20deg);
                 opacity: 1;
             }
 
-            46% {
+            42% {
+                transform: translateX(80vw) translateY(-80px) rotate(-25deg);
                 opacity: 0;
             }
 
@@ -260,9 +343,10 @@
         /* STAGE 2: BOTTOM DELIVERY LOOP */
         .delivery-actor {
             position: absolute;
-            bottom: 20px;
+            bottom: 0;
             left: 0;
             width: 100%;
+            height: 100%;
             animation: delivery-phase var(--cycle-duration) infinite linear;
             opacity: 0;
         }
@@ -270,11 +354,11 @@
         @keyframes delivery-phase {
 
             0%,
-            48% {
+            45% {
                 opacity: 0;
             }
 
-            50% {
+            48% {
                 opacity: 1;
             }
 
@@ -290,28 +374,29 @@
         .box-drop-actor {
             position: absolute;
             left: 10%;
+            top: 50%;
+            transform: translateY(-50%);
             animation: box-fall var(--cycle-duration) infinite linear;
         }
 
         @keyframes box-fall {
 
             0%,
-            50% {
-                transform: translateY(-300px);
+            45% {
+                transform: translateY(-150px);
                 opacity: 0;
             }
 
-            55% {
-                transform: translateY(0);
+            52% {
+                transform: translateY(-50%);
                 opacity: 1;
             }
 
-            60% {
-                transform: translateY(0);
+            58% {
+                transform: translateY(-50%);
                 opacity: 0;
             }
 
-            /* Handed over */
             100% {
                 opacity: 0;
             }
@@ -319,8 +404,10 @@
 
         .stickman-actor {
             position: absolute;
-            left: 5%;
-            font-size: 50px;
+            left: 8%;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 45px;
             display: flex;
             align-items: center;
             animation: walk-to-door var(--cycle-duration) infinite linear;
@@ -329,22 +416,22 @@
         @keyframes walk-to-door {
 
             0%,
-            60% {
-                transform: translateX(0);
+            58% {
+                transform: translateY(-50%) translateX(0);
                 opacity: 0;
             }
 
-            61% {
+            60% {
                 opacity: 1;
             }
 
             85% {
-                transform: translateX(70vw);
+                transform: translateY(-50%) translateX(65vw);
                 opacity: 1;
             }
 
-            90% {
-                transform: translateX(70vw);
+            88% {
+                transform: translateY(-50%) translateX(65vw);
                 opacity: 0;
             }
 
@@ -355,17 +442,19 @@
 
         .house-actor {
             position: absolute;
-            right: 15%;
-            bottom: 0;
-            font-size: 100px;
+            right: 12%;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 80px;
             color: var(--primary);
         }
 
         .doorbell-ring {
             position: absolute;
-            right: 14%;
-            bottom: 80px;
-            font-size: 30px;
+            right: 11%;
+            top: 50%;
+            transform: translateY(-100%);
+            font-size: 25px;
             color: var(--accent);
             opacity: 0;
             animation: ring-pulse var(--cycle-duration) infinite linear;
@@ -374,23 +463,23 @@
         @keyframes ring-pulse {
 
             0%,
-            85% {
+            84% {
                 opacity: 0;
-                transform: scale(0);
+                transform: translateY(-100%) scale(0);
             }
 
             86% {
                 opacity: 1;
-                transform: scale(1.2);
+                transform: translateY(-100%) scale(1.3);
                 filter: drop-shadow(0 0 20px gold);
             }
 
             88% {
                 opacity: 1;
-                transform: scale(1);
+                transform: translateY(-100%) scale(1);
             }
 
-            90% {
+            92% {
                 opacity: 0;
             }
 
@@ -478,13 +567,31 @@
 
     <!-- TOP RUNWAY: SHIPPING FACTORY -->
     <div class="runway-zone top-runway">
+        <!-- Runway Surface -->
+        <div class="runway-surface">
+            <div class="runway-center-line"></div>
+            <div class="runway-edge-top"></div>
+            <div class="runway-edge-bottom"></div>
+            <div class="runway-threshold left">
+                <div class="threshold-bar"></div>
+                <div class="threshold-bar"></div>
+                <div class="threshold-bar"></div>
+            </div>
+            <div class="runway-threshold right">
+                <div class="threshold-bar"></div>
+                <div class="threshold-bar"></div>
+                <div class="threshold-bar"></div>
+            </div>
+        </div>
+
+        <!-- Animation Actors -->
         <div class="shipping-actor">
             <div class="box-container">
                 <div class="bulb-content bulb-anim"><ion-icon name="bulb"></ion-icon></div>
-                <div class="box-lid lid-anim">🔼</div>
+                <div class="box-lid lid-anim">✈️</div>
                 <div class="box-body">📦</div>
             </div>
-            <div class="plane-actor"><ion-icon name="paper-plane"></ion-icon></div>
+            <div class="plane-actor">✈️</div>
         </div>
     </div>
 
@@ -492,7 +599,8 @@
     <div class="lab-container">
         <h1>Idea Lab</h1>
         <p>A cinematic journey of production. Concept packed on the <b>Top Runway</b>, project delivered on the
-            <b>Bottom Runway</b>. Total continuity from thought to reality.</p>
+            <b>Bottom Runway</b>. Total continuity from thought to reality.
+        </p>
         <a href="./index.html" class="btn-back">
             <ion-icon name="arrow-back-outline"></ion-icon>
             Return to Portfolio
@@ -501,13 +609,31 @@
 
     <!-- BOTTOM RUNWAY: FINAL DELIVERY -->
     <div class="runway-zone bottom-runway">
+        <!-- Runway Surface -->
+        <div class="runway-surface">
+            <div class="runway-center-line"></div>
+            <div class="runway-edge-top"></div>
+            <div class="runway-edge-bottom"></div>
+            <div class="runway-threshold left">
+                <div class="threshold-bar"></div>
+                <div class="threshold-bar"></div>
+                <div class="threshold-bar"></div>
+            </div>
+            <div class="runway-threshold right">
+                <div class="threshold-bar"></div>
+                <div class="threshold-bar"></div>
+                <div class="threshold-bar"></div>
+            </div>
+        </div>
+
+        <!-- Animation Actors -->
         <div class="delivery-actor">
             <div class="box-drop-actor">
-                <div class="box-body">📦</div>
+                <div class="box-body" style="font-size: 50px;">📦</div>
             </div>
             <div class="stickman-actor">
                 <ion-icon name="walk-outline"></ion-icon>
-                <div class="box-body" style="font-size: 30px; margin-left: -5px;">📦</div>
+                <div class="box-body" style="font-size: 28px; margin-left: -5px;">📦</div>
             </div>
             <div class="house-actor"><ion-icon name="home-outline"></ion-icon></div>
             <div class="doorbell-ring"><ion-icon name="notifications-outline"></ion-icon></div>
@@ -515,7 +641,7 @@
     </div>
 
     <script>
-        console.log('Idea Lab Cinematic Cycle Started');
+        console.log('Idea Lab Cinematic Cycle Started - Runway Edition');
     </script>
 </body>
 

@@ -1,0 +1,1321 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Railway Ticket Booking System | Adish Yermal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+    <style>
+        :root {
+            --primary: #1a56db;
+            --primary-dark: #1e40af;
+            --secondary: #10b981;
+            --accent: #f59e0b;
+            --bg-dark: #0f172a;
+            --bg-card: #1e293b;
+            --text: #f1f5f9;
+            --text-dim: #94a3b8;
+            --border: rgba(255, 255, 255, 0.1);
+            --success: #22c55e;
+            --warning: #f59e0b;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background: var(--bg-dark);
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            padding: 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header p {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 1.1rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .back-btn {
+            position: absolute;
+            top: 1.5rem;
+            left: 1.5rem;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            padding: 0.75rem 1.25rem;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            transition: all 0.3s;
+            z-index: 10;
+        }
+
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        /* Main Container */
+        .main-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Tab Navigation */
+        .tab-nav {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            color: var(--text-dim);
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s;
+        }
+
+        .tab-btn:hover {
+            border-color: var(--primary);
+            color: var(--text);
+        }
+
+        .tab-btn.active {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: white;
+        }
+
+        .tab-btn ion-icon {
+            font-size: 1.25rem;
+        }
+
+        /* Tab Content */
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.4s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Booking Card */
+        .booking-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .booking-card h2 {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        /* Form Grid */
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .form-group label {
+            font-weight: 600;
+            color: var(--text-dim);
+            font-size: 0.875rem;
+        }
+
+        .form-group input,
+        .form-group select {
+            background: var(--bg-dark);
+            border: 1px solid var(--border);
+            color: var(--text);
+            padding: 1rem;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        /* Station Select */
+        .station-container {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .station-box {
+            flex: 1;
+        }
+
+        .swap-btn {
+            background: var(--primary);
+            border: none;
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+            flex-shrink: 0;
+            margin-top: 1.5rem;
+        }
+
+        .swap-btn:hover {
+            transform: rotate(180deg);
+            background: var(--primary-dark);
+        }
+
+        /* Class Selection */
+        .class-options {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-top: 1rem;
+        }
+
+        .class-option {
+            flex: 1;
+            min-width: 140px;
+            background: var(--bg-dark);
+            border: 2px solid var(--border);
+            padding: 1rem;
+            border-radius: 12px;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .class-option:hover {
+            border-color: var(--primary);
+        }
+
+        .class-option.selected {
+            border-color: var(--primary);
+            background: rgba(26, 86, 219, 0.1);
+        }
+
+        .class-option h4 {
+            font-size: 1rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .class-option p {
+            color: var(--text-dim);
+            font-size: 0.875rem;
+        }
+
+        /* Search Button */
+        .search-btn {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            border: none;
+            color: white;
+            padding: 1rem 3rem;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 1.5rem;
+            transition: all 0.3s;
+        }
+
+        .search-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(26, 86, 219, 0.3);
+        }
+
+        /* Train Results */
+        .train-results {
+            margin-top: 2rem;
+        }
+
+        .train-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            display: grid;
+            grid-template-columns: 1fr 2fr 1fr;
+            gap: 2rem;
+            align-items: center;
+            transition: all 0.3s;
+        }
+
+        .train-card:hover {
+            border-color: var(--primary);
+            transform: translateX(5px);
+        }
+
+        .train-info h3 {
+            font-size: 1.25rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .train-info p {
+            color: var(--text-dim);
+            font-size: 0.875rem;
+        }
+
+        .train-timing {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 2rem;
+        }
+
+        .time-block {
+            text-align: center;
+        }
+
+        .time-block .time {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .time-block .station {
+            color: var(--text-dim);
+            font-size: 0.875rem;
+        }
+
+        .duration {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: var(--text-dim);
+        }
+
+        .duration-line {
+            width: 80px;
+            height: 2px;
+            background: var(--border);
+            position: relative;
+        }
+
+        .duration-line::before {
+            content: '🚂';
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .train-price {
+            text-align: right;
+        }
+
+        .train-price .price {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--secondary);
+        }
+
+        .train-price .per-person {
+            color: var(--text-dim);
+            font-size: 0.875rem;
+        }
+
+        .book-btn {
+            background: var(--secondary);
+            border: none;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 0.5rem;
+            transition: all 0.3s;
+        }
+
+        .book-btn:hover {
+            background: #0d9668;
+        }
+
+        /* Food Menu */
+        .food-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .food-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+
+        .food-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .food-image {
+            height: 180px;
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+        }
+
+        .food-details {
+            padding: 1.5rem;
+        }
+
+        .food-details h3 {
+            margin-bottom: 0.5rem;
+        }
+
+        .food-details p {
+            color: var(--text-dim);
+            font-size: 0.875rem;
+            margin-bottom: 1rem;
+        }
+
+        .food-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .food-price {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--accent);
+        }
+
+        .food-region {
+            background: rgba(245, 158, 11, 0.2);
+            color: var(--accent);
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .add-food-btn {
+            width: 100%;
+            background: var(--accent);
+            border: none;
+            color: #000;
+            padding: 0.75rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 1rem;
+            transition: all 0.3s;
+        }
+
+        .add-food-btn:hover {
+            background: #d97706;
+        }
+
+        /* E-Ticket */
+        .ticket-container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .e-ticket {
+            background: linear-gradient(135deg, #1e3a5f 0%, #0f172a 100%);
+            border-radius: 20px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .ticket-header {
+            background: var(--primary);
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .ticket-header h2 {
+            font-size: 1.5rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .ticket-header p {
+            opacity: 0.8;
+            font-size: 0.875rem;
+        }
+
+        .ticket-body {
+            padding: 2rem;
+        }
+
+        .ticket-route {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+        }
+
+        .ticket-station {
+            text-align: center;
+        }
+
+        .ticket-station .code {
+            font-size: 2rem;
+            font-weight: 800;
+        }
+
+        .ticket-station .name {
+            color: var(--text-dim);
+            font-size: 0.875rem;
+        }
+
+        .ticket-arrow {
+            font-size: 2rem;
+            color: var(--primary);
+        }
+
+        .ticket-details {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+
+        .ticket-detail {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1rem;
+            border-radius: 10px;
+        }
+
+        .ticket-detail label {
+            color: var(--text-dim);
+            font-size: 0.75rem;
+            display: block;
+            margin-bottom: 0.25rem;
+        }
+
+        .ticket-detail span {
+            font-weight: 600;
+        }
+
+        .ticket-qr {
+            text-align: center;
+            padding: 2rem;
+            border-top: 2px dashed var(--border);
+            margin-top: 2rem;
+        }
+
+        .qr-placeholder {
+            width: 150px;
+            height: 150px;
+            background: white;
+            margin: 0 auto 1rem;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #000;
+            font-size: 0.75rem;
+        }
+
+        .ticket-number {
+            color: var(--text-dim);
+            font-family: monospace;
+            font-size: 0.875rem;
+        }
+
+        .download-ticket-btn {
+            background: var(--success);
+            border: none;
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            margin-top: 1.5rem;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .download-ticket-btn:hover {
+            background: #16a34a;
+        }
+
+        /* Postal Section */
+        .postal-form {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .weight-selector {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .weight-option {
+            flex: 1;
+            min-width: 100px;
+            background: var(--bg-dark);
+            border: 2px solid var(--border);
+            padding: 1.5rem 1rem;
+            border-radius: 12px;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .weight-option:hover {
+            border-color: var(--accent);
+        }
+
+        .weight-option.selected {
+            border-color: var(--accent);
+            background: rgba(245, 158, 11, 0.1);
+        }
+
+        .weight-option .weight {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .weight-option .price {
+            color: var(--accent);
+            font-size: 0.875rem;
+        }
+
+        /* Price Calculator */
+        .price-calculator {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .price-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .price-row:last-child {
+            border-bottom: none;
+            font-weight: 700;
+            font-size: 1.25rem;
+            color: var(--secondary);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .train-card {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .train-timing {
+                justify-content: space-around;
+            }
+
+            .train-price {
+                text-align: center;
+            }
+
+            .station-container {
+                flex-direction: column;
+            }
+
+            .swap-btn {
+                margin-top: 0;
+                transform: rotate(90deg);
+            }
+
+            .header h1 {
+                font-size: 1.75rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header class="header">
+        <a href="../../index.html" class="back-btn">
+            <ion-icon name="arrow-back"></ion-icon>
+            Back to Portfolio
+        </a>
+        <h1>🚂 Railway Ticket Booking</h1>
+        <p>Book tickets, send parcels, and order food - all in one place</p>
+    </header>
+
+    <main class="main-container">
+        <!-- Tab Navigation -->
+        <div class="tab-nav">
+            <button class="tab-btn active" onclick="switchTab('tickets')">
+                <ion-icon name="train-outline"></ion-icon>
+                Train Tickets
+            </button>
+            <button class="tab-btn" onclick="switchTab('postal')">
+                <ion-icon name="mail-outline"></ion-icon>
+                Postal Service
+            </button>
+            <button class="tab-btn" onclick="switchTab('food')">
+                <ion-icon name="restaurant-outline"></ion-icon>
+                Food Menu
+            </button>
+            <button class="tab-btn" onclick="switchTab('eticket')">
+                <ion-icon name="qr-code-outline"></ion-icon>
+                E-Ticket
+            </button>
+        </div>
+
+        <!-- Train Tickets Tab -->
+        <div id="tickets" class="tab-content active">
+            <div class="booking-card">
+                <h2><ion-icon name="search-outline"></ion-icon> Search Trains</h2>
+
+                <div class="station-container">
+                    <div class="form-group station-box">
+                        <label>From Station</label>
+                        <select id="fromStation">
+                            <option value="">Select departure station</option>
+                            <option value="BCT">Mumbai Central (BCT)</option>
+                            <option value="NDLS">New Delhi (NDLS)</option>
+                            <option value="MAS">Chennai Central (MAS)</option>
+                            <option value="HWH">Howrah Junction (HWH)</option>
+                            <option value="BLR">Bangalore City (BLR)</option>
+                            <option value="PUNE">Pune Junction (PUNE)</option>
+                            <option value="ADI">Ahmedabad (ADI)</option>
+                            <option value="CSTM">Mumbai CST (CSTM)</option>
+                        </select>
+                    </div>
+                    <button class="swap-btn" onclick="swapStations()">
+                        <ion-icon name="swap-horizontal"></ion-icon>
+                    </button>
+                    <div class="form-group station-box">
+                        <label>To Station</label>
+                        <select id="toStation">
+                            <option value="">Select destination station</option>
+                            <option value="BCT">Mumbai Central (BCT)</option>
+                            <option value="NDLS">New Delhi (NDLS)</option>
+                            <option value="MAS">Chennai Central (MAS)</option>
+                            <option value="HWH">Howrah Junction (HWH)</option>
+                            <option value="BLR">Bangalore City (BLR)</option>
+                            <option value="PUNE">Pune Junction (PUNE)</option>
+                            <option value="ADI">Ahmedabad (ADI)</option>
+                            <option value="CSTM">Mumbai CST (CSTM)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-grid" style="margin-top: 1.5rem;">
+                    <div class="form-group">
+                        <label>Journey Date</label>
+                        <input type="date" id="journeyDate">
+                    </div>
+                    <div class="form-group">
+                        <label>Passengers</label>
+                        <select id="passengers">
+                            <option value="1">1 Passenger</option>
+                            <option value="2">2 Passengers</option>
+                            <option value="3">3 Passengers</option>
+                            <option value="4">4 Passengers</option>
+                            <option value="5">5 Passengers</option>
+                            <option value="6">6 Passengers</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div style="margin-top: 1.5rem;">
+                    <label
+                        style="font-weight: 600; color: var(--text-dim); font-size: 0.875rem; display: block; margin-bottom: 0.75rem;">Select
+                        Class</label>
+                    <div class="class-options">
+                        <div class="class-option selected" onclick="selectClass(this)">
+                            <h4>Sleeper (SL)</h4>
+                            <p>₹485 avg.</p>
+                        </div>
+                        <div class="class-option" onclick="selectClass(this)">
+                            <h4>AC 3 Tier (3A)</h4>
+                            <p>₹1,285 avg.</p>
+                        </div>
+                        <div class="class-option" onclick="selectClass(this)">
+                            <h4>AC 2 Tier (2A)</h4>
+                            <p>₹1,885 avg.</p>
+                        </div>
+                        <div class="class-option" onclick="selectClass(this)">
+                            <h4>AC 1st Class</h4>
+                            <p>₹3,250 avg.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="search-btn" onclick="searchTrains()">
+                    <ion-icon name="search"></ion-icon>
+                    Search Trains
+                </button>
+            </div>
+
+            <!-- Train Results -->
+            <div class="train-results" id="trainResults" style="display: none;">
+                <h2 style="margin-bottom: 1.5rem;">Available Trains</h2>
+
+                <div class="train-card">
+                    <div class="train-info">
+                        <h3>Rajdhani Express</h3>
+                        <p>12951 • Runs Daily</p>
+                    </div>
+                    <div class="train-timing">
+                        <div class="time-block">
+                            <div class="time">16:25</div>
+                            <div class="station">BCT</div>
+                        </div>
+                        <div class="duration">
+                            <span>15h 35m</span>
+                            <div class="duration-line"></div>
+                        </div>
+                        <div class="time-block">
+                            <div class="time">08:00</div>
+                            <div class="station">NDLS</div>
+                        </div>
+                    </div>
+                    <div class="train-price">
+                        <div class="price">₹1,285</div>
+                        <div class="per-person">per person</div>
+                        <button class="book-btn" onclick="bookTrain('Rajdhani Express', 1285)">Book Now</button>
+                    </div>
+                </div>
+
+                <div class="train-card">
+                    <div class="train-info">
+                        <h3>Duronto Express</h3>
+                        <p>12261 • Mon, Wed, Fri</p>
+                    </div>
+                    <div class="train-timing">
+                        <div class="time-block">
+                            <div class="time">23:15</div>
+                            <div class="station">BCT</div>
+                        </div>
+                        <div class="duration">
+                            <span>17h 45m</span>
+                            <div class="duration-line"></div>
+                        </div>
+                        <div class="time-block">
+                            <div class="time">17:00</div>
+                            <div class="station">NDLS</div>
+                        </div>
+                    </div>
+                    <div class="train-price">
+                        <div class="price">₹1,125</div>
+                        <div class="per-person">per person</div>
+                        <button class="book-btn" onclick="bookTrain('Duronto Express', 1125)">Book Now</button>
+                    </div>
+                </div>
+
+                <div class="train-card">
+                    <div class="train-info">
+                        <h3>Garib Rath</h3>
+                        <p>12909 • Tue, Thu, Sat</p>
+                    </div>
+                    <div class="train-timing">
+                        <div class="time-block">
+                            <div class="time">17:40</div>
+                            <div class="station">BCT</div>
+                        </div>
+                        <div class="duration">
+                            <span>19h 20m</span>
+                            <div class="duration-line"></div>
+                        </div>
+                        <div class="time-block">
+                            <div class="time">13:00</div>
+                            <div class="station">NDLS</div>
+                        </div>
+                    </div>
+                    <div class="train-price">
+                        <div class="price">₹725</div>
+                        <div class="per-person">per person</div>
+                        <button class="book-btn" onclick="bookTrain('Garib Rath', 725)">Book Now</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Postal Service Tab -->
+        <div id="postal" class="tab-content">
+            <div class="booking-card">
+                <h2><ion-icon name="cube-outline"></ion-icon> Send Parcel</h2>
+
+                <div class="postal-form">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>From City</label>
+                            <select id="postalFrom">
+                                <option value="">Select origin city</option>
+                                <option value="mumbai">Mumbai, Maharashtra</option>
+                                <option value="delhi">Delhi, NCR</option>
+                                <option value="bangalore">Bangalore, Karnataka</option>
+                                <option value="chennai">Chennai, Tamil Nadu</option>
+                                <option value="kolkata">Kolkata, West Bengal</option>
+                                <option value="hyderabad">Hyderabad, Telangana</option>
+                                <option value="pune">Pune, Maharashtra</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>To City</label>
+                            <select id="postalTo">
+                                <option value="">Select destination city</option>
+                                <option value="mumbai">Mumbai, Maharashtra</option>
+                                <option value="delhi">Delhi, NCR</option>
+                                <option value="bangalore">Bangalore, Karnataka</option>
+                                <option value="chennai">Chennai, Tamil Nadu</option>
+                                <option value="kolkata">Kolkata, West Bengal</option>
+                                <option value="hyderabad">Hyderabad, Telangana</option>
+                                <option value="pune">Pune, Maharashtra</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label
+                            style="font-weight: 600; color: var(--text-dim); font-size: 0.875rem; display: block; margin-bottom: 0.75rem;">Parcel
+                            Weight</label>
+                        <div class="weight-selector">
+                            <div class="weight-option selected" onclick="selectWeight(this, 50)">
+                                <div class="weight">500g</div>
+                                <div class="price">₹50</div>
+                            </div>
+                            <div class="weight-option" onclick="selectWeight(this, 85)">
+                                <div class="weight">1 kg</div>
+                                <div class="price">₹85</div>
+                            </div>
+                            <div class="weight-option" onclick="selectWeight(this, 150)">
+                                <div class="weight">2 kg</div>
+                                <div class="price">₹150</div>
+                            </div>
+                            <div class="weight-option" onclick="selectWeight(this, 280)">
+                                <div class="weight">5 kg</div>
+                                <div class="price">₹280</div>
+                            </div>
+                            <div class="weight-option" onclick="selectWeight(this, 450)">
+                                <div class="weight">10 kg</div>
+                                <div class="price">₹450</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Sender Name</label>
+                            <input type="text" placeholder="Your full name">
+                        </div>
+                        <div class="form-group">
+                            <label>Sender Phone</label>
+                            <input type="tel" placeholder="+91 XXXXXXXXXX">
+                        </div>
+                        <div class="form-group">
+                            <label>Receiver Name</label>
+                            <input type="text" placeholder="Receiver's full name">
+                        </div>
+                        <div class="form-group">
+                            <label>Receiver Phone</label>
+                            <input type="tel" placeholder="+91 XXXXXXXXXX">
+                        </div>
+                    </div>
+
+                    <div class="price-calculator">
+                        <h3 style="margin-bottom: 1rem;">Price Breakdown</h3>
+                        <div class="price-row">
+                            <span>Base Price (Weight)</span>
+                            <span id="basePrice">₹50</span>
+                        </div>
+                        <div class="price-row">
+                            <span>Distance Charge</span>
+                            <span>₹35</span>
+                        </div>
+                        <div class="price-row">
+                            <span>GST (18%)</span>
+                            <span id="gstAmount">₹15</span>
+                        </div>
+                        <div class="price-row">
+                            <span>Total Amount</span>
+                            <span id="totalPostal">₹100</span>
+                        </div>
+                    </div>
+
+                    <button class="search-btn"
+                        style="background: linear-gradient(135deg, var(--accent) 0%, #d97706 100%);">
+                        <ion-icon name="send"></ion-icon>
+                        Book Postal Service
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Food Menu Tab -->
+        <div id="food" class="tab-content">
+            <div class="booking-card">
+                <h2><ion-icon name="fast-food-outline"></ion-icon> Order Food for Your Journey</h2>
+                <p style="color: var(--text-dim); margin-bottom: 1.5rem;">Regional cuisines based on your train route.
+                    Prices vary by distance.</p>
+
+                <div class="food-grid">
+                    <div class="food-card">
+                        <div class="food-image" style="background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);">
+                            🍛</div>
+                        <div class="food-details">
+                            <h3>Veg Thali</h3>
+                            <p>Complete meal with rice, dal, roti, sabzi, pickle & sweet</p>
+                            <div class="food-meta">
+                                <span class="food-price">₹120</span>
+                                <span class="food-region">North India</span>
+                            </div>
+                            <button class="add-food-btn" onclick="addFood('Veg Thali', 120)">Add to Order</button>
+                        </div>
+                    </div>
+
+                    <div class="food-card">
+                        <div class="food-image" style="background: linear-gradient(135deg, #f9ca24 0%, #f0932b 100%);">
+                            🍗</div>
+                        <div class="food-details">
+                            <h3>Chicken Biryani</h3>
+                            <p>Aromatic basmati rice with tender chicken pieces</p>
+                            <div class="food-meta">
+                                <span class="food-price">₹180</span>
+                                <span class="food-region">Hyderabad</span>
+                            </div>
+                            <button class="add-food-btn" onclick="addFood('Chicken Biryani', 180)">Add to Order</button>
+                        </div>
+                    </div>
+
+                    <div class="food-card">
+                        <div class="food-image" style="background: linear-gradient(135deg, #6ab04c 0%, #009432 100%);">
+                            🥘</div>
+                        <div class="food-details">
+                            <h3>South Indian Meals</h3>
+                            <p>Rice, sambar, rasam, poriyal, curd & papad</p>
+                            <div class="food-meta">
+                                <span class="food-price">₹100</span>
+                                <span class="food-region">Tamil Nadu</span>
+                            </div>
+                            <button class="add-food-btn" onclick="addFood('South Indian Meals', 100)">Add to
+                                Order</button>
+                        </div>
+                    </div>
+
+                    <div class="food-card">
+                        <div class="food-image" style="background: linear-gradient(135deg, #e056fd 0%, #9b59b6 100%);">
+                            🍜</div>
+                        <div class="food-details">
+                            <h3>Veg Noodles</h3>
+                            <p>Indo-Chinese style hakka noodles with vegetables</p>
+                            <div class="food-meta">
+                                <span class="food-price">₹90</span>
+                                <span class="food-region">All India</span>
+                            </div>
+                            <button class="add-food-btn" onclick="addFood('Veg Noodles', 90)">Add to Order</button>
+                        </div>
+                    </div>
+
+                    <div class="food-card">
+                        <div class="food-image" style="background: linear-gradient(135deg, #fd79a8 0%, #e84393 100%);">
+                            🍲</div>
+                        <div class="food-details">
+                            <h3>Paneer Butter Masala</h3>
+                            <p>Creamy tomato gravy with cottage cheese & naan</p>
+                            <div class="food-meta">
+                                <span class="food-price">₹160</span>
+                                <span class="food-region">Punjab</span>
+                            </div>
+                            <button class="add-food-btn" onclick="addFood('Paneer Butter Masala', 160)">Add to
+                                Order</button>
+                        </div>
+                    </div>
+
+                    <div class="food-card">
+                        <div class="food-image" style="background: linear-gradient(135deg, #00b894 0%, #00cec9 100%);">
+                            🥤</div>
+                        <div class="food-details">
+                            <h3>Beverages Combo</h3>
+                            <p>Tea/Coffee + Biscuits + Water bottle</p>
+                            <div class="food-meta">
+                                <span class="food-price">₹45</span>
+                                <span class="food-region">All India</span>
+                            </div>
+                            <button class="add-food-btn" onclick="addFood('Beverages Combo', 45)">Add to Order</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="price-calculator" style="margin-top: 2rem;">
+                    <h3 style="margin-bottom: 1rem;">Your Food Order</h3>
+                    <div id="foodOrderList">
+                        <p style="color: var(--text-dim); text-align: center;">No items added yet</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- E-Ticket Tab -->
+        <div id="eticket" class="tab-content">
+            <div class="ticket-container">
+                <div class="e-ticket">
+                    <div class="ticket-header">
+                        <h2>🎫 E-Ticket</h2>
+                        <p>Indian Railways</p>
+                    </div>
+                    <div class="ticket-body">
+                        <div class="ticket-route">
+                            <div class="ticket-station">
+                                <div class="code">BCT</div>
+                                <div class="name">Mumbai Central</div>
+                            </div>
+                            <div class="ticket-arrow">→</div>
+                            <div class="ticket-station">
+                                <div class="code">NDLS</div>
+                                <div class="name">New Delhi</div>
+                            </div>
+                        </div>
+
+                        <div class="ticket-details">
+                            <div class="ticket-detail">
+                                <label>Train Name</label>
+                                <span id="ticketTrain">Rajdhani Express</span>
+                            </div>
+                            <div class="ticket-detail">
+                                <label>Train Number</label>
+                                <span>12951</span>
+                            </div>
+                            <div class="ticket-detail">
+                                <label>Date of Journey</label>
+                                <span id="ticketDate">26 Jan 2026</span>
+                            </div>
+                            <div class="ticket-detail">
+                                <label>Departure</label>
+                                <span>16:25</span>
+                            </div>
+                            <div class="ticket-detail">
+                                <label>Coach / Seat</label>
+                                <span>B2 / 45</span>
+                            </div>
+                            <div class="ticket-detail">
+                                <label>Class</label>
+                                <span>AC 3 Tier</span>
+                            </div>
+                            <div class="ticket-detail">
+                                <label>Passengers</label>
+                                <span>1 Adult</span>
+                            </div>
+                            <div class="ticket-detail">
+                                <label>Total Fare</label>
+                                <span style="color: var(--secondary);" id="ticketFare">₹1,285</span>
+                            </div>
+                        </div>
+
+                        <div class="ticket-qr">
+                            <div class="qr-placeholder">
+                                <div style="padding: 10px; text-align: center;">
+                                    <ion-icon name="qr-code" style="font-size: 80px; color: #333;"></ion-icon>
+                                </div>
+                            </div>
+                            <div class="ticket-number">PNR: 8547123698</div>
+                        </div>
+                    </div>
+
+                    <button class="download-ticket-btn" onclick="downloadTicket()">
+                        <ion-icon name="download-outline"></ion-icon>
+                        Download E-Ticket (PDF)
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Tab Switching
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            event.target.closest('.tab-btn').classList.add('active');
+        }
+
+        // Swap Stations
+        function swapStations() {
+            const from = document.getElementById('fromStation');
+            const to = document.getElementById('toStation');
+            const temp = from.value;
+            from.value = to.value;
+            to.value = temp;
+        }
+
+        // Select Travel Class
+        function selectClass(element) {
+            document.querySelectorAll('.class-option').forEach(opt => opt.classList.remove('selected'));
+            element.classList.add('selected');
+        }
+
+        // Search Trains
+        function searchTrains() {
+            document.getElementById('trainResults').style.display = 'block';
+            document.getElementById('trainResults').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Book Train
+        function bookTrain(trainName, price) {
+            document.getElementById('ticketTrain').textContent = trainName;
+            document.getElementById('ticketFare').textContent = '₹' + price.toLocaleString();
+            const today = new Date();
+            document.getElementById('ticketDate').textContent = today.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
+            switchTab('eticket');
+            document.querySelector('[onclick="switchTab(\'eticket\')"]').classList.add('active');
+            document.querySelector('[onclick="switchTab(\'tickets\')"]').classList.remove('active');
+        }
+
+        // Weight Selection for Postal
+        let postalBasePrice = 50;
+        function selectWeight(element, price) {
+            document.querySelectorAll('.weight-option').forEach(opt => opt.classList.remove('selected'));
+            element.classList.add('selected');
+            postalBasePrice = price;
+            updatePostalPrice();
+        }
+
+        function updatePostalPrice() {
+            const distanceCharge = 35;
+            const subtotal = postalBasePrice + distanceCharge;
+            const gst = Math.round(subtotal * 0.18);
+            const total = subtotal + gst;
+
+            document.getElementById('basePrice').textContent = '₹' + postalBasePrice;
+            document.getElementById('gstAmount').textContent = '₹' + gst;
+            document.getElementById('totalPostal').textContent = '₹' + total;
+        }
+
+        // Food Order
+        let foodOrder = [];
+        function addFood(name, price) {
+            foodOrder.push({ name, price });
+            updateFoodOrder();
+        }
+
+        function updateFoodOrder() {
+            const listEl = document.getElementById('foodOrderList');
+            if (foodOrder.length === 0) {
+                listEl.innerHTML = '<p style="color: var(--text-dim); text-align: center;">No items added yet</p>';
+                return;
+            }
+
+            let total = 0;
+            let html = '';
+            foodOrder.forEach((item, index) => {
+                total += item.price;
+                html += `<div class="price-row">
+                    <span>${item.name}</span>
+                    <span>₹${item.price}</span>
+                </div>`;
+            });
+            html += `<div class="price-row" style="font-weight: 700; font-size: 1.25rem; color: var(--secondary);">
+                <span>Total</span>
+                <span>₹${total}</span>
+            </div>`;
+            listEl.innerHTML = html;
+        }
+
+        // Download Ticket
+        function downloadTicket() {
+            alert('E-Ticket PDF would be generated and downloaded.\n\nPNR: 8547123698\n\nThis is a demo - in production, this would generate a real PDF ticket.');
+        }
+
+        // Set default date
+        document.getElementById('journeyDate').valueAsDate = new Date();
+    </script>
+</body>
+
+</html>
