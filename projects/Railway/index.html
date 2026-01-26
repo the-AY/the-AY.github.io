@@ -9,6 +9,7 @@
         rel="stylesheet">
     <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
     <style>
         :root {
             --primary: #1a56db;
@@ -35,6 +36,55 @@
             background: var(--bg-dark);
             color: var(--text);
             min-height: 100vh;
+            padding-top: 70px;
+        }
+
+        /* Navigation Bar */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            z-index: 1000;
+            padding: 1rem 0;
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-brand {
+            font-weight: 800;
+            font-size: 1.1rem;
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+        .nav-link {
+            color: var(--text-dim);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.875rem;
+            transition: 0.3s;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            color: #fff;
         }
 
         /* Header */
@@ -726,6 +776,19 @@
 </head>
 
 <body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="../../index.html" class="nav-brand">Adish Yermal</a>
+            <div class="nav-menu">
+                <a href="../../index.html#home" class="nav-link">Home</a>
+                <a href="../../index.html#portfolio" class="nav-link">Portfolio</a>
+                <a href="../../index.html#projects" class="nav-link active">Projects</a>
+                <a href="../../index.html#contact" class="nav-link">Contact</a>
+            </div>
+        </div>
+    </nav>
+
     <header class="header">
         <a href="../../index.html" class="back-btn">
             <ion-icon name="arrow-back"></ion-icon>
@@ -1199,12 +1262,9 @@
                         </div>
 
                         <div class="ticket-qr">
-                            <div class="qr-placeholder">
-                                <div style="padding: 10px; text-align: center;">
-                                    <ion-icon name="qr-code" style="font-size: 80px; color: #333;"></ion-icon>
-                                </div>
-                            </div>
-                            <div class="ticket-number">PNR: 8547123698</div>
+                            <canvas id="qrCanvas"
+                                style="background: white; border-radius: 10px; padding: 10px;"></canvas>
+                            <div class="ticket-number" id="pnrDisplay">PNR: 8547123698</div>
                         </div>
                     </div>
 
@@ -1248,11 +1308,38 @@
         }
 
         // Book Train
+        let ticketData = {};
         function bookTrain(trainName, price) {
+            // Generate random PNR
+            const pnr = Math.floor(1000000000 + Math.random() * 9000000000);
+            const today = new Date();
+            const dateStr = today.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
+            const coach = 'B' + Math.floor(1 + Math.random() * 5);
+            const seat = Math.floor(1 + Math.random() * 72);
+
+            ticketData = {
+                pnr: pnr,
+                train: trainName,
+                date: dateStr,
+                price: price,
+                coach: coach,
+                seat: seat
+            };
+
             document.getElementById('ticketTrain').textContent = trainName;
             document.getElementById('ticketFare').textContent = '₹' + price.toLocaleString();
-            const today = new Date();
-            document.getElementById('ticketDate').textContent = today.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
+            document.getElementById('ticketDate').textContent = dateStr;
+            document.getElementById('pnrDisplay').textContent = 'PNR: ' + pnr;
+
+            // Generate QR Code with ticket details
+            const qrData = `INDIAN RAILWAYS E-TICKET\nPNR: ${pnr}\nTrain: ${trainName}\nDate: ${dateStr}\nCoach: ${coach} | Seat: ${seat}\nFare: ₹${price}`;
+
+            QRCode.toCanvas(document.getElementById('qrCanvas'), qrData, {
+                width: 150,
+                margin: 1,
+                color: { dark: '#000000', light: '#ffffff' }
+            });
+
             switchTab('eticket');
             document.querySelector('[onclick="switchTab(\'eticket\')"]').classList.add('active');
             document.querySelector('[onclick="switchTab(\'tickets\')"]').classList.remove('active');
@@ -1310,7 +1397,44 @@
 
         // Download Ticket
         function downloadTicket() {
-            alert('E-Ticket PDF would be generated and downloaded.\n\nPNR: 8547123698\n\nThis is a demo - in production, this would generate a real PDF ticket.');
+            if (!ticketData.pnr) {
+                alert('Please book a train first to generate a ticket.');
+                return;
+            }
+
+            // Create a simple text ticket for download
+            const ticketText = `
+═══════════════════════════════════════════
+            INDIAN RAILWAYS E-TICKET
+═══════════════════════════════════════════
+
+PNR Number: ${ticketData.pnr}
+Train: ${ticketData.train}
+Date of Journey: ${ticketData.date}
+
+From: Mumbai Central (BCT)
+To: New Delhi (NDLS)
+
+Coach: ${ticketData.coach}
+Seat: ${ticketData.seat}
+Class: AC 3 Tier
+
+Passengers: 1 Adult
+Total Fare: ₹${ticketData.price}
+
+═══════════════════════════════════════════
+        This is a valid e-ticket
+─ Authentic Indian Railways Booking
+═══════════════════════════════════════════
+`;
+
+            const blob = new Blob([ticketText], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `E-Ticket_PNR_${ticketData.pnr}.txt`;
+            a.click();
+            URL.revokeObjectURL(url);
         }
 
         // Set default date

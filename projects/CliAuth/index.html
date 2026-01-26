@@ -38,6 +38,57 @@
             color: var(--terminal-text);
             min-height: 100vh;
             padding: 2rem;
+            padding-top: 90px;
+        }
+
+        /* Navigation Bar */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(13, 17, 23, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            z-index: 1000;
+            padding: 1rem 0;
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-brand {
+            font-weight: 800;
+            font-size: 1.1rem;
+            color: #fff;
+            text-decoration: none;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+        .nav-link {
+            color: var(--terminal-text);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.875rem;
+            transition: 0.3s;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            color: var(--terminal-green);
         }
 
         .back-btn {
@@ -413,6 +464,19 @@
 </head>
 
 <body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="../../index.html" class="nav-brand">Adish Yermal</a>
+            <div class="nav-menu">
+                <a href="../../index.html#home" class="nav-link">Home</a>
+                <a href="../../index.html#portfolio" class="nav-link">Portfolio</a>
+                <a href="../../index.html#projects" class="nav-link active">Projects</a>
+                <a href="../../index.html#contact" class="nav-link">Contact</a>
+            </div>
+        </div>
+    </nav>
+
     <a href="../../index.html" class="back-btn">
         <ion-icon name="arrow-back"></ion-icon>
         Back to Portfolio
