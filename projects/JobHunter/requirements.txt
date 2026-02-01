@@ -7,3 +7,4 @@ phonenumbers
 feedparser
 beautifulsoup4
 requests
+openpyxl

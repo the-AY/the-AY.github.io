@@ -472,9 +472,27 @@
                 checks.push({ type: 'warning', text: "No common technical skills found." });
             }
 
+            // Action Verbs Check
+            const actionVerbs = ["led", "developed", "created", "managed", "designed", "implemented", "optimized", "achieved"];
+            const foundVerbs = actionVerbs.filter(v => lowerText.includes(v));
+            if (foundVerbs.length > 2) {
+                score += 10;
+                checks.push({ type: 'success', text: `Strong action verbs detected (${foundVerbs.length}).` });
+            } else {
+                checks.push({ type: 'warning', text: "Use more action verbs like 'Led', 'Developed', 'Achieved'." });
+            }
+
+            // Metrics Check
+            if (/\d+%|\$\d+|\d+\+/.test(text)) {
+                score += 10;
+                checks.push({ type: 'success', text: "Quantifiable metrics (%, $) detected." });
+            } else {
+                checks.push({ type: 'warning', text: "Add numbers to quantify your impact (e.g., 'Improved by 20%')." });
+            }
+
             // Contact Check
             if (text.includes("@")) {
-                score += 20;
+                score += 10;
                 checks.push({ type: 'success', text: "Email address detected." });
             } else {
                 checks.push({ type: 'warning', text: "Email address missing!" });
@@ -482,14 +500,14 @@
 
             // Section Check (Simple)
             if (lowerText.includes("experience") || lowerText.includes("work")) {
-                score += 15;
+                score += 10;
                 checks.push({ type: 'success', text: "Experience section detected." });
             } else {
                 checks.push({ type: 'warning', text: "Experience section missing." });
             }
 
             if (lowerText.includes("education")) {
-                score += 15;
+                score += 10;
                 checks.push({ type: 'success', text: "Education section detected." });
             }
 
@@ -566,6 +584,32 @@
                     <p>Click to Search</p>
                 </a>
             `).join('');
+
+            // Add Excel Tracker Download
+            addTrackerDownload(role, links);
+        }
+
+        function addTrackerDownload(role, links) {
+            const existingBtn = document.getElementById('trackerBtn');
+            if (existingBtn) existingBtn.remove();
+
+            const csvContent = "data:text/csv;charset=utf-8,"
+                + "Platform,Search Link,Status,Date Applied,Notes\n"
+                + links.map(l => `${l.name},${l.url},To Apply,,`).join("\n");
+
+            const encodedUri = encodeURI(csvContent);
+            const linkBox = document.getElementById('linkResults');
+
+            const downBtn = document.createElement('a');
+            downBtn.id = 'trackerBtn';
+            downBtn.className = 'btn';
+            downBtn.style.marginTop = '2rem';
+            downBtn.style.backgroundColor = '#10b981'; // Green for excel/sheets
+            downBtn.setAttribute("href", encodedUri);
+            downBtn.setAttribute("download", `Job_Search_Tracker_${role}.csv`);
+            downBtn.innerHTML = '<ion-icon name="grid-outline"></ion-icon> Download Search Tracking Sheet (Excel)';
+
+            linkBox.appendChild(downBtn);
         }
     </script>
 </body>

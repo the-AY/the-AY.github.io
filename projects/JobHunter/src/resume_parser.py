@@ -19,12 +19,11 @@ class ResumeParser:
             "fastapi", "spring boot", "node.js", "express", "graphql", "rest api",
             "communication", "leadership", "teamwork", "problem solving", "agile", "scrum"
         }
-        self.essential_sections = [
-            "experience", "work history", "employment",
-            "education", "academic",
-            "skills", "technologies", "technical stack",
-            "projects", "personal projects"
-        ]
+        self.action_verbs = {
+            "led", "developed", "created", "managed", "designed", "implemented", "optimized",
+            "achieved", "improved", "increased", "decreased", "saved", "launched", "engineered",
+            "architected", "built", "spearheaded", "mentored", "orchestrated", "resolved"
+        }
 
     def extract_text_from_pdf(self, pdf_file):
         try:
@@ -95,6 +94,30 @@ class ResumeParser:
                 
         return found_skills
 
+    def check_content_quality(self, text):
+        text_lower = text.lower()
+        details = {
+            "action_verbs": [],
+            "metrics": False, # Found numbers/percentages
+            "verb_count": 0
+        }
+        
+        # Check for Action Verbs
+        for verb in self.action_verbs:
+            if r'\b' + verb + r'\b' in text_lower: # regex matching for verbs? simple check for now
+                if verb in text_lower:
+                    details["action_verbs"].append(verb)
+        
+        details["verb_count"] = len(details["action_verbs"])
+
+        # Check for Metrics (e.g., 20%, $50k, 100+)
+        # Pattern: number followed by % or preceded by $ or number+
+        metric_pattern = r'\d+%|\$\d+|\d+\+'
+        if re.search(metric_pattern, text):
+            details["metrics"] = True
+            
+        return details
+
     def analyze_resume(self, text):
         if not text or len(text) < 50:
             return {"error": "Resume text is too short or empty."}
@@ -102,35 +125,42 @@ class ResumeParser:
         contact_info = self.extract_contact_info(text)
         found_sections, missing_sections = self.check_sections(text)
         found_skills = self.extract_skills(text)
+        quality_check = self.check_content_quality(text)
         
         # Scoring Logic
         score = 0
         
-        # 1. Contact Info (20 pts)
+        # 1. Contact Info (15 pts) - Reduced to make room for quality
         if contact_info["email"]: score += 5
         if contact_info["phone"]: score += 5
         if contact_info["linkedin"]: score += 5
-        if contact_info["github"]: score += 5 # Bonus/Optional
         
-        # 2. Sections (40 pts) - 10 per essential section
-        essential_count = len([s for s in found_sections if s != "Projects"]) # Projects optional-ish
-        score += len(found_sections) * 10
+        # 2. Sections (25 pts)
+        score += len(found_sections) * 6.25  # Max 25 (4 sections * 6.25)
         
-        # 3. Skills (20 pts)
-        # Cap at 20 points for 10+ skills
-        skill_score = min(len(found_skills) * 2, 20)
+        # 3. Skills (25 pts)
+        skill_score = min(len(found_skills) * 2.5, 25)
         score += skill_score
         
-        # 4. Word Count / Formatting (20 pts)
+        # 4. Content Quality (25 pts) [NEW]
+        # Action Verbs (15 pts)
+        if quality_check["verb_count"] > 5: score += 15
+        elif quality_check["verb_count"] > 2: score += 8
+        else: score += 0
+        
+        # Metrics (10 pts)
+        if quality_check["metrics"]: score += 10
+        
+        # 5. Formatting/Length (10 pts)
         word_count = len(text.split())
-        if 200 <= word_count <= 1000: # Typical 1-2 page resume
-            score += 20
+        if 200 <= word_count <= 1000:
+            score += 10
         elif word_count > 1000:
-            score += 10 # A bit long
+            score += 5
         else:
-            score += 5 # Too short
+            score += 2
 
-        score = min(score, 100) # Cap at 100
+        score = min(round(score), 100)
 
         return {
             "score": score,
@@ -139,26 +169,29 @@ class ResumeParser:
             "missing_sections": missing_sections,
             "skills": found_skills,
             "word_count": word_count,
-            "summary_feedback": self.generate_feedback(score, missing_sections, contact_info)
+            "content_quality": quality_check,
+            "summary_feedback": self.generate_feedback(score, missing_sections, contact_info, quality_check)
         }
 
-    def generate_feedback(self, score, missing_sections, contact_info):
+    def generate_feedback(self, score, missing_sections, contact_info, quality_check):
         feedback = []
         if score < 50:
-            feedback.append("CRITICAL: Your resume needs significant improvement to pass ATS filters.")
-        elif score < 70:
-            feedback.append("WARNING: Good foundation, but missing key elements.")
+            feedback.append("CRITICAL: Your resume needs significant improvement.")
+        elif score < 75:
+            feedback.append("WARNING: Good foundation, but upgrade your content.")
         else:
-            feedback.append("SUCCESS: Your resume is in good shape!")
+            feedback.append("SUCCESS: Your resume is business-ready!")
             
         if missing_sections:
-            feedback.append(f"Missing Sections: {', '.join(missing_sections)}. ATS parsers look for these specific headers.")
+            feedback.append(f"Missing Sections: {', '.join(missing_sections)}.")
             
-        if not contact_info["email"]:
-            feedback.append("Missing Information: Email address not detected.")
-        if not contact_info["phone"]:
-            feedback.append("Missing Information: Phone number not detected.")
+        if not quality_check["metrics"]:
+            feedback.append("Impact Missing: Add quantifiable metrics (e.g., 'Improved performance by 20%').")
+            
+        if quality_check["verb_count"] < 3:
+            feedback.append("Weak Language: Use strong action verbs like 'Led', 'Developed', 'Engineered'.")
+            
         if not contact_info["linkedin"]:
-            feedback.append("Tip: Add a LinkedIn profile URL for better credibility.")
+            feedback.append("Tip: Add a LinkedIn profile URL.")
             
         return feedback
