@@ -1,86 +1,97 @@
 import urllib.parse
 import feedparser
 import pandas as pd
+import requests
+from bs4 import BeautifulSoup
 from datetime import datetime
 
 class JobSearcher:
     def __init__(self):
         self.rss_feeds = [
             "https://weworkremotely.com/categories/remote-programming-jobs.rss",
-            "https://remotive.com/remote-jobs/software-dev/feed",
-            "https://stackoverflow.com/jobs/feed" # Note: StackOverflow jobs might be deprecated, but keeping structure generic
+            "https://remotive.com/remote-jobs/software-dev/feed"
         ]
+        self.headers = {
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
+        }
 
     def generate_smart_links(self, role, location, skills):
-        """
-        Generates optimized boolean search URLs for major platforms.
-        """
-        # 1. Construct Boolean Query
-        # Example: ("Software Engineer" OR "Developer") AND ("Python" OR "Django")
-        
+        """Generates optimized boolean search URLs."""
+        # Query Construction
         role_part = f'"{role}"'
-        
-        # Pick top 3 skills to avoid URL overflow/complexity
         top_skills = skills[:3] if skills else []
         skill_part = " OR ".join([f'"{s}"' for s in top_skills])
-        
-        if skill_part:
-            query = f'({role_part}) AND ({skill_part})'
-        else:
-            query = role_part
+        query = f'({role_part}) AND ({skill_part})' if skill_part else role_part
 
         encoded_query = urllib.parse.quote(query)
         encoded_location = urllib.parse.quote(location)
         
-        links = []
-        
-        # LinkedIn
-        li_url = f"https://www.linkedin.com/jobs/search/?keywords={encoded_query}&location={encoded_location}"
-        links.append({"name": "LinkedIn Jobs", "url": li_url, "icon": "linkedin"})
-        
-        # Google Jobs (via Search)
-        g_query = urllib.parse.quote(f"{role} {skill_part} jobs in {location}")
-        g_url = f"https://www.google.com/search?q={g_query}&ibp=htl;jobs"
-        links.append({"name": "Google Jobs", "url": g_url, "icon": "google"})
-        
-        # Indeed (Simple param structure)
-        ind_url = f"https://www.indeed.com/jobs?q={encoded_query}&l={encoded_location}"
-        links.append({"name": "Indeed", "url": ind_url, "icon": "briefcase"}) # Using generic icon name for mapping later
-        
-        # Naukri (Indian context specific)
-        n_query = f"{role} {skill_part}".replace('"', '').replace(' ', '-')
-        n_url = f"https://www.naukri.com/{n_query}-jobs-in-{location.lower().replace(' ', '-')}"
-        links.append({"name": "Naukri", "url": n_url, "icon": "search"})
-
-        return links
+        return [
+            {"name": "LinkedIn (Boolean)", "url": f"https://www.linkedin.com/jobs/search/?keywords={encoded_query}&location={encoded_location}"},
+            {"name": "Google Jobs", "url": f"https://www.google.com/search?q={urllib.parse.quote(role + ' ' + ' '.join(top_skills) + ' jobs in ' + location)}&ibp=htl;jobs"},
+            {"name": "Indeed", "url": f"https://www.indeed.com/jobs?q={encoded_query}&l={encoded_location}"},
+            {"name": "Naukri", "url": f"https://www.naukri.com/{role.replace(' ', '-')}-jobs-in-{location.lower().replace(' ', '-')}"}
+        ]
 
     def fetch_rss_jobs(self, search_term):
-        """
-        Fetches jobs from public RSS feeds and filters them by the search term.
-        Returns a Pandas DataFrame.
-        """
+        """Fetches jobs from RSS feeds."""
         jobs = []
-        
         for feed_url in self.rss_feeds:
             try:
                 feed = feedparser.parse(feed_url)
                 for entry in feed.entries:
-                    # Simple filter: checks if search term is in title or summary
                     title = entry.get('title', '').lower()
-                    summary = entry.get('summary', '').lower()
-                    term = search_term.lower()
-                    
-                    if term in title or term in summary:
+                    if search_term.lower() in title:
                         jobs.append({
                             "Title": entry.get('title', 'No Title'),
-                            "Company": entry.get('author', 'Unknown'), # RSS author is often company
+                            "Company": "RSS Source",
                             "Date": entry.get('published', datetime.now().strftime("%Y-%m-%d")),
                             "Link": entry.get('link', '#'),
                             "Source": urllib.parse.urlparse(feed_url).netloc
                         })
             except Exception as e:
-                print(f"Error fetching feed {feed_url}: {e}")
-                continue
+                print(f"RSS Error: {e}")
+        return pd.DataFrame(jobs)
+
+    def google_custom_scrape(self, query, location):
+        """
+        Attempts to find specific job application links via Google Search.
+        WARNING: This is strictly educational/demonstration code. 
+        Google often blocks automated requests without API.
+        """
+        # Targeted search for Applicant Tracking Systems
+        search_query = f'{query} jobs in {location} "apply" (site:greenhouse.io OR site:lever.co OR site:workday.com)'
+        url = f"https://www.google.com/search?q={urllib.parse.quote(search_query)}"
+        
+        try:
+            res = requests.get(url, headers=self.headers, timeout=10)
+            if res.status_code != 200:
+                return pd.DataFrame() # Blocked or error
                 
-        df = pd.DataFrame(jobs)
-        return df
+            soup = BeautifulSoup(res.text, 'html.parser')
+            links = []
+            
+            # Extract links from search results (generic 'a' filtering)
+            for a in soup.find_all('a', href=True):
+                href = a['href']
+                text = a.get_text()
+                
+                # Logic to filter valid external links
+                if href.startswith("http") and "google.com" not in href:
+                    # Check for ATS domains
+                    if any(d in href for d in ['greenhouse.io', 'lever.co', 'workday', 'linkedin.com/jobs']):
+                        links.append({
+                            "Title": text[:50] + "...",
+                            "Company": "Derived from URL",
+                            "Link": href,
+                            "Source": "Google Search",
+                            "Date": datetime.now().strftime("%Y-%m-%d")
+                        })
+            
+            # Remove duplicates
+            unique_links = {v['Link']: v for v in links}.values()
+            return pd.DataFrame(unique_links)
+            
+        except Exception as e:
+            print(f"Scrape Error: {e}")
+            return pd.DataFrame()

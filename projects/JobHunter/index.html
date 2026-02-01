@@ -300,9 +300,11 @@
         <a href="../../index.html" class="nav-back">
             <ion-icon name="arrow-back-outline"></ion-icon> Back to Portfolio
         </a>
+        <!-- Update Title -->
         <div class="nav-brand">
-            <ion-icon name="briefcase"></ion-icon> Job Hunter Pro
+            <ion-icon name="briefcase"></ion-icon> Job Hunter
         </div>
+
         <div style="width: 100px;"></div> <!-- Spacer -->
     </nav>
 
@@ -337,6 +339,11 @@
 
                             <h3 style="margin-top: 1.5rem;">Detected Skills</h3>
                             <div id="skillsList"></div>
+
+                            <div id="suggestionsBox" style="margin-top: 1.5rem; display: none;">
+                                <h3 style="color: #f59e0b; font-size: 1rem;">💡 Recommended Skills to Add</h3>
+                                <div id="suggestionsList" style="display: flex; flex-wrap: wrap; gap: 5px;"></div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -453,6 +460,38 @@
 
             // 1. Skill Extraction
             extractedSkills = commonSkills.filter(skill => lowerText.includes(skill.toLowerCase()));
+
+            // Skill Suggestions Logic
+            const relatedSkills = {
+                "react": ["Redux", "TypeScript", "Next.js"],
+                "python": ["Django", "Flask", "Pandas"],
+                "java": ["Spring Boot", "Hibernate"],
+                "node.js": ["Express", "MongoDB"],
+                "aws": ["Docker", "Kubernetes", "Terraform"],
+                "sql": ["PostgreSQL", "NoSQL"],
+                "javascript": ["HTML", "CSS", "TypeScript"]
+            };
+
+            let suggestions = new Set();
+            extractedSkills.forEach(skill => {
+                const lowerSkill = skill.toLowerCase();
+                if (relatedSkills[lowerSkill]) {
+                    relatedSkills[lowerSkill].forEach(s => {
+                        if (!extractedSkills.includes(s.toLowerCase()) && !lowerText.includes(s.toLowerCase())) {
+                            suggestions.add(s);
+                        }
+                    });
+                }
+            });
+
+            if (suggestions.size > 0) {
+                document.getElementById('suggestionsBox').style.display = 'block';
+                document.getElementById('suggestionsList').innerHTML = Array.from(suggestions).slice(0, 6).map(s =>
+                    `<span class="tag" style="background: rgba(245, 158, 11, 0.2); color: #f59e0b;">+ ${s}</span>`
+                ).join('');
+            } else {
+                document.getElementById('suggestionsBox').style.display = 'none';
+            }
 
             // Update Search Input with Skills
             document.getElementById('jobSkills').value = extractedSkills.slice(0, 5).join(", ");
