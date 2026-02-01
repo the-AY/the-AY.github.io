@@ -1,0 +1,9 @@
+streamlit
+pandas
+pdfminer.six
+spacy
+plotly
+phonenumbers
+feedparser
+beautifulsoup4
+requests
