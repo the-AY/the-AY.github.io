@@ -32,6 +32,86 @@
             --glass: rgba(255, 255, 255, 0.03);
         }
 
+        /* Navigation Bar */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            z-index: 1000;
+            padding: 1rem 0;
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-brand {
+            font-weight: 800;
+            font-size: 1.1rem;
+            color: #fff;
+            text-decoration: none;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+        .nav-link {
+            color: var(--text-dim);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.875rem;
+            transition: 0.3s;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            color: #fff;
+        }
+
+        .back-btn {
+            position: absolute;
+            top: 6rem;
+            left: 2rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: white;
+            padding: 0.75rem 1.25rem;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            display: none;
+            /* Hidden on mobile by default */
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            transition: all 0.3s;
+            z-index: 10;
+        }
+
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        @media (min-width: 768px) {
+            .back-btn {
+                display: flex;
+            }
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -45,12 +125,14 @@
             color: var(--text);
             min-height: 100vh;
             overflow-x: hidden;
+            padding-top: 70px;
         }
 
         /* Responsive Layout Wrapper */
         .desktop-wrapper {
             width: 100%;
-            min-height: 100vh;
+            min-height: calc(100vh - 70px);
+            position: relative;
         }
 
         .desktop-info {
@@ -1055,7 +1137,24 @@
 </head>
 
 <body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="../../index.html" class="nav-brand">Adish Yermal</a>
+            <div class="nav-menu">
+                <a href="../../index.html#home" class="nav-link">Home</a>
+                <a href="../../index.html#portfolio" class="nav-link">Portfolio</a>
+                <a href="../../index.html#projects" class="nav-link active">Projects</a>
+                <a href="../../index.html#contact" class="nav-link">Contact</a>
+            </div>
+        </div>
+    </nav>
+
     <div class="desktop-wrapper">
+        <a href="../../index.html" class="back-btn">
+            <ion-icon name="arrow-back"></ion-icon>
+            Back to Portfolio
+        </a>
         <div class="phone-frame">
             <div class="phone-screen">
                 <div class="app-scroll-container">

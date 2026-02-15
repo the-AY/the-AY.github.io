@@ -4,6 +4,7 @@ import pandas as pd
 import requests
 from bs4 import BeautifulSoup
 from datetime import datetime
+from jobspy import scrape_jobs
 
 class JobSearcher:
     def __init__(self):
@@ -52,6 +53,45 @@ class JobSearcher:
             except Exception as e:
                 print(f"RSS Error: {e}")
         return pd.DataFrame(jobs)
+
+    def scrape_live_jobs(self, role, location, limit=20):
+        """
+        Scrapes real-time jobs from LinkedIn, Indeed, Glassdoor, and Google using python-jobspy.
+        """
+        try:
+            jobs = scrape_jobs(
+                site_name=["linkedin", "indeed", "glassdoor", "google"],
+                search_term=role,
+                location=location,
+                results_wanted=limit,
+                hours_old=72,  # Last 3 days
+                country_watchlist=[location] if location.lower() != "remote" else None
+            )
+            
+            if jobs.empty:
+                return pd.DataFrame()
+
+            # Normalize columns to match RSS output
+            normalized_jobs = jobs.rename(columns={
+                "title": "Title",
+                "company": "Company",
+                "job_url": "Link",
+                "site": "Source",
+                "date_posted": "Date"
+            })
+            
+            # Select only relevant columns
+            cols_to_keep = ["Title", "Company", "Date", "Link", "Source"]
+            # Fill missing columns if any
+            for col in cols_to_keep:
+                if col not in normalized_jobs.columns:
+                    normalized_jobs[col] = "N/A"
+            
+            return normalized_jobs[cols_to_keep]
+
+        except Exception as e:
+            print(f"JobSpy Error: {e}")
+            return pd.DataFrame()
 
     def google_custom_scrape(self, query, location):
         """

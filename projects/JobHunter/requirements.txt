@@ -2,6 +2,8 @@ streamlit
 pandas
 pdfminer.six
 spacy
+python-jobspy
+et_xmlfile
 plotly
 phonenumbers
 feedparser

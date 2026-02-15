@@ -128,11 +128,21 @@ def show_job_search():
             with cols[i]:
                 st.link_button(f"🔎 {link['name']}", link['url'])
 
-        # 2. RSS Aggregator
+        # 2. Results Section
         st.markdown("---")
-        st.markdown("### 📡 Live Feed Results")
-        with st.spinner("Fetching latest jobs from feeds..."):
-            df = searcher.fetch_rss_jobs(role)
+        
+        # Scrape Mode Toggle
+        use_scraper = st.toggle("Enable Real-time Scraping (Slower but more results)", value=False)
+        
+        st.markdown("### 📡 Job Results")
+        
+        with st.spinner("Fetching jobs... this might take a moment if scraping is enabled."):
+            if use_scraper:
+                df = searcher.scrape_live_jobs(role, location)
+                st.caption(f"Scraped from LinkedIn, Indeed, Glassdoor, Google.")
+            else:
+                df = searcher.fetch_rss_jobs(role)
+                st.caption("Fetched from RSS Feeds (WeWorkRemotely, Remotive).")
             
             if not df.empty:
                 st.dataframe(
@@ -173,7 +183,7 @@ def show_job_search():
                     except ImportError:
                         st.error("Install 'openpyxl' to enable Excel export.")
             else:
-                st.warning("No matching jobs found in RSS feeds. Try a broader term or check Smart Links above.")
+                st.warning("No matching jobs found. Try a broader term or check Smart Links above.")
 
 if __name__ == "__main__":
     main()
