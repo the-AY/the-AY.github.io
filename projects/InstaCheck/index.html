@@ -170,6 +170,186 @@
             letter-spacing: 1px;
         }
 
+        /* Mode Toggle Tabs */
+        .mode-tabs {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 30px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 8px;
+        }
+
+        .mode-tab {
+            flex: 1;
+            padding: 14px 20px;
+            border-radius: 14px;
+            border: none;
+            background: transparent;
+            color: var(--text-dim);
+            font-weight: 700;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.35s cubic-bezier(0.165, 0.84, 0.44, 1);
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .mode-tab.active {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: #fff;
+            box-shadow: 0 8px 25px rgba(255, 45, 120, 0.35);
+        }
+
+        .mode-tab:hover:not(.active) {
+            color: #fff;
+            background: rgba(255, 255, 255, 0.06);
+        }
+
+        /* Username Section */
+        .username-section {
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--card-radius);
+            padding: 50px;
+            margin-bottom: 50px;
+            animation: fadeInUp 0.6s cubic-bezier(0.19, 1, 0.22, 1) backwards;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            display: none;
+        }
+
+        .username-search-wrap {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 30px;
+        }
+
+        .username-input {
+            flex: 1;
+            padding: 16px 24px;
+            border-radius: 16px;
+            border: 1px solid var(--glass-border);
+            background: rgba(255, 255, 255, 0.04);
+            color: #fff;
+            font-size: 1.1rem;
+            font-weight: 600;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            outline: none;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .username-input::placeholder {
+            color: var(--text-dim);
+        }
+
+        .username-input:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(0, 242, 255, 0.12);
+        }
+
+        .btn-scan {
+            padding: 16px 28px;
+            border-radius: 16px;
+            border: none;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: #fff;
+            font-size: 1rem;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .btn-scan:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(255, 45, 120, 0.4);
+        }
+
+        .username-result {
+            display: none;
+        }
+
+        .profile-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 30px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 20px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .profile-card:hover {
+            background: rgba(255, 255, 255, 0.06);
+            transform: translateY(-4px);
+            border-color: rgba(255, 255, 255, 0.15);
+        }
+
+        .profile-avatar-big {
+            width: 64px;
+            height: 64px;
+            border-radius: 20px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: #fff;
+            flex-shrink: 0;
+        }
+
+        .profile-meta h3 {
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 5px;
+        }
+
+        .profile-meta p {
+            color: var(--text-dim);
+            font-size: 0.9rem;
+        }
+
+        .note-card {
+            background: rgba(0, 242, 255, 0.05);
+            border: 1px solid rgba(0, 242, 255, 0.15);
+            border-radius: 20px;
+            padding: 25px 30px;
+        }
+
+        .note-card h4 {
+            color: var(--accent);
+            font-size: 0.85rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+
+        .note-card ol {
+            padding-left: 20px;
+        }
+
+        .note-card li {
+            color: var(--text-dim);
+            font-size: 0.95rem;
+            margin-bottom: 8px;
+            line-height: 1.6;
+        }
+
+        .note-card li b {
+            color: #fff;
+        }
+
         /* Premium Upload Area */
         .upload-section {
             background: rgba(255, 255, 255, 0.02);
@@ -474,7 +654,61 @@
             <p class="subtitle">Peak Analytics for the modern web.</p>
         </header>
 
-        <div class="upload-section">
+        <!-- Mode Toggle -->
+        <div class="mode-tabs">
+            <button class="mode-tab active" id="tabJSON" onclick="switchMode('json')">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                    <polyline points="14 2 14 8 20 8" />
+                </svg>
+                Upload JSON Files
+            </button>
+            <button class="mode-tab" id="tabUsername" onclick="switchMode('username')">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="11" cy="11" r="8" />
+                    <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                </svg>
+                Scan by Username
+            </button>
+        </div>
+
+        <!-- Username Scan Section -->
+        <div class="username-section" id="usernameSection">
+            <div style="font-size: 1.5rem; font-weight: 700; margin-bottom: 8px;">Enter Instagram Username</div>
+            <p style="color: var(--text-dim); margin-bottom: 28px;">Open the profile directly on Instagram and compare
+                followers &amp; following lists.</p>
+
+            <div class="username-search-wrap">
+                <input type="text" class="username-input" id="usernameInput" placeholder="e.g. cristiano"
+                    oninput="clearUsernameResult()" onkeydown="if(event.key==='Enter') scanUsername()">
+                <button class="btn-scan" onclick="scanUsername()">Open Profile ↗</button>
+            </div>
+
+            <div class="username-result" id="usernameResult">
+                <a class="profile-card" id="profileLink" href="#" target="_blank" rel="noopener">
+                    <div class="profile-avatar-big" id="profileAvatar">?</div>
+                    <div class="profile-meta">
+                        <h3 id="profileName">@username</h3>
+                        <p>Click to open profile on Instagram ↗</p>
+                    </div>
+                </a>
+
+                <div class="note-card">
+                    <h4>📋 How to check unfollowers manually</h4>
+                    <ol>
+                        <li>Open the profile link above on <b>Instagram</b>.</li>
+                        <li>Note the <b>Followers</b> count and open the list — these follow you.</li>
+                        <li>Switch to the <b>Following</b> list — these are people you follow.</li>
+                        <li>For a full automated analysis, use the <b>Upload JSON Files</b> tab (Instagram data export).
+                        </li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+
+        <div class="upload-section" id="jsonSection">
             <div class="drop-zone" id="dropZone">
                 <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.5"
                     stroke-linecap="round" stroke-linejoin="round" style="margin-bottom: 25px;">
@@ -546,9 +780,51 @@
             <p style="margin-top: 15px; font-size: 0.75rem; opacity: 0.5;">Disclaimer: Not affiliated with Meta. All
                 data stays in your browser.</p>
         </footer>
-    </div>
+    </div> <!-- end .container -->
 
     <script>
+        // Mode switcher
+        function switchMode(mode) {
+            const jsonSection = document.getElementById('jsonSection');
+            const usernameSection = document.getElementById('usernameSection');
+            const tabJSON = document.getElementById('tabJSON');
+            const tabUsername = document.getElementById('tabUsername');
+
+            if (mode === 'json') {
+                jsonSection.style.display = 'block';
+                usernameSection.style.display = 'none';
+                tabJSON.classList.add('active');
+                tabUsername.classList.remove('active');
+            } else {
+                jsonSection.style.display = 'none';
+                usernameSection.style.display = 'block';
+                tabJSON.classList.remove('active');
+                tabUsername.classList.add('active');
+                setTimeout(() => document.getElementById('usernameInput').focus(), 100);
+            }
+        }
+
+        function scanUsername() {
+            const raw = document.getElementById('usernameInput').value.trim().replace(/^@/, '');
+            if (!raw) return;
+            const username = raw;
+            const result = document.getElementById('usernameResult');
+            const profileLink = document.getElementById('profileLink');
+            const profileName = document.getElementById('profileName');
+            const profileAvatar = document.getElementById('profileAvatar');
+
+            profileLink.href = `https://www.instagram.com/${username}/`;
+            profileName.textContent = `@${username}`;
+            profileAvatar.textContent = username[0].toUpperCase();
+            profileAvatar.style.background = `linear-gradient(135deg, ${getRandomColor()}, ${getRandomColor()})`;
+
+            result.style.display = 'block';
+        }
+
+        function clearUsernameResult() {
+            document.getElementById('usernameResult').style.display = 'none';
+        }
+
         const fileInput = document.getElementById('fileInput');
         const dropZone = document.getElementById('dropZone');
         const loading = document.getElementById('loading');
