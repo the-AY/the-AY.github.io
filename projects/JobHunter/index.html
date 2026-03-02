@@ -5,17 +5,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description"
-        content="Job Hunter Pro — Advanced ATS resume checker with 12+ scoring parameters, job description matching, keyword analysis, and PDF preview by Adish Yermal.">
+        content="Resume Analyzer — Professional ATS resume checker with 12+ scoring parameters, job description matching, keyword analysis, and Firebase-powered history by Adish Yermal.">
     <meta name="keywords"
-        content="ATS resume checker, resume analyzer, job description match, keyword extractor, resume score, Adish Yermal">
+        content="Resume Analyzer, ATS resume checker, resume analyzer, job description match, keyword extractor, resume score, Adish Yermal">
     <meta name="author" content="Adish Yermal">
-    <meta property="og:title" content="Job Hunter Pro — Advanced ATS Resume Checker">
+    <meta property="og:title" content="Resume Analyzer — Professional ATS Resume Checker">
     <meta property="og:description"
-        content="Analyze your resume with 12+ ATS parameters, match against job descriptions, and get keyword insights.">
+        content="Analyze your resume with 12+ ATS parameters, match against job descriptions, and save your history with Firebase.">
     <meta property="og:url" content="https://the-ay.github.io/projects/JobHunter/index.html">
     <meta property="og:type" content="website">
     <link rel="canonical" href="https://the-ay.github.io/projects/JobHunter/index.html">
-    <title>Job Hunter Pro — ATS Resume Analyzer | Adish Yermal</title>
+    <title>Resume Analyzer — ATS Resume Analyzer | Adish Yermal</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
@@ -24,8 +24,8 @@
 {
   "@context":"https://schema.org",
   "@type":"SoftwareApplication",
-  "name":"Job Hunter Pro",
-  "description":"Advanced ATS resume checker and job search tool with 12+ scoring parameters, job description matching, and keyword analysis.",
+  "name":"Resume Analyzer",
+  "description":"Professional ATS resume checker and job search tool with 12+ scoring parameters, job description matching, and Firebase-powered analysis history.",
   "url":"https://the-ay.github.io/projects/JobHunter/index.html",
   "applicationCategory":"BusinessApplication",
   "author":{"@type":"Person","name":"Adish Yermal","url":"https://the-ay.github.io"},
@@ -213,7 +213,6 @@
         }
 
         /* JD PANEL */
-        .jd-panel {}
 
         textarea.jd-input {
             width: 100%;
@@ -751,9 +750,24 @@
         <header style="text-align:center;margin-bottom:2rem">
             <h1
                 style="font-size:2.3rem;font-weight:700;background:linear-gradient(135deg,#6366f1,#22d3ee);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:.4rem">
-                Job Hunter Pro</h1>
-            <p class="section-sub" style="font-size:1rem">Advanced ATS Resume Analyzer &amp; Intelligent Job Search
-                Engine</p>
+                Resume Analyzer</h1>
+            <p class="section-sub" style="font-size:1rem">Professional ATS Resume Analysis &amp; Intelligent Job
+                Matching</p>
+            <div id="authStatus"
+                style="margin-top: 1rem; font-size: 0.85rem; color: var(--muted); display: flex; align-items: center; justify-content: center; gap: 12px;">
+                <div id="trialBadge" class="jd-badge"
+                    style="background: rgba(34, 211, 238, 0.1); color: var(--accent); border: 1px solid var(--accent); cursor: help;"
+                    title="Free trial mode enabled. Login to save history across devices.">Trial Mode</div>
+                <button class="btn btn-sm btn-outline" id="loginBtn" onclick="toggleAuth()"><ion-icon
+                        name="logo-google"></ion-icon> Login with Google</button>
+                <div id="userInfo" style="display: none; align-items: center; gap: 10px;">
+                    <span id="userName" style="color: var(--txt); font-weight: 500;"></span>
+                    <button class="btn btn-sm btn-outline" onclick="toggleAuth()">Logout</button>
+                    <div id="adminBadge" class="jd-badge"
+                        style="display:none; background: rgba(245, 158, 11, 0.1); color: var(--warn); border: 1px solid var(--warn);">
+                        Admin</div>
+                </div>
+            </div>
         </header>
 
         <!-- TOP TABS -->
@@ -811,6 +825,12 @@
                             <div style="font-weight:600;margin-bottom:.25rem">Drop PDF resume here</div>
                             <div style="font-size:.8rem;color:var(--muted)">or click to browse</div>
                         </div>
+                        <div class="stats-mini"
+                            style="margin-top:1rem; padding-top:1rem; border-top:1px solid var(--border); display:flex; justify-content:space-between; align-items:center; font-size:.8rem;">
+                            <span style="color:var(--muted)">Resumes Analyzed Globally</span>
+                            <span id="globalCounter"
+                                style="font-weight:700; color:var(--primary); font-size:1rem">...</span>
+                        </div>
                         <div class="loading-bar" id="loadBar"></div>
                     </div>
 
@@ -859,11 +879,20 @@
                     <button class="kw-tab-btn" onclick="switchKwTab('skills',this)">Skills</button>
                     <button class="kw-tab-btn" onclick="switchKwTab('verbs',this)">Action Verbs</button>
                     <button class="kw-tab-btn" onclick="switchKwTab('jdkw',this)">JD Keywords</button>
+                    <button class="kw-tab-btn" onclick="switchKwTab('history',this)">My History</button>
+                    <button class="kw-tab-btn" id="adminTabBtn" style="display:none; color:var(--warn)"
+                        onclick="switchKwTab('admin',this); loadGlobalLogs()">Admin Logs</button>
                 </div>
                 <div class="kw-panel active" id="kw-all"></div>
                 <div class="kw-panel" id="kw-skills"></div>
                 <div class="kw-panel" id="kw-verbs"></div>
                 <div class="kw-panel" id="kw-jdkw"></div>
+                <div class="kw-panel" id="kw-history">
+                    <div id="historyList">Login to view your saved history.</div>
+                </div>
+                <div class="kw-panel" id="kw-admin">
+                    <div id="globalLogList">Loading global logs...</div>
+                </div>
             </div>
 
             <!-- PDF PREVIEW (bottom) -->
@@ -905,6 +934,157 @@
             </div>
         </div>
     </div><!-- /page -->
+
+    <!-- Firebase SDK Modular -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        import { getFirestore, doc, setDoc, getDoc, updateDoc, increment, collection, addDoc, query, where, orderBy, limit, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+        // Firebase configuration (Replace with your actual config)
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_PROJECT_ID.appspot.com",
+            messagingSenderId: "YOUR_MESSAGING_ID",
+            appId: "YOUR_APP_ID"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        const provider = new GoogleAuthProvider();
+
+        const ADMIN_EMAIL = "adishyermal@gmail.com"; // Set superadmin email
+        let currentUser = null;
+
+        // AUTH LOGIC
+        window.toggleAuth = async () => {
+            if (currentUser) {
+                await signOut(auth);
+            } else {
+                try {
+                    await signInWithPopup(auth, provider);
+                } catch (err) {
+                    console.error("Auth error:", err);
+                    alert("Login failed. Check if Firebase config is correct.");
+                }
+            }
+        };
+
+        onAuthStateChanged(auth, (user) => {
+            currentUser = user;
+            const loginBtn = document.getElementById('loginBtn');
+            const userInfo = document.getElementById('userInfo');
+            const userName = document.getElementById('userName');
+            const trialBadge = document.getElementById('trialBadge');
+            const adminBadge = document.getElementById('adminBadge');
+            const adminTabBtn = document.getElementById('adminTabBtn');
+
+            if (user) {
+                loginBtn.style.display = 'none';
+                trialBadge.style.display = 'none';
+                userInfo.style.display = 'flex';
+                userName.textContent = user.displayName || user.email;
+
+                if (user.email === ADMIN_EMAIL) {
+                    adminBadge.style.display = 'inline-block';
+                    if (adminTabBtn) adminTabBtn.style.display = 'inline-block';
+                }
+                loadHistory();
+            } else {
+                loginBtn.style.display = 'inline-flex';
+                trialBadge.style.display = 'inline-block';
+                userInfo.style.display = 'none';
+                if (adminBadge) adminBadge.style.display = 'none';
+                if (adminTabBtn) adminTabBtn.style.display = 'none';
+                document.getElementById('historyList').innerHTML = 'Login to view your saved history.';
+            }
+        });
+
+        // STATS LOGIC
+        window.logAnalysis = async (data) => {
+            // Global counter increment for everyone
+            try {
+                const statsRef = doc(db, "system", "stats");
+                await setDoc(statsRef, { totalAnalyzed: increment(1) }, { merge: true });
+                updateGlobalCounter();
+            } catch (e) {
+                console.warn("Global stats update failed.");
+            }
+
+            if (currentUser) {
+                // Personal log for authenticated users
+                try {
+                    await addDoc(collection(db, "analysis_logs"), {
+                        uid: currentUser.uid,
+                        email: currentUser.email,
+                        filename: data.filename,
+                        score: data.score,
+                        matchPct: data.matchPct || 0,
+                        date: new Date().toISOString(),
+                        parameters: data.params
+                    });
+                    loadHistory();
+                } catch (e) {
+                    console.error("Error logging to Firestore:", e);
+                }
+            }
+        };
+
+        async function updateGlobalCounter() {
+            try {
+                const snap = await getDoc(doc(db, "system", "stats"));
+                if (snap.exists()) {
+                    const count = snap.data().totalAnalyzed || 0;
+                    const counterEl = document.getElementById('globalCounter');
+                    if (counterEl) counterEl.textContent = count;
+                }
+            } catch (e) { }
+        }
+
+        async function loadHistory() {
+            if (!currentUser) return;
+            const q = query(collection(db, "analysis_logs"), where("uid", "==", currentUser.uid), orderBy("date", "desc"), limit(10));
+            try {
+                const snap = await getDocs(q);
+                renderLogs(snap, 'historyList');
+            } catch (e) { console.warn("History not reachable"); }
+        }
+
+        async function loadGlobalLogs() {
+            if (!currentUser || currentUser.email !== ADMIN_EMAIL) return;
+            const q = query(collection(db, "analysis_logs"), orderBy("date", "desc"), limit(50));
+            try {
+                const snap = await getDocs(q);
+                renderLogs(snap, 'globalLogList', true);
+            } catch (e) { alert("Admin access denied or Firestore rules pending."); }
+        }
+
+        function renderLogs(snap, targetId, isAdmin = false) {
+            let html = '<div style="display:grid; gap:0.5rem;">';
+            snap.forEach(doc => {
+                const d = doc.data();
+                const date = new Date(d.date).toLocaleDateString();
+                html += `
+                    <div class="param-card" style="display:flex; justify-content:space-between; align-items:center;">
+                        <div>
+                            <div style="font-weight:600; font-size:0.85rem;">${d.filename}</div>
+                            <div style="font-size:0.75rem; color:var(--muted);">${date} ${isAdmin ? `(${d.email})` : ''}</div>
+                        </div>
+                        <div style="font-weight:700; color:var(--primary);">${d.score}%</div>
+                    </div>
+                `;
+            });
+            html += '</div>';
+            document.getElementById(targetId).innerHTML = snap.empty ? 'No logs found.' : html;
+        }
+
+        // Initial counter update
+        updateGlobalCounter();
+    </script>
 
     <script>
         // ─── Tab helpers ───
@@ -987,7 +1167,7 @@
                 });
                 const boldPct = totalChars > 0 ? Math.round(boldChars / totalChars * 100) : 0;
                 const avgFont = fontSizes.length > 0 ? fontSizes.reduce((a, b) => a + b, 0) / fontSizes.length : 0;
-                runAnalysis(fullText, pdf.numPages, boldPct, avgFont);
+                runAnalysis(fullText, pdf.numPages, boldPct, avgFont, f.name);
                 setLoadBar(100);
                 renderPDFPreview(arr, pdf.numPages);
                 setTimeout(() => setLoadBar(0), 600);
@@ -995,7 +1175,7 @@
         }
         function setLoadBar(w) { document.getElementById('loadBar').style.width = w + '%'; }
         // ─── ANALYSIS ENGINE ───
-        function runAnalysis(text, pages, boldPct, avgFont) {
+        function runAnalysis(text, pages, boldPct, avgFont, filename) {
             const lo = text.toLowerCase();
             const words = text.split(/\s+/).filter(w => w.length > 1);
             const loWords = lo.split(/\s+/).filter(w => w.length > 1);
@@ -1154,6 +1334,16 @@
       <ion-icon class="improve-icon ${i.t}" name="${i.t === 'ok' ? 'checkmark-circle' : 'alert-circle'}"></ion-icon>
       <div class="improve-text"><div class="improve-title">${i.title}</div><div class="improve-sub">${i.sub}</div></div>
     </div>`).join('');
+
+            // Firebase Log
+            if (window.logAnalysis) {
+                window.logAnalysis({
+                    filename: filename,
+                    score: totalScore,
+                    matchPct: 0, // JD match done separately
+                    params: d
+                });
+            }
         }
         function renderKeywordTabs() {
             // All keywords (top 30 by freq)
