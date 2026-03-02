@@ -4,322 +4,740 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Job Hunter Pro - ATS Scanner & Search</title>
-    <!-- Simple consistent styling matching main portfolio -->
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <meta name="description"
+        content="Job Hunter Pro — Advanced ATS resume checker with 12+ scoring parameters, job description matching, keyword analysis, and PDF preview by Adish Yermal.">
+    <meta name="keywords"
+        content="ATS resume checker, resume analyzer, job description match, keyword extractor, resume score, Adish Yermal">
+    <meta name="author" content="Adish Yermal">
+    <meta property="og:title" content="Job Hunter Pro — Advanced ATS Resume Checker">
+    <meta property="og:description"
+        content="Analyze your resume with 12+ ATS parameters, match against job descriptions, and get keyword insights.">
+    <meta property="og:url" content="https://the-ay.github.io/projects/JobHunter/index.html">
+    <meta property="og:type" content="website">
+    <link rel="canonical" href="https://the-ay.github.io/projects/JobHunter/index.html">
+    <title>Job Hunter Pro — ATS Resume Analyzer | Adish Yermal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
     <script>pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';</script>
+    <script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"SoftwareApplication",
+  "name":"Job Hunter Pro",
+  "description":"Advanced ATS resume checker and job search tool with 12+ scoring parameters, job description matching, and keyword analysis.",
+  "url":"https://the-ay.github.io/projects/JobHunter/index.html",
+  "applicationCategory":"BusinessApplication",
+  "author":{"@type":"Person","name":"Adish Yermal","url":"https://the-ay.github.io"},
+  "offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}
+}
+</script>
     <style>
         :root {
-            --bg-color: #0f172a;
-            --card-bg: #1e293b;
-            --primary: #3b82f6;
-            --text-main: #f8fafc;
-            --text-muted: #94a3b8;
-            --success: #22c55e;
-            --warning: #f59e0b;
+            --bg: #0a0f1e;
+            --card: #111827;
+            --card2: #1a2235;
+            --primary: #6366f1;
+            --accent: #22d3ee;
+            --success: #10b981;
+            --warn: #f59e0b;
+            --danger: #ef4444;
+            --txt: #f1f5f9;
+            --muted: #64748b;
+            --border: #1e293b
         }
 
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Roboto', sans-serif;
+            font-family: 'Inter', sans-serif
         }
 
         body {
-            background-color: var(--bg-color);
-            color: var(--text-main);
+            background: var(--bg);
+            color: var(--txt);
             line-height: 1.6;
-            padding-top: 80px;
+            padding-top: 72px;
+            min-height: 100vh
         }
 
-        /* Navigation Bar */
+        /* NAV */
         .navbar {
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
-            background: rgba(15, 23, 42, 0.95);
+            background: rgba(10, 15, 30, .95);
             backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            border-bottom: 1px solid var(--border);
             z-index: 1000;
-            padding: 1rem 0;
+            padding: .9rem 0
         }
 
-        .nav-container {
-            max-width: 1400px;
+        .nav-c {
+            max-width: 1600px;
             margin: 0 auto;
-            padding: 0 2rem;
+            padding: 0 1.5rem;
             display: flex;
             justify-content: space-between;
-            align-items: center;
+            align-items: center
         }
 
         .nav-brand {
             font-weight: 700;
-            font-size: 1.2rem;
             color: var(--primary);
             text-decoration: none;
+            font-size: 1.1rem;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px
         }
 
         .nav-menu {
             display: flex;
-            gap: 1.5rem;
-            align-items: center;
+            gap: 1.5rem
         }
 
         .nav-link {
-            color: var(--text-muted);
+            color: var(--muted);
             text-decoration: none;
-            font-weight: 600;
-            font-size: 0.875rem;
-            transition: 0.3s;
+            font-size: .875rem;
+            font-weight: 500;
+            transition: .2s
         }
 
         .nav-link:hover,
         .nav-link.active {
-            color: var(--text-main);
+            color: var(--txt)
         }
 
-        .container {
-            max-width: 1200px;
-            margin: 2rem auto;
-            padding: 0 1rem;
+        /* CONTAINER */
+        .page {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 1.5rem
         }
 
-        .tabs {
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--muted);
+            text-decoration: none;
+            font-size: .875rem;
+            margin-bottom: 1.5rem;
+            transition: .2s
+        }
+
+        .back-link:hover {
+            color: var(--txt)
+        }
+
+        /* TOP TABS */
+        .top-tabs {
             display: flex;
-            gap: 1rem;
-            margin-bottom: 2rem;
-            border-bottom: 2px solid var(--card-bg);
+            gap: .5rem;
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid var(--border)
         }
 
-        .tab-btn {
+        .top-tab {
             background: none;
             border: none;
-            color: var(--text-muted);
-            padding: 1rem 2rem;
+            color: var(--muted);
+            padding: .75rem 1.5rem;
             cursor: pointer;
-            font-size: 1.1rem;
+            font-size: 1rem;
             font-weight: 500;
             border-bottom: 2px solid transparent;
             margin-bottom: -2px;
-            transition: all 0.3s;
+            transition: .2s
         }
 
-        .tab-btn.active {
+        .top-tab.active {
             color: var(--primary);
-            border-bottom-color: var(--primary);
+            border-bottom-color: var(--primary)
         }
 
-        .tab-content {
-            display: none;
-            animation: fadeIn 0.3s ease;
+        .tab-pane {
+            display: none
         }
 
-        .tab-content.active {
-            display: block;
+        .tab-pane.active {
+            display: block
         }
 
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(10px);
+        /* 3-PANEL GRID */
+        .panel-grid {
+            display: grid;
+            grid-template-columns: 320px 1fr 320px;
+            gap: 1rem;
+            align-items: start
+        }
+
+        @media(max-width:1100px) {
+            .panel-grid {
+                grid-template-columns: 1fr 1fr
             }
+        }
 
-            to {
-                opacity: 1;
-                transform: translateY(0);
+        @media(max-width:700px) {
+            .panel-grid {
+                grid-template-columns: 1fr
             }
         }
 
+        /* CARDS */
         .card {
-            background-color: var(--card-bg);
+            background: var(--card);
+            border: 1px solid var(--border);
             border-radius: 1rem;
-            padding: 2rem;
-            margin-bottom: 2rem;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            padding: 1.25rem;
+            margin-bottom: 1rem
         }
 
-        h2 {
+        .card-title {
+            font-weight: 600;
+            font-size: .95rem;
             margin-bottom: 1rem;
-            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--txt)
         }
 
-        h3 {
-            margin-bottom: 0.5rem;
-            color: var(--text-main);
-            font-size: 1.2rem;
+        .card-title ion-icon {
+            color: var(--primary);
+            font-size: 1.1rem
         }
 
-        p {
-            color: var(--text-muted);
-            margin-bottom: 1.5rem;
-        }
+        /* JD PANEL */
+        .jd-panel {}
 
-        .input-group {
-            margin-bottom: 1.5rem;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 0.5rem;
-            color: var(--text-muted);
-        }
-
-        input[type="text"],
-        input[type="file"] {
+        textarea.jd-input {
             width: 100%;
-            padding: 0.8rem;
-            background-color: #0f172a;
-            border: 1px solid #334155;
-            border-radius: 0.5rem;
-            color: white;
-            transition: border-color 0.3s;
+            min-height: 220px;
+            background: var(--card2);
+            border: 1px solid var(--border);
+            border-radius: .75rem;
+            padding: .875rem;
+            color: var(--txt);
+            font-size: .85rem;
+            resize: vertical;
+            transition: .2s;
+            font-family: inherit
         }
 
-        input:focus {
+        textarea.jd-input:focus {
             border-color: var(--primary);
-            outline: none;
+            outline: none
         }
 
-        .btn {
-            background-color: var(--primary);
-            color: white;
-            padding: 0.8rem 1.5rem;
+        .jd-badge {
+            display: inline-block;
+            background: rgba(99, 102, 241, .15);
+            color: var(--primary);
+            border-radius: 999px;
+            font-size: .75rem;
+            padding: .2rem .6rem;
+            margin-bottom: .5rem
+        }
+
+        /* CENTER PANEL */
+        .upload-zone {
+            border: 2px dashed var(--border);
+            border-radius: .75rem;
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: .3s;
+            position: relative;
+            margin-bottom: 1rem
+        }
+
+        .upload-zone:hover,
+        .upload-zone.drag {
+            border-color: var(--primary);
+            background: rgba(99, 102, 241, .05)
+        }
+
+        .upload-zone input {
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            cursor: pointer
+        }
+
+        .upload-zone ion-icon {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: .5rem
+        }
+
+        /* SCORE RING */
+        .score-wrap {
+            text-align: center;
+            margin: 1rem 0
+        }
+
+        .score-ring {
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto .75rem;
+            position: relative;
+            background: conic-gradient(var(--success) 0%, var(--border) 0%)
+        }
+
+        .score-ring::before {
+            content: '';
+            position: absolute;
+            width: 112px;
+            height: 112px;
+            background: var(--card);
+            border-radius: 50%
+        }
+
+        .score-num {
+            position: relative;
+            font-size: 2.2rem;
+            font-weight: 700
+        }
+
+        .score-label {
+            font-size: .8rem;
+            color: var(--muted)
+        }
+
+        /* PARAM CARDS GRID */
+        .params-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: .6rem
+        }
+
+        .param-card {
+            background: var(--card2);
+            border: 1px solid var(--border);
+            border-radius: .75rem;
+            padding: .75rem;
+            transition: .2s
+        }
+
+        .param-card:hover {
+            border-color: var(--primary)
+        }
+
+        .param-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: .4rem
+        }
+
+        .param-name {
+            font-size: .78rem;
+            font-weight: 600;
+            color: var(--muted)
+        }
+
+        .param-pts {
+            font-size: .75rem;
+            font-weight: 700
+        }
+
+        .param-pts.ok {
+            color: var(--success)
+        }
+
+        .param-pts.warn {
+            color: var(--warn)
+        }
+
+        .param-pts.fail {
+            color: var(--danger)
+        }
+
+        .param-bar-bg {
+            height: 4px;
+            background: var(--border);
+            border-radius: 2px
+        }
+
+        .param-bar {
+            height: 4px;
+            border-radius: 2px;
+            transition: width .6s ease
+        }
+
+        .param-detail {
+            font-size: .72rem;
+            color: var(--muted);
+            margin-top: .35rem
+        }
+
+        /* RIGHT PANEL */
+        .improve-list {
+            display: flex;
+            flex-direction: column;
+            gap: .6rem
+        }
+
+        .improve-item {
+            display: flex;
+            gap: .75rem;
+            align-items: flex-start;
+            padding: .75rem;
+            border-radius: .6rem;
+            background: var(--card2);
+            border: 1px solid var(--border)
+        }
+
+        .improve-icon {
+            font-size: 1rem;
+            flex-shrink: 0;
+            margin-top: .1rem
+        }
+
+        .improve-icon.ok {
+            color: var(--success)
+        }
+
+        .improve-icon.warn {
+            color: var(--warn)
+        }
+
+        .improve-icon.fail {
+            color: var(--danger)
+        }
+
+        .improve-text {
+            font-size: .8rem;
+            line-height: 1.5
+        }
+
+        .improve-title {
+            font-weight: 600;
+            color: var(--txt)
+        }
+
+        .improve-sub {
+            color: var(--muted);
+            margin-top: .15rem
+        }
+
+        /* JD MATCH BOX */
+        .jd-match-box {
+            background: linear-gradient(135deg, rgba(99, 102, 241, .1), rgba(34, 211, 238, .08));
+            border: 1px solid rgba(99, 102, 241, .3);
+            border-radius: .75rem;
+            padding: 1rem;
+            margin-bottom: .75rem;
+            display: none
+        }
+
+        .jd-match-pct {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary)
+        }
+
+        .jd-match-label {
+            font-size: .78rem;
+            color: var(--muted);
+            margin-bottom: .75rem
+        }
+
+        .keyword-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: .4rem;
+            margin-top: .5rem
+        }
+
+        /* TAGS */
+        .tag {
+            display: inline-block;
+            padding: .2rem .55rem;
+            border-radius: 999px;
+            font-size: .75rem;
+            font-weight: 500
+        }
+
+        .tag-skill {
+            background: rgba(99, 102, 241, .18);
+            color: #a5b4fc
+        }
+
+        .tag-match {
+            background: rgba(16, 185, 129, .18);
+            color: #6ee7b7
+        }
+
+        .tag-miss {
+            background: rgba(239, 68, 68, .18);
+            color: #fca5a5
+        }
+
+        .tag-kw {
+            background: rgba(34, 211, 238, .15);
+            color: var(--accent);
+            cursor: default
+        }
+
+        /* BOTTOM KEYWORD TAB */
+        .kw-tab-wrap {
+            display: none;
+            margin-top: 1.5rem
+        }
+
+        .kw-tab-head {
+            display: flex;
+            gap: .5rem;
+            border-bottom: 2px solid var(--border);
+            margin-bottom: 1rem
+        }
+
+        .kw-tab-btn {
+            background: none;
             border: none;
-            border-radius: 0.5rem;
+            color: var(--muted);
+            padding: .6rem 1.25rem;
+            cursor: pointer;
+            font-size: .875rem;
+            font-weight: 500;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -2px;
+            transition: .2s
+        }
+
+        .kw-tab-btn.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent)
+        }
+
+        .kw-panel {
+            display: none
+        }
+
+        .kw-panel.active {
+            display: flex;
+            flex-wrap: wrap;
+            gap: .4rem;
+            min-height: 60px;
+            padding: .5rem 0
+        }
+
+        .tag-kw-large {
+            padding: .3rem .8rem;
+            background: rgba(34, 211, 238, .12);
+            color: var(--accent);
+            border-radius: 999px;
+            font-size: .8rem;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: .3rem
+        }
+
+        .kw-freq {
+            background: rgba(255, 255, 255, .1);
+            border-radius: 999px;
+            font-size: .65rem;
+            padding: .1rem .4rem;
+            font-weight: 700
+        }
+
+        /* PDF PREVIEW */
+        .preview-wrap {
+            display: none;
+            margin-top: 1.5rem
+        }
+
+        .preview-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: .75rem
+        }
+
+        .preview-strip {
+            display: flex;
+            gap: 1rem;
+            overflow-x: auto;
+            padding: .5rem 0
+        }
+
+        .preview-strip canvas {
+            border: 2px solid var(--border);
+            border-radius: .5rem;
+            max-height: 300px;
+            flex-shrink: 0;
+            cursor: pointer;
+            transition: .2s
+        }
+
+        .preview-strip canvas:hover {
+            border-color: var(--primary)
+        }
+
+        /* SKILLS PANEL */
+        .skills-wrap {
+            display: flex;
+            flex-wrap: wrap;
+            gap: .4rem;
+            margin-top: .5rem
+        }
+
+        /* BUTTONS */
+        .btn {
+            background: var(--primary);
+            color: #fff;
+            padding: .65rem 1.25rem;
+            border: none;
+            border-radius: .6rem;
             cursor: pointer;
             font-weight: 500;
             display: inline-flex;
             align-items: center;
-            gap: 8px;
-            text-decoration: none;
-            transition: opacity 0.3s;
+            gap: 6px;
+            font-size: .875rem;
+            transition: .2s;
+            text-decoration: none
         }
 
         .btn:hover {
-            opacity: 0.9;
+            opacity: .9
+        }
+
+        .btn-sm {
+            padding: .4rem .9rem;
+            font-size: .8rem
         }
 
         .btn-outline {
             background: transparent;
             border: 1px solid var(--primary);
-            color: var(--primary);
+            color: var(--primary)
         }
 
         .btn-outline:hover {
-            background: rgba(59, 130, 246, 0.1);
+            background: rgba(99, 102, 241, .1)
         }
 
-        /* ATS Specifics */
-        .score-gauge {
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
-            background: conic-gradient(var(--success) 0%, #334155 0%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 1.5rem;
-            position: relative;
+        .btn-cyan {
+            background: var(--accent);
+            color: #000
         }
 
-        .score-gauge::before {
-            content: "";
-            position: absolute;
-            width: 120px;
-            height: 120px;
-            background-color: var(--card-bg);
-            border-radius: 50%;
+        /* JOB SEARCH TAB */
+        .search-form {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem
         }
 
-        .score-value {
-            position: relative;
-            font-size: 2.5rem;
-            font-weight: 700;
-            color: var(--text-main);
+        @media(max-width:600px) {
+            .search-form {
+                grid-template-columns: 1fr
+            }
         }
 
-        .feedback-item {
-            display: flex;
-            align-items: start;
-            gap: 10px;
-            margin-bottom: 0.8rem;
-            padding: 0.8rem;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 0.5rem;
+        .form-group {
+            margin-bottom: 1rem
         }
 
-        .feedback-item.success ion-icon {
-            color: var(--success);
+        .form-group label {
+            display: block;
+            font-size: .82rem;
+            color: var(--muted);
+            margin-bottom: .4rem
         }
 
-        .feedback-item.warning ion-icon {
-            color: var(--warning);
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            background: var(--card2);
+            border: 1px solid var(--border);
+            border-radius: .6rem;
+            padding: .7rem .9rem;
+            color: var(--txt);
+            font-size: .875rem;
+            transition: .2s;
+            font-family: inherit
         }
 
-        /* Job Search Grid */
+        .form-group input:focus,
+        .form-group textarea:focus {
+            border-color: var(--primary);
+            outline: none
+        }
+
         .search-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1rem;
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            gap: .75rem;
+            margin-top: 1.5rem
         }
 
         .search-card {
-            background: rgba(255, 255, 255, 0.05);
-            padding: 1.5rem;
-            border-radius: 0.5rem;
+            background: var(--card2);
+            border: 1px solid var(--border);
+            border-radius: .75rem;
+            padding: 1.25rem;
             text-align: center;
             text-decoration: none;
-            color: white;
-            transition: transform 0.2s;
-            border: 1px solid transparent;
+            color: var(--txt);
+            transition: .2s
         }
 
         .search-card:hover {
-            transform: translateY(-5px);
             border-color: var(--primary);
+            transform: translateY(-3px)
         }
 
-        .search-icon {
-            font-size: 2rem;
-            margin-bottom: 0.5rem;
+        .search-card ion-icon {
+            font-size: 1.8rem;
             color: var(--primary);
+            display: block;
+            margin-bottom: .5rem
         }
 
-        .tag {
-            display: inline-block;
-            background: rgba(59, 130, 246, 0.2);
-            color: var(--primary);
-            padding: 0.2rem 0.6rem;
-            border-radius: 1rem;
-            font-size: 0.85rem;
-            margin: 0 0.2rem 0.2rem 0;
+        /* MISC */
+        .hidden {
+            display: none !important
         }
 
-        .download-box {
-            margin-top: 3rem;
-            text-align: center;
-            padding: 2rem;
-            border-top: 1px solid #334155;
+        .loading-bar {
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            width: 0;
+            border-radius: 2px;
+            transition: width .4s
+        }
+
+        .section-sub {
+            font-size: .82rem;
+            color: var(--muted);
+            margin-bottom: 1rem
+        }
+
+        .divider {
+            border: none;
+            border-top: 1px solid var(--border);
+            margin: 1rem 0
         }
     </style>
 </head>
 
 <body>
-
     <nav class="navbar">
-        <div class="nav-container">
-            <a href="../../index.html" class="nav-brand">
-                <ion-icon name="briefcase"></ion-icon>
-                Adish Yermal
-            </a>
+        <div class="nav-c">
+            <a href="../../index.html" class="nav-brand"><ion-icon name="briefcase"></ion-icon>Adish Yermal</a>
             <div class="nav-menu">
                 <a href="../../index.html#home" class="nav-link">Home</a>
                 <a href="../../index.html#portfolio" class="nav-link">Portfolio</a>
@@ -328,360 +746,504 @@
             </div>
         </div>
     </nav>
-
-    <div class="container">
-        <a href="../../index.html"
-            style="display: inline-flex; align-items: center; gap: 8px; color: var(--text-muted); text-decoration: none; margin-bottom: 2rem; font-weight: 500; transition: color 0.3s;"
-            onmouseover="this.style.color='#f8fafc'" onmouseout="this.style.color='#94a3b8'">
-            <ion-icon name="arrow-back"></ion-icon> Back to Portfolio
-        </a>
-
-        <header style="text-align: center; margin-bottom: 3rem;">
+    <div class="page">
+        <a href="../../index.html" class="back-link"><ion-icon name="arrow-back"></ion-icon>Back to Portfolio</a>
+        <header style="text-align:center;margin-bottom:2rem">
             <h1
-                style="font-size: 2.5rem; margin-bottom: 0.5rem; background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">
+                style="font-size:2.3rem;font-weight:700;background:linear-gradient(135deg,#6366f1,#22d3ee);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:.4rem">
                 Job Hunter Pro</h1>
-            <p style="color: var(--text-muted); font-size: 1.1rem;">Intelligent ATS Scanner & Job Search Engine</p>
+            <p class="section-sub" style="font-size:1rem">Advanced ATS Resume Analyzer &amp; Intelligent Job Search
+                Engine</p>
         </header>
 
-        <div class="tabs">
-            <button class="tab-btn active" onclick="switchTab('ats')">ATS Scanner</button>
-            <button class="tab-btn" onclick="switchTab('search')">Job Search</button>
+        <!-- TOP TABS -->
+        <div class="top-tabs">
+            <button class="top-tab active" onclick="switchTab('ats',this)">📄 ATS Scanner</button>
+            <button class="top-tab" onclick="switchTab('search',this)">🔍 Job Search</button>
         </div>
 
-        <!-- ATS SCANNER SECTION -->
-        <div id="ats" class="tab-content active">
-            <div class="card">
-                <h2>Resume Analysis</h2>
-                <p>Upload your PDF resume to check its parseability and get instant feedback.</p>
-                <div class="input-group">
-                    <input type="file" id="resumeInput" accept="application/pdf" onchange="analyzeResume()">
-                </div>
+        <!-- ========== ATS TAB ========== -->
+        <div id="tab-ats" class="tab-pane active">
+            <div class="panel-grid">
 
-                <div id="atsResults" style="display: none;">
-                    <div style="display: flex; flex-wrap: wrap; gap: 2rem;">
-                        <div style="flex: 1; min-width: 250px; text-align: center;">
-                            <div class="score-gauge" id="scoreGauge">
-                                <span class="score-value" id="scoreValue">0</span>
-                            </div>
-                            <h3>ATS Capability Score</h3>
-                            <p>Based on keywords & structure</p>
+                <!-- LEFT: JD INPUT -->
+                <div class="jd-panel">
+                    <div class="card">
+                        <div class="card-title"><ion-icon name="document-text"></ion-icon>Job Description <span
+                                class="jd-badge">Optional</span></div>
+                        <p class="section-sub">Paste a job description to get match % and missing keywords.</p>
+                        <div class="form-group">
+                            <textarea class="jd-input" id="jdInput"
+                                placeholder="Paste job description here…&#10;&#10;e.g. We are looking for a Python developer with 3+ years experience in Django, REST APIs, AWS…"></textarea>
                         </div>
-                        <div style="flex: 2; min-width: 300px;">
-                            <h3>Feedback</h3>
-                            <div id="feedbackList"></div>
-
-                            <h3 style="margin-top: 1.5rem;">Detected Skills</h3>
-                            <div id="skillsList"></div>
-
-                            <div id="suggestionsBox" style="margin-top: 1.5rem; display: none;">
-                                <h3 style="color: #f59e0b; font-size: 1rem;">💡 Recommended Skills to Add</h3>
-                                <div id="suggestionsList" style="display: flex; flex-wrap: wrap; gap: 5px;"></div>
-                            </div>
+                        <div style="display:flex;gap:.5rem;flex-wrap:wrap">
+                            <button class="btn btn-sm" onclick="analyzeJD()"><ion-icon name="flash"></ion-icon>Analyze
+                                Match</button>
+                            <button class="btn btn-sm btn-outline"
+                                onclick="document.getElementById('jdInput').value=''">Clear</button>
                         </div>
                     </div>
+                    <!-- JD MATCH RESULTS (shown after analysis) -->
+                    <div class="card" id="jdMatchCard" style="display:none">
+                        <div class="card-title"><ion-icon name="git-compare"></ion-icon>JD Match</div>
+                        <div class="jd-match-box" id="jdMatchBox" style="display:block">
+                            <div class="jd-match-pct" id="jdMatchPct">—</div>
+                            <div class="jd-match-label">keyword match with job description</div>
+                            <div style="font-size:.78rem;color:var(--muted);margin-bottom:.5rem">✅ Matched Keywords
+                            </div>
+                            <div class="keyword-row" id="jdMatchedKw"></div>
+                            <hr class="divider">
+                            <div style="font-size:.78rem;color:var(--muted);margin-bottom:.5rem">❌ Missing Keywords
+                            </div>
+                            <div class="keyword-row" id="jdMissingKw"></div>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
 
-        <!-- JOB SEARCH SECTION -->
-        <div id="search" class="tab-content">
+                <!-- CENTER: UPLOAD + SCORE -->
+                <div>
+                    <div class="card">
+                        <div class="card-title"><ion-icon name="cloud-upload"></ion-icon>Upload Resume</div>
+                        <div class="upload-zone" id="uploadZone" ondragover="handleDrag(event,true)"
+                            ondragleave="handleDrag(event,false)" ondrop="handleDrop(event)">
+                            <input type="file" id="resumeFile" accept="application/pdf" onchange="analyzeResume()">
+                            <ion-icon name="document-attach"></ion-icon>
+                            <div style="font-weight:600;margin-bottom:.25rem">Drop PDF resume here</div>
+                            <div style="font-size:.8rem;color:var(--muted)">or click to browse</div>
+                        </div>
+                        <div class="loading-bar" id="loadBar"></div>
+                    </div>
+
+                    <!-- SCORE -->
+                    <div class="card" id="scoreCard" style="display:none">
+                        <div class="score-wrap">
+                            <div class="score-ring" id="scoreRing">
+                                <span class="score-num" id="scoreNum">0</span>
+                            </div>
+                            <div style="font-weight:600;font-size:1rem">Overall ATS Score</div>
+                            <div class="score-label" id="scoreGrade">Analyzing…</div>
+                        </div>
+
+                        <h3
+                            style="font-size:.85rem;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:.75rem">
+                            Parameter Breakdown</h3>
+                        <div class="params-grid" id="paramsGrid"></div>
+
+                        <hr class="divider">
+                        <h3
+                            style="font-size:.85rem;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:.5rem">
+                            Detected Skills</h3>
+                        <div class="skills-wrap" id="skillsWrap"></div>
+                    </div>
+                </div>
+
+                <!-- RIGHT: IMPROVEMENTS -->
+                <div>
+                    <div class="card" id="improvCard" style="display:none">
+                        <div class="card-title"><ion-icon name="bulb"></ion-icon>Improvements</div>
+                        <div class="improve-list" id="improveList"></div>
+                    </div>
+                    <div class="card" id="suggestCard" style="display:none">
+                        <div class="card-title" style="color:var(--warn)"><ion-icon name="add-circle"></ion-icon>Skills
+                            to Add</div>
+                        <div class="skills-wrap" id="suggestWrap"></div>
+                    </div>
+                </div>
+            </div><!-- /panel-grid -->
+
+            <!-- KEYWORD TAB (bottom) -->
+            <div class="kw-tab-wrap card" id="kwTabWrap">
+                <div class="card-title"><ion-icon name="pricetags"></ion-icon>Keyword Intelligence</div>
+                <div class="kw-tab-head">
+                    <button class="kw-tab-btn active" onclick="switchKwTab('all',this)">All Keywords</button>
+                    <button class="kw-tab-btn" onclick="switchKwTab('skills',this)">Skills</button>
+                    <button class="kw-tab-btn" onclick="switchKwTab('verbs',this)">Action Verbs</button>
+                    <button class="kw-tab-btn" onclick="switchKwTab('jdkw',this)">JD Keywords</button>
+                </div>
+                <div class="kw-panel active" id="kw-all"></div>
+                <div class="kw-panel" id="kw-skills"></div>
+                <div class="kw-panel" id="kw-verbs"></div>
+                <div class="kw-panel" id="kw-jdkw"></div>
+            </div>
+
+            <!-- PDF PREVIEW (bottom) -->
+            <div class="preview-wrap card" id="previewWrap">
+                <div class="preview-head">
+                    <div class="card-title" style="margin-bottom:0"><ion-icon name="eye"></ion-icon>Resume Preview</div>
+                    <button class="btn btn-sm btn-outline" onclick="togglePreview()">Hide</button>
+                </div>
+                <div class="preview-strip" id="previewStrip"></div>
+            </div>
+        </div><!-- /ats tab -->
+
+        <!-- ========== SEARCH TAB ========== -->
+        <div id="tab-search" class="tab-pane">
             <div class="card">
-                <h2>Intelligent Job Search</h2>
-                <p>Generate optimized Boolean search links for major platforms.</p>
-
-                <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
-                    <div style="flex: 1;">
-                        <label>Job Role</label>
-                        <input type="text" id="jobRole" placeholder="e.g. Python Developer" value="Software Developer">
-                    </div>
-                    <div style="flex: 1;">
-                        <label>Location</label>
-                        <input type="text" id="jobLocation" placeholder="e.g. Remote, Bangalore" value="Remote">
-                    </div>
+                <div class="card-title"><ion-icon name="search"></ion-icon>Intelligent Job Search</div>
+                <p class="section-sub">Generate optimized Boolean search links for major platforms.</p>
+                <div class="search-form">
+                    <div class="form-group"><label>Job Role</label><input type="text" id="jobRole"
+                            placeholder="e.g. Python Developer" value="Software Developer"></div>
+                    <div class="form-group"><label>Location</label><input type="text" id="jobLoc"
+                            placeholder="e.g. Remote, Bangalore" value="Remote"></div>
                 </div>
-                <div class="input-group" style="margin-top: 1rem;">
-                    <label>Skills (Auto-filled from ATS or Manual)</label>
-                    <input type="text" id="jobSkills" placeholder="Python, Django, AWS">
-                </div>
-
-                <button class="btn" onclick="generateLinks()">
-                    <ion-icon name="search"></ion-icon> Find Jobs
-                </button>
-
-                <div id="linkResults" style="margin-top: 2rem; display: none;">
-                    <h3>One-Click Search Links</h3>
-                    <div class="search-grid" id="searchGrid">
-                        <!-- Links generated here -->
-                    </div>
+                <div class="form-group"><label>Skills (comma-separated)</label><input type="text" id="jobSkills"
+                        placeholder="Python, Django, AWS"></div>
+                <button class="btn" onclick="generateLinks()"><ion-icon name="search"></ion-icon>Find Jobs</button>
+                <div id="linkResults" style="display:none">
+                    <h3 style="margin:1.5rem 0 .75rem;font-size:.9rem;color:var(--muted)">One-Click Search Links</h3>
+                    <div class="search-grid" id="searchGrid"></div>
                 </div>
             </div>
+            <div style="text-align:center;padding:2rem;border-top:1px solid var(--border)">
+                <h3 style="margin-bottom:.5rem">Want the full offline power?</h3>
+                <p class="section-sub">Advanced NLP (spaCy), local file analysis and batch processing.</p>
+                <a href="https://github.com/the-AY" class="btn btn-outline" target="_blank"><ion-icon
+                        name="logo-github"></ion-icon>View Source</a>
+                <a href="JobHunter_Source.zip" class="btn btn-outline" download style="margin-left:.5rem"><ion-icon
+                        name="download-outline"></ion-icon>Download ZIP</a>
+            </div>
         </div>
-
-        <!-- OFFLINE APP TEASER -->
-        <div class="download-box">
-            <h3>Want more power?</h3>
-            <p>Get the offline Python app with advanced NLP features (Spacy), local file analysis, and more.</p>
-            <a href="https://github.com/the-AY" class="btn btn-outline" target="_blank">
-                <ion-icon name="logo-github"></ion-icon> View Project Source
-            </a>
-            <a href="JobHunter_Source.zip" class="btn btn-outline" download>
-                <ion-icon name="download-outline"></ion-icon> Download Offline App (ZIP)
-            </a>
-        </div>
-
-    </div>
+    </div><!-- /page -->
 
     <script>
-        // --- TAB LOGIC ---
-        function switchTab(tabId) {
-            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
-            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
-            document.getElementById(tabId).classList.add('active');
-            document.querySelector(`button[onclick="switchTab('${tabId}')"]`).classList.add('active');
+        // ─── Tab helpers ───
+        function switchTab(id, el) {
+            document.querySelectorAll('.tab-pane').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.top-tab').forEach(t => t.classList.remove('active'));
+            document.getElementById('tab-' + id).classList.add('active');
+            el.classList.add('active');
         }
-
-        // --- SKILL / KEYWORD DB (Simulated) ---
-        const commonSkills = [
-            // Programming Languages
-            "python", "javascript", "java", "c++", "c#", "ruby", "php", "swift", "kotlin", "go", "rust", "typescript",
-            // Web
-            "html", "css", "react", "angular", "vue", "node.js", "django", "flask", "fastapi", "spring boot", "asp.net",
-            // Data & AI
-            "sql", "mysql", "postgresql", "mongodb", "pandas", "numpy", "pytorch", "tensorflow", "scikit-learn", "machine learning", "deep learning", "nlp",
-            // Cloud & DevOps
-            "aws", "azure", "gcp", "docker", "kubernetes", "jenkins", "git", "ci/cd", "terraform", "ansible",
-            // Soft Skills
-            "communication", "leadership", "teamwork", "agile", "scrum", "problem solving", "time management"
+        function switchKwTab(id, el) {
+            document.querySelectorAll('.kw-tab-btn').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.kw-panel').forEach(p => p.classList.remove('active'));
+            el.classList.add('active');
+            document.getElementById('kw-' + id).classList.add('active');
+        }
+        // ─── Drag/drop ───
+        function handleDrag(e, on) { e.preventDefault(); document.getElementById('uploadZone').classList.toggle('drag', on); }
+        function handleDrop(e) {
+            e.preventDefault();
+            document.getElementById('uploadZone').classList.remove('drag');
+            const f = e.dataTransfer.files[0];
+            if (f && f.type === 'application/pdf') { processFile(f); }
+        }
+        // ─── Skill/Verb DB ───
+        const SKILLS = [
+            "python", "javascript", "typescript", "java", "c++", "c#", "ruby", "php", "swift", "kotlin", "go", "rust", "r",
+            "html", "css", "react", "angular", "vue", "next.js", "node.js", "django", "flask", "fastapi", "spring boot", "asp.net", "laravel",
+            "sql", "mysql", "postgresql", "mongodb", "redis", "elasticsearch", "firebase", "dynamodb", "cassandra",
+            "aws", "azure", "gcp", "docker", "kubernetes", "jenkins", "terraform", "ansible", "git", "ci/cd", "linux",
+            "machine learning", "deep learning", "nlp", "computer vision", "tensorflow", "pytorch", "scikit-learn", "pandas", "numpy",
+            "rest api", "graphql", "microservices", "agile", "scrum", "jira", "figma", "tableau", "power bi",
+            "communication", "leadership", "teamwork", "problem solving", "time management", "critical thinking"
         ];
-
+        const ACTION_VERBS = [
+            "achieved", "architected", "automated", "built", "collaborated", "conceptualized", "created", "decreased",
+            "delivered", "designed", "developed", "directed", "drove", "engineered", "established", "executed", "expanded",
+            "implemented", "improved", "increased", "initiated", "launched", "led", "managed", "mentored", "migrated",
+            "optimized", "orchestrated", "oversaw", "pioneered", "reduced", "resolved", "scaled", "spearheaded", "streamlined",
+            "transformed", "upgraded", "validated", "founded", "deployed"
+        ];
+        const PERSONAL_PRONOUNS = ["\\bi\\b", "\\bme\\b", "\\bmy\\b", "\\bmyself\\b", "\\bwe\\b", "\\bour\\b"];
+        const COMMON_TYPOS = { "recieve": "receive", "occured": "occurred", "seperately": "separately", "accomodate": "accommodate", "begining": "beginning", "definately": "definitely", "occurance": "occurrence", "untill": "until", "recieved": "received", "enviroment": "environment" };
+        const STOP_WORDS = new Set(["the", "a", "an", "and", "or", "but", "in", "on", "at", "to", "for", "of", "with", "is", "are", "was", "were", "be", "been", "being", "have", "has", "had", "do", "does", "did", "will", "would", "could", "should", "may", "might", "shall", "can", "need", "dare"]);
+        // ─── Global state ───
         let extractedSkills = [];
-
-        // --- ATS LOGIC (Client-Side PDF) ---
+        let allKeywords = {};
+        let verbsFound = [];
+        let jdKeywords = [];
+        let currentFile = null;
+        // ─── Main flow ───
         async function analyzeResume() {
-            const fileInput = document.getElementById('resumeInput');
-            if (!fileInput.files[0]) return;
-
-            const file = fileInput.files[0];
-            const reader = new FileReader();
-
-            reader.onload = async function () {
-                const typedarray = new Uint8Array(this.result);
-
-                try {
-                    const pdf = await pdfjsLib.getDocument(typedarray).promise;
-                    let fullText = "";
-
-                    for (let i = 1; i <= pdf.numPages; i++) {
-                        const page = await pdf.getPage(i);
-                        const textContent = await page.getTextContent();
-                        fullText += textContent.items.map(item => item.str).join(" ");
-                    }
-
-                    processText(fullText);
-                } catch (e) {
-                    alert("Error parsing PDF. Please ensure it's a valid PDF file.");
-                    console.error(e);
+            const f = document.getElementById('resumeFile').files[0];
+            if (!f) return;
+            processFile(f);
+        }
+        async function processFile(f) {
+            currentFile = f;
+            setLoadBar(20);
+            try {
+                const arr = await f.arrayBuffer();
+                const pdf = await pdfjsLib.getDocument(new Uint8Array(arr)).promise;
+                setLoadBar(50);
+                let fullText = '';
+                const pageData = [];
+                for (let i = 1; i <= pdf.numPages; i++) {
+                    const pg = await pdf.getPage(i);
+                    const tc = await pg.getTextContent();
+                    const pgText = tc.items.map(it => it.str).join(' ');
+                    fullText += pgText + '\n';
+                    pageData.push({ pg, tc, text: pgText });
                 }
+                setLoadBar(80);
+                // Bold/font analysis from first page
+                let boldChars = 0, totalChars = 0, fontSizes = [];
+                const ops = await pageData[0].pg.getOperatorList();
+                pageData[0].tc.items.forEach(it => {
+                    totalChars += it.str.length;
+                    if (it.fontName && (it.fontName.toLowerCase().includes('bold') || it.fontName.toLowerCase().includes('bd'))) { boldChars += it.str.length; }
+                    if (it.transform && it.transform[3]) { fontSizes.push(Math.abs(it.transform[3])); }
+                });
+                const boldPct = totalChars > 0 ? Math.round(boldChars / totalChars * 100) : 0;
+                const avgFont = fontSizes.length > 0 ? fontSizes.reduce((a, b) => a + b, 0) / fontSizes.length : 0;
+                runAnalysis(fullText, pdf.numPages, boldPct, avgFont);
+                setLoadBar(100);
+                renderPDFPreview(arr, pdf.numPages);
+                setTimeout(() => setLoadBar(0), 600);
+            } catch (err) { alert('Error reading PDF: ' + err.message); setLoadBar(0); }
+        }
+        function setLoadBar(w) { document.getElementById('loadBar').style.width = w + '%'; }
+        // ─── ANALYSIS ENGINE ───
+        function runAnalysis(text, pages, boldPct, avgFont) {
+            const lo = text.toLowerCase();
+            const words = text.split(/\s+/).filter(w => w.length > 1);
+            const loWords = lo.split(/\s+/).filter(w => w.length > 1);
+
+            // 1. Sections
+            const sectionGroups = {
+                "Summary/Objective": ["summary", "objective", "profile", "about"],
+                "Experience": ["experience", "work history", "employment"],
+                "Education": ["education", "academic", "degree", "university", "college"],
+                "Skills": ["skills", "technologies", "competencies", "tech stack"],
+                "Projects": ["projects", "portfolio"],
+                "Certifications": ["certification", "certificate", "certified"],
+                "Awards": ["award", "achievement", "honor", "recognition"]
             };
+            let foundSections = [], missingSections = [];
+            for (const [s, kws] of Object.entries(sectionGroups)) {
+                if (kws.some(k => lo.includes(k))) foundSections.push(s);
+                else missingSections.push(s);
+            }
+            const sectionScore = Math.round((foundSections.length / 7) * 18);
 
-            reader.readAsArrayBuffer(file);
+            // 2. Skills
+            extractedSkills = SKILLS.filter(s => { const p = new RegExp('\\b' + s.replace(/[.+]/g, '\\$&') + '\\b'); return p.test(lo); });
+            const skillScore = Math.min(extractedSkills.length * 1.5, 15);
+
+            // 3. Action verbs
+            verbsFound = ACTION_VERBS.filter(v => new RegExp('\\b' + v + 'ed?\\b').test(lo));
+            const verbScore = verbsFound.length >= 8 ? 12 : verbsFound.length >= 5 ? 9 : verbsFound.length >= 3 ? 6 : verbsFound.length > 0 ? 3 : 0;
+
+            // 4. Quantification
+            const quantMatches = (text.match(/\d+\s*%|\d+x\s|\$\s*\d+|\d+\s*(million|k|thousand|lakh)/gi) || []);
+            const quantScore = quantMatches.length >= 5 ? 10 : quantMatches.length >= 3 ? 8 : quantMatches.length >= 1 ? 5 : 0;
+
+            // 5. Spelling/grammar
+            let typoCount = 0, passiveCount = (text.match(/\b(was|were|is|are|been)\s+(by\b|\w+ed\b)/gi) || []).length;
+            for (const [typo] of Object.entries(COMMON_TYPOS)) { if (lo.includes(typo)) typoCount++; }
+            const spellScore = typoCount === 0 && passiveCount <= 2 ? 8 : typoCount <= 2 && passiveCount <= 4 ? 5 : 2;
+
+            // 6. Repetition
+            const freq = {};
+            loWords.forEach(w => { const clean = w.replace(/[^a-z]/g, ''); if (clean.length > 3 && !STOP_WORDS.has(clean)) freq[clean] = (freq[clean] || 0) + 1; });
+            const repeated = Object.entries(freq).filter(([, c]) => c > 5).map(([w]) => w);
+            const repScore = repeated.length === 0 ? 5 : repeated.length <= 2 ? 3 : 1;
+
+            // 7. Personal pronouns
+            let pronounCount = 0;
+            PERSONAL_PRONOUNS.forEach(p => { const m = lo.match(new RegExp(p, 'g')); if (m) pronounCount += m.length; });
+            const pronounScore = pronounCount === 0 ? 5 : pronounCount <= 2 ? 3 : 1;
+
+            // 8. Font size
+            const fontScore = avgFont === 0 ? 3 : avgFont >= 9 && avgFont <= 12 ? 7 : avgFont >= 8 ? 5 : 3;
+
+            // 9. Pages
+            const pageScore = pages === 1 ? 8 : pages === 2 ? 6 : pages === 3 ? 3 : 1;
+
+            // 10. Bold %
+            const boldScore = boldPct >= 5 && boldPct <= 25 ? 5 : boldPct > 0 ? 3 : 1;
+
+            // 11. Contact info
+            const hasEmail = /@/.test(text), hasPhone = /(\+?\d[\d\s\-().]{7,})\d/.test(text), hasLinkedIn = /linkedin\.com\/in\//i.test(text), hasGitHub = /github\.com\//i.test(text);
+            const contactScore = (hasEmail ? 3 : 0) + (hasPhone ? 2 : 0) + (hasLinkedIn ? 1 : 0) + (hasGitHub ? 1 : 0);
+
+            // 12. ATS compatibility (no images/tables heuristic via text density)
+            const textDensity = words.length / (pages || 1);
+            const atsScore = textDensity > 100 ? 5 : textDensity > 50 ? 3 : 1;
+
+            const total = Math.min(Math.round(sectionScore + skillScore + verbScore + quantScore + spellScore + repScore + pronounScore + fontScore + pageScore + boldScore + contactScore + atsScore), 100);
+
+            // ── Build keyword frequency map ──
+            allKeywords = {};
+            words.forEach(w => { const c = w.replace(/[^a-zA-Z]/g, '').toLowerCase(); if (c.length > 3 && !STOP_WORDS.has(c)) { allKeywords[c] = (allKeywords[c] || 0) + 1; } });
+
+            // ── Render ──
+            renderScore(total);
+            renderParams([
+                { name: 'Resume Sections', score: sectionScore, max: 18, detail: `${foundSections.length}/7 sections found` },
+                { name: 'Skills', score: Math.round(skillScore), max: 15, detail: `${extractedSkills.length} skills detected` },
+                { name: 'Action Verbs', score: verbScore, max: 12, detail: `${verbsFound.length} strong verbs used` },
+                { name: 'Quantification', score: quantScore, max: 10, detail: `${quantMatches.length} metrics found` },
+                { name: 'Spelling & Grammar', score: spellScore, max: 8, detail: `${typoCount} typos, ${passiveCount} passive voice` },
+                { name: 'Repetition', score: repScore, max: 5, detail: repeated.length ? `Overused: ${repeated.slice(0, 3).join(', ')}` : 'No repetition issues' },
+                { name: 'Personal Pronouns', score: pronounScore, max: 5, detail: `${pronounCount} pronoun(s) detected` },
+                { name: 'Font Size', score: fontScore, max: 7, detail: avgFont ? `~${avgFont.toFixed(0)}pt detected` : 'Could not detect font' },
+                { name: 'Page Count', score: pageScore, max: 8, detail: `${pages} page(s)` },
+                { name: 'Bold Usage', score: boldScore, max: 5, detail: `~${boldPct}% bold text` },
+                { name: 'Contact Info', score: contactScore, max: 7, detail: [hasEmail && 'Email', hasPhone && 'Phone', hasLinkedIn && 'LinkedIn', hasGitHub && 'GitHub'].filter(Boolean).join(', ') || 'Missing contact info' },
+                { name: 'ATS Compatibility', score: atsScore, max: 5, detail: `Text density: ${Math.round(textDensity)} words/page` }
+            ]);
+            renderSkillTags();
+            renderImprovements({ foundSections, missingSections, pronounCount, typoCount, passiveCount, repeated, quantMatches, verbsFound, pages, boldPct, avgFont, hasEmail, hasPhone, hasLinkedIn, hasGitHub, atsScore, extractedSkills });
+            renderKeywordTabs();
+            document.getElementById('kwTabWrap').style.display = 'block';
+            document.getElementById('previewWrap').style.display = 'block';
+            // Update search skills
+            document.getElementById('jobSkills').value = extractedSkills.slice(0, 5).join(', ');
         }
 
-        function processText(text) {
-            const lowerText = text.toLowerCase();
-            document.getElementById('atsResults').style.display = 'block';
-
-            // 1. Skill Extraction
-            extractedSkills = commonSkills.filter(skill => lowerText.includes(skill.toLowerCase()));
-
-            // Skill Suggestions Logic
-            const relatedSkills = {
-                "react": ["Redux", "TypeScript", "Next.js"],
-                "python": ["Django", "Flask", "Pandas"],
-                "java": ["Spring Boot", "Hibernate"],
-                "node.js": ["Express", "MongoDB"],
-                "aws": ["Docker", "Kubernetes", "Terraform"],
-                "sql": ["PostgreSQL", "NoSQL"],
-                "javascript": ["HTML", "CSS", "TypeScript"]
-            };
-
-            let suggestions = new Set();
-            extractedSkills.forEach(skill => {
-                const lowerSkill = skill.toLowerCase();
-                if (relatedSkills[lowerSkill]) {
-                    relatedSkills[lowerSkill].forEach(s => {
-                        if (!extractedSkills.includes(s.toLowerCase()) && !lowerText.includes(s.toLowerCase())) {
-                            suggestions.add(s);
-                        }
-                    });
-                }
-            });
-
-            if (suggestions.size > 0) {
-                document.getElementById('suggestionsBox').style.display = 'block';
-                document.getElementById('suggestionsList').innerHTML = Array.from(suggestions).slice(0, 6).map(s =>
-                    `<span class="tag" style="background: rgba(245, 158, 11, 0.2); color: #f59e0b;">+ ${s}</span>`
-                ).join('');
-            } else {
-                document.getElementById('suggestionsBox').style.display = 'none';
+        function renderScore(s) {
+            document.getElementById('scoreCard').style.display = 'block';
+            document.getElementById('scoreNum').textContent = s;
+            const color = s >= 75 ? '#10b981' : s >= 50 ? '#f59e0b' : '#ef4444';
+            document.getElementById('scoreRing').style.background = `conic-gradient(${color} ${s}%,#1e293b ${s}%)`;
+            document.getElementById('scoreNum').style.color = color;
+            document.getElementById('scoreGrade').textContent = s >= 75 ? 'Excellent – ATS Ready' : s >= 50 ? 'Good – Needs Tweaks' : 'Needs Significant Work';
+        }
+        function renderParams(params) {
+            const grid = document.getElementById('paramsGrid');
+            grid.innerHTML = params.map(p => {
+                const pct = Math.round(p.score / p.max * 100);
+                const cls = pct >= 66 ? 'ok' : pct >= 33 ? 'warn' : 'fail';
+                const color = cls === 'ok' ? '#10b981' : cls === 'warn' ? '#f59e0b' : '#ef4444';
+                return `<div class="param-card">
+      <div class="param-header">
+        <span class="param-name">${p.name}</span>
+        <span class="param-pts ${cls}">${p.score}/${p.max}</span>
+      </div>
+      <div class="param-bar-bg"><div class="param-bar" style="width:${pct}%;background:${color}"></div></div>
+      <div class="param-detail">${p.detail}</div>
+    </div>`;
+            }).join('');
+        }
+        function renderSkillTags() {
+            const s = document.getElementById('skillsWrap');
+            s.innerHTML = extractedSkills.map(sk => `<span class="tag tag-skill">${sk}</span>`).join('') || '<span style="color:var(--muted);font-size:.8rem">No common skills detected</span>';
+            // Suggestions
+            const related = { react: ['Redux', 'Next.js', 'TypeScript'], python: ['Django', 'Flask', 'Pandas'], java: ['Spring Boot', 'Hibernate'], 'node.js': ['Express', 'MongoDB'], aws: ['Docker', 'Kubernetes', 'Terraform'], javascript: ['TypeScript', 'HTML', 'CSS'] };
+            const sugg = new Set();
+            extractedSkills.forEach(sk => { const r = related[sk.toLowerCase()]; if (r) r.forEach(x => { if (!extractedSkills.map(s => s.toLowerCase()).includes(x.toLowerCase())) sugg.add(x); }); });
+            if (sugg.size > 0) {
+                document.getElementById('suggestCard').style.display = 'block';
+                document.getElementById('suggestWrap').innerHTML = Array.from(sugg).slice(0, 8).map(s => `<span class="tag" style="background:rgba(245,158,11,.18);color:#fcd34d">+ ${s}</span>`).join('');
             }
-
-            // Update Search Input with Skills
-            document.getElementById('jobSkills').value = extractedSkills.slice(0, 5).join(", ");
-
-            // 2. Checks
-            const checks = [];
-            let score = 20; // Base score
-
-            // Skills Check
-            if (extractedSkills.length > 5) {
-                score += 30;
-                checks.push({ type: 'success', text: `Great! Found ${extractedSkills.length} relevant skills.` });
-            } else if (extractedSkills.length > 0) {
-                score += 15;
-                checks.push({ type: 'warning', text: `Only found ${extractedSkills.length} skills. Consider adding more.` });
-            } else {
-                checks.push({ type: 'warning', text: "No common technical skills found." });
-            }
-
-            // Action Verbs Check
-            const actionVerbs = ["led", "developed", "created", "managed", "designed", "implemented", "optimized", "achieved"];
-            const foundVerbs = actionVerbs.filter(v => lowerText.includes(v));
-            if (foundVerbs.length > 2) {
-                score += 10;
-                checks.push({ type: 'success', text: `Strong action verbs detected (${foundVerbs.length}).` });
-            } else {
-                checks.push({ type: 'warning', text: "Use more action verbs like 'Led', 'Developed', 'Achieved'." });
-            }
-
-            // Metrics Check
-            if (/\d+%|\$\d+|\d+\+/.test(text)) {
-                score += 10;
-                checks.push({ type: 'success', text: "Quantifiable metrics (%, $) detected." });
-            } else {
-                checks.push({ type: 'warning', text: "Add numbers to quantify your impact (e.g., 'Improved by 20%')." });
-            }
-
-            // Contact Check
-            if (text.includes("@")) {
-                score += 10;
-                checks.push({ type: 'success', text: "Email address detected." });
-            } else {
-                checks.push({ type: 'warning', text: "Email address missing!" });
-            }
-
-            // Section Check (Simple)
-            if (lowerText.includes("experience") || lowerText.includes("work")) {
-                score += 10;
-                checks.push({ type: 'success', text: "Experience section detected." });
-            } else {
-                checks.push({ type: 'warning', text: "Experience section missing." });
-            }
-
-            if (lowerText.includes("education")) {
-                score += 10;
-                checks.push({ type: 'success', text: "Education section detected." });
-            }
-
-            // Render
-            updateGauge(score);
-            renderFeedback(checks);
-            renderSkills(extractedSkills);
+        }
+        function renderImprovements(d) {
+            document.getElementById('improvCard').style.display = 'block';
+            const items = [];
+            if (d.missingSections.length) items.push({ t: 'fail', title: 'Missing Sections', sub: `Add: ${d.missingSections.join(', ')}` });
+            else items.push({ t: 'ok', title: 'All Key Sections Present', sub: 'Resume has every important section.' });
+            if (d.pronounCount > 0) items.push({ t: 'warn', title: 'Remove Personal Pronouns', sub: `Found ${d.pronounCount} pronoun(s) (I/me/my). Use third-person tone.` });
+            else items.push({ t: 'ok', title: 'No Personal Pronouns', sub: 'Great — resume reads professionally.' });
+            if (d.typoCount > 0) items.push({ t: 'warn', title: 'Fix Spelling Errors', sub: `${d.typoCount} common typo(s) detected. Proofread carefully.` });
+            if (d.passiveCount > 2) items.push({ t: 'warn', title: 'Reduce Passive Voice', sub: `${d.passiveCount} passive constructions. Use active verbs.` });
+            if (d.repeated.length) items.push({ t: 'warn', title: 'Word Repetition', sub: `Overused words: ${d.repeated.slice(0, 4).join(', ')}. Use synonyms.` });
+            if (d.quantMatches.length < 3) items.push({ t: 'fail', title: 'Add Quantified Achievements', sub: 'Include numbers: "improved speed by 40%", "managed team of 8".' });
+            else items.push({ t: 'ok', title: 'Good Use of Metrics', sub: `${d.quantMatches.length} quantified achievements found.` });
+            if (d.verbsFound.length < 5) items.push({ t: 'warn', title: 'Strengthen Action Verbs', sub: `Only ${d.verbsFound.length} strong verbs. Use: Led, Architected, Optimized, Deployed.` });
+            else items.push({ t: 'ok', title: 'Strong Action Verbs', sub: `${d.verbsFound.length} impactful verbs detected.` });
+            if (d.pages > 2) items.push({ t: 'warn', title: 'Resume Too Long', sub: `${d.pages} pages detected. Aim for 1-2 pages max.` });
+            else if (d.pages === 1) items.push({ t: 'ok', title: 'Ideal Resume Length', sub: '1 page — perfect for most roles.' });
+            if (!d.hasLinkedIn) items.push({ t: 'warn', title: 'Add LinkedIn URL', sub: 'Recruiters check LinkedIn — include your profile link.' });
+            if (!d.hasGitHub && d.extractedSkills.some(s => ['python', 'javascript', 'java', 'react', 'node.js'].includes(s)))
+                items.push({ t: 'warn', title: 'Add GitHub Profile', sub: 'Tech roles benefit from a GitHub portfolio link.' });
+            if (d.boldPct > 30) items.push({ t: 'warn', title: 'Too Much Bold Text', sub: `${d.boldPct}% bold. Use bold sparingly for emphasis only.` });
+            document.getElementById('improveList').innerHTML = items.map(i => `
+    <div class="improve-item">
+      <ion-icon class="improve-icon ${i.t}" name="${i.t === 'ok' ? 'checkmark-circle' : 'alert-circle'}"></ion-icon>
+      <div class="improve-text"><div class="improve-title">${i.title}</div><div class="improve-sub">${i.sub}</div></div>
+    </div>`).join('');
+        }
+        function renderKeywordTabs() {
+            // All keywords (top 30 by freq)
+            const top = Object.entries(allKeywords).sort((a, b) => b[1] - a[1]).slice(0, 30);
+            document.getElementById('kw-all').innerHTML = top.map(([w, c]) => `<span class="tag-kw-large">${w}<span class="kw-freq">${c}</span></span>`).join('');
+            // Skills
+            document.getElementById('kw-skills').innerHTML = extractedSkills.map(s => `<span class="tag-kw-large">${s}<span class="kw-freq">${allKeywords[s.toLowerCase()] || 1}</span></span>`).join('') || '<span style="color:var(--muted);font-size:.8rem">No skills detected</span>';
+            // Verbs
+            document.getElementById('kw-verbs').innerHTML = verbsFound.map(v => `<span class="tag-kw-large" style="background:rgba(99,102,241,.12);color:#a5b4fc">${v}<span class="kw-freq">${allKeywords[v] || 1}</span></span>`).join('') || '<span style="color:var(--muted);font-size:.8rem">No action verbs detected</span>';
+            // JD keywords placeholder
+            document.getElementById('kw-jdkw').innerHTML = '<span style="color:var(--muted);font-size:.8rem">Paste a job description on the left and click Analyze Match.</span>';
         }
 
-        function updateGauge(score) {
-            const gauge = document.getElementById('scoreGauge');
-            const value = document.getElementById('scoreValue');
-            value.innerText = score;
-            let color = score > 70 ? '#22c55e' : (score > 40 ? '#f59e0b' : '#ef4444');
-            gauge.style.background = `conic-gradient(${color} ${score}%, #334155 ${score}%)`;
+        // ─── JD ANALYSIS ───
+        function analyzeJD() {
+            const jdText = document.getElementById('jdInput').value.trim();
+            if (!jdText) { alert('Please paste a job description in the left panel.'); return; }
+            if (!extractedSkills.length && !verbsFound.length) { alert('Please upload your resume first.'); return; }
+            const jdLo = jdText.toLowerCase();
+            const jdWords = jdLo.split(/\s+/).filter(w => w.length > 3 && !STOP_WORDS.has(w.replace(/[^a-z]/g, '')));
+            // Extract JD noun phrases & tech terms
+            jdKeywords = [...new Set([...SKILLS.filter(s => jdLo.includes(s)), ...jdWords.map(w => w.replace(/[^a-z]/g, '')).filter(w => w.length > 3 && !STOP_WORDS.has(w)).slice(0, 20)])];
+            const resumeLo = Object.keys(allKeywords).join(' ');
+            const matched = jdKeywords.filter(k => resumeLo.includes(k));
+            const missing = jdKeywords.filter(k => !resumeLo.includes(k) && k.length > 3);
+            const pct = jdKeywords.length > 0 ? Math.round(matched.length / jdKeywords.length * 100) : 0;
+            document.getElementById('jdMatchCard').style.display = 'block';
+            document.getElementById('jdMatchPct').textContent = pct + '%';
+            document.getElementById('jdMatchedKw').innerHTML = matched.slice(0, 12).map(k => `<span class="tag tag-match">${k}</span>`).join('');
+            document.getElementById('jdMissingKw').innerHTML = missing.slice(0, 12).map(k => `<span class="tag tag-miss">${k}</span>`).join('');
+            // Update JD tab
+            document.getElementById('kw-jdkw').innerHTML = [
+                `<div style="width:100%;margin-bottom:.5rem"><span style="font-size:.78rem;color:var(--muted)">✅ ${matched.length} matched&nbsp;&nbsp;❌ ${missing.length} missing&nbsp;&nbsp;📊 ${pct}% match</span></div>`,
+                ...matched.map(k => `<span class="tag-kw-large" style="background:rgba(16,185,129,.15);color:#6ee7b7">${k}</span>`),
+                ...missing.slice(0, 10).map(k => `<span class="tag-kw-large" style="background:rgba(239,68,68,.12);color:#fca5a5">${k} ✗</span>`)
+            ].join('');
         }
 
-        function renderFeedback(checks) {
-            const container = document.getElementById('feedbackList');
-            container.innerHTML = checks.map(c => `
-                <div class="feedback-item ${c.type}">
-                    <ion-icon name="${c.type === 'success' ? 'checkmark-circle' : 'alert-circle'}"></ion-icon>
-                    <span>${c.text}</span>
-                </div>
-            `).join('');
+        // ─── PDF PREVIEW ───
+        async function renderPDFPreview(arr, numPages) {
+            const strip = document.getElementById('previewStrip');
+            strip.innerHTML = '';
+            const pdf = await pdfjsLib.getDocument(new Uint8Array(arr)).promise;
+            for (let i = 1; i <= Math.min(numPages, 4); i++) {
+                const pg = await pdf.getPage(i);
+                const vp = pg.getViewport({ scale: 0.6 });
+                const cv = document.createElement('canvas');
+                cv.width = vp.width; cv.height = vp.height;
+                await pg.render({ canvasContext: cv.getContext('2d'), viewport: vp }).promise;
+                strip.appendChild(cv);
+            }
+        }
+        function togglePreview() {
+            const w = document.getElementById('previewWrap');
+            w.style.display = w.style.display === 'none' ? 'block' : 'none';
         }
 
-        function renderSkills(skills) {
-            document.getElementById('skillsList').innerHTML = skills.map(s => `
-                <span class="tag">${s}</span>
-            `).join('');
-        }
-
-        // --- JOB SEARCH LOGIC ---
+        // ─── JOB SEARCH ───
         function generateLinks() {
             const role = document.getElementById('jobRole').value;
-            const location = document.getElementById('jobLocation').value;
-            const skills = document.getElementById('jobSkills').value.split(',').map(s => s.trim()).filter(s => s);
-
-            if (!role) { alert("Please enter a job role"); return; }
-
-            const skillQuery = skills.length > 0 ? `(${skills.map(s => `"${s}"`).join(" OR ")})` : "";
-            const fullQuery = encodeURIComponent(`"${role}" ${skillQuery}`);
-            const locQuery = encodeURIComponent(location);
-
+            const loc = document.getElementById('jobLoc').value;
+            const skills = document.getElementById('jobSkills').value.split(',').map(s => s.trim()).filter(Boolean);
+            if (!role) { alert('Enter a job role.'); return; }
+            const sq = skills.length ? `(${skills.map(s => `"${s}"`).join(' OR ')})` : '';
+            const fq = encodeURIComponent(`"${role}" ${sq}`);
+            const lq = encodeURIComponent(loc);
             const links = [
-                {
-                    name: "LinkedIn",
-                    icon: "logo-linkedin",
-                    url: `https://www.linkedin.com/jobs/search/?keywords=${fullQuery}&location=${locQuery}`
-                },
-                {
-                    name: "Google Jobs",
-                    icon: "logo-google",
-                    url: `https://www.google.com/search?q=${role} ${skills.join(" ")} jobs in ${location}&ibp=htl;jobs`
-                },
-                {
-                    name: "Indeed",
-                    icon: "briefcase",
-                    url: `https://www.indeed.com/jobs?q=${fullQuery}&l=${locQuery}`
-                },
-                {
-                    name: "Naukri",
-                    icon: "search",
-                    url: `https://www.naukri.com/${role.replace(/ /g, '-')}-jobs-in-${location.toLowerCase().replace(/ /g, '-')}`
-                }
+                { name: 'LinkedIn', icon: 'logo-linkedin', url: `https://www.linkedin.com/jobs/search/?keywords=${fq}&location=${lq}` },
+                { name: 'Google Jobs', icon: 'logo-google', url: `https://www.google.com/search?q=${encodeURIComponent(role + ' ' + skills.join(' ') + ' jobs in ' + loc)}&ibp=htl;jobs` },
+                { name: 'Indeed', icon: 'briefcase', url: `https://www.indeed.com/jobs?q=${fq}&l=${lq}` },
+                { name: 'Naukri', icon: 'search', url: `https://www.naukri.com/${role.replace(/ /g, '-').toLowerCase()}-jobs-in-${loc.toLowerCase().replace(/ /g, '-')}` },
+                { name: 'AngelList', icon: 'rocket', url: `https://angel.co/jobs?query=${encodeURIComponent(role)}` },
+                { name: 'Glassdoor', icon: 'star', url: `https://www.glassdoor.com/Job/jobs.htm?sc.keyword=${fq}&locT=C&locId=1147401` }
             ];
-
             document.getElementById('linkResults').style.display = 'block';
-            document.getElementById('searchGrid').innerHTML = links.map(link => `
-                <a href="${link.url}" target="_blank" class="search-card">
-                    <div class="search-icon"><ion-icon name="${link.icon}"></ion-icon></div>
-                    <h3>${link.name}</h3>
-                    <p>Click to Search</p>
-                </a>
-            `).join('');
-
-            // Add Excel Tracker Download
-            addTrackerDownload(role, links);
-        }
-
-        function addTrackerDownload(role, links) {
-            const existingBtn = document.getElementById('trackerBtn');
-            if (existingBtn) existingBtn.remove();
-
-            const csvContent = "data:text/csv;charset=utf-8,"
-                + "Platform,Search Link,Status,Date Applied,Notes\n"
-                + links.map(l => `${l.name},${l.url},To Apply,,`).join("\n");
-
-            const encodedUri = encodeURI(csvContent);
-            const linkBox = document.getElementById('linkResults');
-
-            const downBtn = document.createElement('a');
-            downBtn.id = 'trackerBtn';
-            downBtn.className = 'btn';
-            downBtn.style.marginTop = '2rem';
-            downBtn.style.backgroundColor = '#10b981'; // Green for excel/sheets
-            downBtn.setAttribute("href", encodedUri);
-            downBtn.setAttribute("download", `Job_Search_Tracker_${role}.csv`);
-            downBtn.innerHTML = '<ion-icon name="grid-outline"></ion-icon> Download Search Tracking Sheet (Excel)';
-
-            linkBox.appendChild(downBtn);
+            document.getElementById('searchGrid').innerHTML = links.map(l => `
+    <a href="${l.url}" target="_blank" class="search-card">
+      <ion-icon name="${l.icon}"></ion-icon>
+      <h3 style="font-size:.9rem;margin-bottom:.25rem">${l.name}</h3>
+      <p style="font-size:.75rem;color:var(--muted)">Search →</p>
+    </a>`).join('');
+            // CSV tracker
+            const csv = 'data:text/csv;charset=utf-8,Platform,Search Link,Status,Date Applied,Notes\n' + links.map(l => `${l.name},${l.url},To Apply,,`).join('\n');
+            const ex = document.getElementById('exportBtn');
+            if (ex) ex.remove();
+            const btn = document.createElement('a');
+            btn.id = 'exportBtn'; btn.className = 'btn'; btn.style.marginTop = '1rem'; btn.style.background = '#10b981';
+            btn.href = encodeURI(csv); btn.download = `Job_Tracker_${role}.csv`;
+            btn.innerHTML = '<ion-icon name="grid-outline"></ion-icon> Download Tracker (CSV)';
+            document.getElementById('linkResults').appendChild(btn);
         }
     </script>
 </body>
