@@ -1171,7 +1171,7 @@
                 setLoadBar(100);
                 renderPDFPreview(arr, pdf.numPages);
                 setTimeout(() => setLoadBar(0), 600);
-            } catch (err) { alert('Error reading PDF: ' + err.message); setLoadBar(0); }
+            } catch (err) { console.error(err); alert('Error reading PDF: ' + err.message); setLoadBar(0); }
         }
         function setLoadBar(w) { document.getElementById('loadBar').style.width = w + '%'; }
         // ─── ANALYSIS ENGINE ───
@@ -1265,7 +1265,7 @@
                 { name: 'ATS Compatibility', score: atsScore, max: 5, detail: `Text density: ${Math.round(textDensity)} words/page` }
             ]);
             renderSkillTags();
-            renderImprovements({ foundSections, missingSections, pronounCount, typoCount, passiveCount, repeated, quantMatches, verbsFound, pages, boldPct, avgFont, hasEmail, hasPhone, hasLinkedIn, hasGitHub, atsScore, extractedSkills });
+            renderImprovements({ foundSections, missingSections, pronounCount, typoCount, passiveCount, repeated, quantMatches, verbsFound, pages, boldPct, avgFont, hasEmail, hasPhone, hasLinkedIn, hasGitHub, atsScore, extractedSkills }, filename, total);
             renderKeywordTabs();
             document.getElementById('kwTabWrap').style.display = 'block';
             document.getElementById('previewWrap').style.display = 'block';
@@ -1309,7 +1309,7 @@
                 document.getElementById('suggestWrap').innerHTML = Array.from(sugg).slice(0, 8).map(s => `<span class="tag" style="background:rgba(245,158,11,.18);color:#fcd34d">+ ${s}</span>`).join('');
             }
         }
-        function renderImprovements(d) {
+        function renderImprovements(d, filename, totalScore) {
             document.getElementById('improvCard').style.display = 'block';
             const items = [];
             if (d.missingSections.length) items.push({ t: 'fail', title: 'Missing Sections', sub: `Add: ${d.missingSections.join(', ')}` });
