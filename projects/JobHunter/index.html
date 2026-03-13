@@ -937,25 +937,26 @@
 
     <!-- Firebase SDK Modular -->
     <script type="module">
+        import firebaseConfig, { checkFirebaseStatus } from "../../assets/js/firebase-config.js";
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
         import { getFirestore, doc, setDoc, getDoc, updateDoc, increment, collection, addDoc, query, where, orderBy, limit, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-        // Firebase configuration (Replace with your actual config)
-        const firebaseConfig = {
-            apiKey: "YOUR_API_KEY",
-            authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-            projectId: "YOUR_PROJECT_ID",
-            storageBucket: "YOUR_PROJECT_ID.appspot.com",
-            messagingSenderId: "YOUR_MESSAGING_ID",
-            appId: "YOUR_APP_ID"
-        };
-
-        // Initialize Firebase
+        // Initialize Firebase using centralized config
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
         const provider = new GoogleAuthProvider();
+
+        // Check database connectivity
+        checkFirebaseStatus(db).then(res => {
+            console.log(`[Firebase Status] ${res.status.toUpperCase()}: ${res.message}`);
+            const counterEl = document.getElementById('globalCounter');
+            if (res.status === 'pending' && counterEl) {
+                counterEl.textContent = "Offline (Setup Pending)";
+                counterEl.style.color = "var(--warn)";
+            }
+        });
 
         const ADMIN_EMAIL = "adishyermal@gmail.com"; // Set superadmin email
         let currentUser = null;
@@ -1047,7 +1048,8 @@
 
         async function loadHistory() {
             if (!currentUser) return;
-            const q = query(collection(db, "analysis_logs"), where("uid", "==", currentUser.uid), orderBy("date", "desc"), limit(10));
+            const q = query(collection(db, "analysis_logs"), where("uid", "==", currentUser.uid), orderBy("date", "desc"),
+                limit(10));
             try {
                 const snap = await getDocs(q);
                 renderLogs(snap, 'historyList');
@@ -1069,14 +1071,14 @@
                 const d = doc.data();
                 const date = new Date(d.date).toLocaleDateString();
                 html += `
-                    <div class="param-card" style="display:flex; justify-content:space-between; align-items:center;">
-                        <div>
-                            <div style="font-weight:600; font-size:0.85rem;">${d.filename}</div>
-                            <div style="font-size:0.75rem; color:var(--muted);">${date} ${isAdmin ? `(${d.email})` : ''}</div>
-                        </div>
-                        <div style="font-weight:700; color:var(--primary);">${d.score}%</div>
-                    </div>
-                `;
+        <div class="param-card" style="display:flex; justify-content:space-between; align-items:center;">
+            <div>
+                <div style="font-weight:600; font-size:0.85rem;">${d.filename}</div>
+                <div style="font-size:0.75rem; color:var(--muted);">${date} ${isAdmin ? `(${d.email})` : ''}</div>
+            </div>
+            <div style="font-weight:700; color:var(--primary);">${d.score}%</div>
+        </div>
+        `;
             });
             html += '</div>';
             document.getElementById(targetId).innerHTML = snap.empty ? 'No logs found.' : html;
