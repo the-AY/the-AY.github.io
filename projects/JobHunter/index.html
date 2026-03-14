@@ -811,6 +811,7 @@
                             <div style="font-size:.78rem;color:var(--muted);margin-bottom:.5rem">❌ Missing Keywords
                             </div>
                             <div class="keyword-row" id="jdMissingKw"></div>
+                            <button class="btn btn-sm" id="saveJDBtn" onclick="saveJDMatch()" style="display:none; margin-top:.75rem;"><ion-icon name="bookmark"></ion-icon>Save Match to Profile</button>
                         </div>
                     </div>
                 </div>
@@ -923,6 +924,7 @@
                 <div id="linkResults" style="display:none">
                     <h3 style="margin:1.5rem 0 .75rem;font-size:.9rem;color:var(--muted)">One-Click Search Links</h3>
                     <div class="search-grid" id="searchGrid"></div>
+                    <button class="btn btn-outline" id="saveSearchBtn" onclick="saveJobSearch()" style="display:none; margin-top:1rem; width:100%;"><ion-icon name="bookmark"></ion-icon>Save Search to Profile</button>
                 </div>
             </div>
             <div style="text-align:center;padding:2rem;border-top:1px solid var(--border)">
@@ -1014,12 +1016,17 @@
             const trialBadge = document.getElementById('trialBadge');
             const adminBadge = document.getElementById('adminBadge');
             const adminTabBtn = document.getElementById('adminTabBtn');
+            const saveJDBtn = document.getElementById('saveJDBtn');
+            const saveSearchBtn = document.getElementById('saveSearchBtn');
 
             if (user) {
                 loginBtn.style.display = 'none';
                 trialBadge.style.display = 'none';
                 userInfo.style.display = 'flex';
                 userName.textContent = user.displayName || user.email;
+
+                if (saveJDBtn) saveJDBtn.style.display = 'inline-flex';
+                if (saveSearchBtn) saveSearchBtn.style.display = 'inline-flex';
 
                 if (user.email === ADMIN_EMAIL) {
                     adminBadge.style.display = 'inline-block';
@@ -1030,11 +1037,54 @@
                 loginBtn.style.display = 'inline-flex';
                 trialBadge.style.display = 'inline-block';
                 userInfo.style.display = 'none';
+                if (saveJDBtn) saveJDBtn.style.display = 'none';
+                if (saveSearchBtn) saveSearchBtn.style.display = 'none';
                 if (adminBadge) adminBadge.style.display = 'none';
                 if (adminTabBtn) adminTabBtn.style.display = 'none';
                 document.getElementById('historyList').innerHTML = 'Login to view your saved history.';
             }
         });
+
+        // SAVE FEATURES LOGIC
+        window.saveJDMatch = async () => {
+            if (!currentUser) return alert("Please log in first!");
+            const pct = document.getElementById('jdMatchPct').innerText;
+            const jdText = document.getElementById('jdInput').value.substring(0, 100) + '...';
+            try {
+                await addDoc(collection(db, "saved_jds"), {
+                    uid: currentUser.uid,
+                    email: currentUser.email,
+                    matchPct: pct,
+                    jdSnippet: jdText,
+                    date: new Date().toISOString()
+                });
+                alert("Job Description match saved to your profile!");
+            } catch (e) {
+                console.error("Save JD error:", e);
+                alert("Could not save to profile.");
+            }
+        };
+
+        window.saveJobSearch = async () => {
+            if (!currentUser) return alert("Please log in first!");
+            const role = document.getElementById('jobRole').value;
+            const loc = document.getElementById('jobLoc').value;
+            const skills = document.getElementById('jobSkills').value;
+            try {
+                await addDoc(collection(db, "saved_searches"), {
+                    uid: currentUser.uid,
+                    email: currentUser.email,
+                    role: role,
+                    location: loc,
+                    skills: skills,
+                    date: new Date().toISOString()
+                });
+                alert("Search query saved to your profile!");
+            } catch (e) {
+                console.error("Save Search error:", e);
+                alert("Could not save to profile.");
+            }
+        };
 
         // STATS LOGIC
         window.logAnalysis = async (data) => {

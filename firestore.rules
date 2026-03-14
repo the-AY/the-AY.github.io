@@ -20,5 +20,19 @@ service cloud.firestore {
       allow read, update, delete: if request.auth != null && resource.data.uid == request.auth.uid;
       allow read: if request.auth != null && request.auth.token.email == "adishyermal@gmail.com";
     }
+
+    // 4. Saved Job Descriptions
+    match /saved_jds/{docId} {
+      allow create: if request.auth != null && request.resource.data.uid == request.auth.uid;
+      allow read, update, delete: if request.auth != null && resource.data.uid == request.auth.uid;
+      allow read: if request.auth != null && request.auth.token.email == "adishyermal@gmail.com";
+    }
+
+    // 5. Saved Searches
+    match /saved_searches/{docId} {
+      allow create: if request.auth != null && request.resource.data.uid == request.auth.uid;
+      allow read, update, delete: if request.auth != null && resource.data.uid == request.auth.uid;
+      allow read: if request.auth != null && request.auth.token.email == "adishyermal@gmail.com";
+    }
   }
 }
