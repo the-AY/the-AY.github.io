@@ -4,12 +4,13 @@
  */
 
 const firebaseConfig = {
-    apiKey: "YOUR_API_KEY",
-    authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-    projectId: "YOUR_PROJECT_ID",
-    storageBucket: "YOUR_PROJECT_ID.appspot.com",
-    messagingSenderId: "YOUR_MESSAGING_ID",
-    appId: "YOUR_APP_ID"
+    apiKey: "AIzaSyC0dzlQJu8i5OErbnfYCWR75udGTFRg3Wc",
+    authDomain: "gitprofile-bc717.firebaseapp.com",
+    projectId: "gitprofile-bc717",
+    storageBucket: "gitprofile-bc717.firebasestorage.app",
+    messagingSenderId: "81796867460",
+    appId: "1:81796867460:web:aa31559b0fbf7a3e5369d1",
+    measurementId: "G-8B1CBVLGJD"
 };
 
 // Helper to check if Firebase is properly configured
@@ -25,6 +26,7 @@ export const checkFirebaseStatus = async (db) => {
     } catch (e) {
         return { status: "error", message: e.message };
     }
+
 };
 
 // Export for use in other modules
