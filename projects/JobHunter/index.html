@@ -20,6 +20,7 @@
     <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
     <script>pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';</script>
+    <script src="https://www.google.com/recaptcha/enterprise.js?render=6LeGOIosAAAAADWpRO-7-TkSa867lKEBvFVY4_xb"></script>
     <script type="application/ld+json">
 {
   "@context":"https://schema.org",
@@ -967,10 +968,40 @@
                 await signOut(auth);
             } else {
                 try {
-                    await signInWithPopup(auth, provider);
+                    const loginBtn = document.getElementById('loginBtn');
+                    const originalText = loginBtn.innerHTML;
+                    loginBtn.innerHTML = '<ion-icon name="shield-checkmark-outline"></ion-icon> Verifying...';
+                    loginBtn.disabled = true;
+
+                    grecaptcha.enterprise.ready(async () => {
+                        try {
+                            const token = await grecaptcha.enterprise.execute('6LeGOIosAAAAADWpRO-7-TkSa867lKEBvFVY4_xb', {action: 'LOGIN'});
+                            
+                            const res = await fetch("https://us-central1-gitprofile-bc717.cloudfunctions.net/api/verify-recaptcha", {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({ token, action: 'LOGIN' })
+                            });
+                            
+                            const data = await res.json();
+                            
+                            if (res.ok && data.success) {
+                                await signInWithPopup(auth, provider);
+                            } else {
+                                console.warn("ReCAPTCHA failed:", data);
+                                alert("Security check failed: " + (data.error || "Please try again."));
+                            }
+                        } catch (err) {
+                            console.error("ReCAPTCHA/Auth err:", err);
+                            alert("Login error occurred.");
+                        } finally {
+                            loginBtn.innerHTML = originalText;
+                            loginBtn.disabled = false;
+                        }
+                    });
                 } catch (err) {
-                    console.error("Auth error:", err);
-                    alert("Login failed. Check if Firebase config is correct.");
+                    console.error("Setup error:", err);
+                    alert("Login setup failed. Check connection.");
                 }
             }
         };

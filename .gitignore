@@ -6,3 +6,5 @@ C:/Users/Super User/.gemini/antigravity/
 node_modules/
 dist/
 build/
+.env
+functions/.env
