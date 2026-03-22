@@ -402,11 +402,122 @@
             line-height: 1.7;
         }
 
-        .ach-hint strong {
-            color: var(--primary-blue);
-        }
+            .ach-hint strong {
+                color: var(--primary-blue);
+            }
 
-        /* ---- Responsive ---- */
+            /* ---- Admin Add Button Layout ---- */
+            .ach-header-actions {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 16px;
+                margin-bottom: var(--spacing-xl);
+                align-items: center;
+            }
+
+            /* ---- Generator Modal ---- */
+            .gen-modal {
+                display: none;
+                position: fixed;
+                inset: 0;
+                background: rgba(0, 0, 0, 0.5);
+                backdrop-filter: blur(5px);
+                z-index: 3000;
+                align-items: center;
+                justify-content: center;
+                padding: 20px;
+            }
+
+            .gen-modal.active {
+                display: flex;
+            }
+
+            .gen-content {
+                background: white;
+                border-radius: var(--radius-lg);
+                width: 100%;
+                max-width: 500px;
+                padding: var(--spacing-lg) var(--spacing-xl);
+                box-shadow: var(--shadow-lg);
+                position: relative;
+            }
+
+            .gen-close {
+                position: absolute;
+                top: 20px;
+                right: 20px;
+                background: none;
+                border: none;
+                font-size: 24px;
+                color: var(--text-muted);
+                cursor: pointer;
+            }
+
+            .gen-title {
+                font-size: var(--fs-h4);
+                font-weight: 700;
+                margin-bottom: var(--spacing-md);
+            }
+
+            .gen-form .form-group {
+                margin-bottom: 12px;
+            }
+
+            .gen-form label {
+                display: block;
+                font-size: 0.875rem;
+                font-weight: 600;
+                margin-bottom: 4px;
+                color: var(--text-secondary);
+            }
+
+            .gen-form input,
+            .gen-form select {
+                width: 100%;
+                padding: 10px 14px;
+                border: 1px solid var(--border-color);
+                border-radius: var(--radius-sm);
+                font-family: inherit;
+                font-size: 0.875rem;
+            }
+
+            .gen-result {
+                background: var(--bg-dark);
+                color: #a0aec0;
+                padding: 12px;
+                border-radius: var(--radius-sm);
+                font-family: monospace;
+                font-size: 0.8rem;
+                margin-top: 16px;
+                word-break: break-all;
+            }
+
+            .gen-result span {
+                color: #48bb78;
+            }
+
+            .gen-copy {
+                width: 100%;
+                padding: 12px;
+                background: var(--primary-blue);
+                color: white;
+                border: none;
+                border-radius: var(--radius-sm);
+                font-weight: 600;
+                margin-top: 12px;
+                cursor: pointer;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                gap: 8px;
+            }
+
+            .gen-copy:hover {
+                background: var(--primary-blue-dark);
+            }
+
+            /* ---- Responsive ---- */
         @media (max-width: 768px) {
             .ach-tabs {
                 flex-wrap: wrap;
@@ -447,17 +558,24 @@
             <h1 class="section-title">Achievements & Certificates</h1>
             <p class="section-subtitle">My certifications, awards, and professional milestones</p>
 
-            <!-- Tab Navigation -->
-            <div class="ach-tabs">
-                <button class="ach-tab active" onclick="switchTab('achievements')" id="tab-achievements">
-                    <ion-icon name="trophy-outline"></ion-icon>
-                    Achievements
-                    <span class="ach-tab-count" id="ach-count">—</span>
-                </button>
-                <button class="ach-tab" onclick="switchTab('certificates')" id="tab-certificates">
-                    <ion-icon name="ribbon-outline"></ion-icon>
-                    Certificates
-                    <span class="ach-tab-count" id="cert-count">—</span>
+            <!-- Tab Navigation & Actions -->
+            <div class="ach-header-actions">
+                <div class="ach-tabs">
+                    <button class="ach-tab active" onclick="switchTab('achievements')" id="tab-achievements">
+                        <ion-icon name="trophy-outline"></ion-icon>
+                        Achievements
+                        <span class="ach-tab-count" id="ach-count">—</span>
+                    </button>
+                    <button class="ach-tab" onclick="switchTab('certificates')" id="tab-certificates">
+                        <ion-icon name="ribbon-outline"></ion-icon>
+                        Certificates
+                        <span class="ach-tab-count" id="cert-count">—</span>
+                    </button>
+                </div>
+                <!-- Admin Add Button -->
+                <button id="admin-btn" class="ach-tab" onclick="openAdminModal()" style="display: none; border-color: var(--primary-blue); color: var(--primary-blue);">
+                    <ion-icon name="add-circle-outline"></ion-icon>
+                    Add Item
                 </button>
             </div>
 
@@ -513,6 +631,55 @@
             <ion-icon name="close-outline"></ion-icon>
         </button>
         <img id="lightbox-img" src="" alt="Certificate">
+    </div>
+
+    <!-- Generator Modal -->
+    <div id="gen-modal" class="gen-modal" onclick="if(event.target===this) closeAdminModal()">
+        <div class="gen-content">
+            <button class="gen-close" onclick="closeAdminModal()">
+                <ion-icon name="close-outline"></ion-icon>
+            </button>
+            <h3 class="gen-title">Generate Achievement Text</h3>
+            <p style="font-size:0.875rem; color:var(--text-muted); margin-bottom:16px;">
+                Fill out the form to generate the exact text string. Copy and paste it into <code>assets/achievements.txt</code>.
+            </p>
+
+            <div class="gen-form">
+                <div class="form-group">
+                    <label>Title *</label>
+                    <input type="text" id="gen-title" placeholder="e.g. Certified Ethical Hacker" oninput="updateGenResult()">
+                </div>
+                <div class="form-group">
+                    <label>Description</label>
+                    <input type="text" id="gen-desc" placeholder="Brief details about the achievement" oninput="updateGenResult()">
+                </div>
+                <div class="form-group">
+                    <label>Year</label>
+                    <input type="text" id="gen-year" placeholder="e.g. 2024" oninput="updateGenResult()">
+                </div>
+                <div class="form-group">
+                    <label>Category (Controls Icon)</label>
+                    <select id="gen-category" onchange="updateGenResult()">
+                        <option value="cybersecurity">Cybersecurity (🔒)</option>
+                        <option value="cloud">Cloud (☁️)</option>
+                        <option value="programming">Programming & Code (💻)</option>
+                        <option value="competition">Hackathons & Competitions (🏆)</option>
+                        <option value="academic">Academic (🎓)</option>
+                        <option value="research">Research & Papers (📄)</option>
+                        <option value="default">Default / Other (⭐)</option>
+                    </select>
+                </div>
+
+                <div class="gen-result" id="gen-output">
+                    <span>Title | Description | Year | Category</span>
+                </div>
+
+                <button class="gen-copy" onclick="copyGenResult()">
+                    <ion-icon name="copy-outline"></ion-icon>
+                    Copy to Clipboard
+                </button>
+            </div>
+        </div>
     </div>
 
     <!-- FOOTER -->
@@ -733,6 +900,59 @@
         // ---- Init ----
         loadAchievements();
         loadCertificates();
+
+        // Reveal Admin button if ?admin=true in URL
+        document.addEventListener('DOMContentLoaded', () => {
+            const params = new URLSearchParams(window.location.search);
+            if (params.get('admin') === 'true') {
+                document.getElementById('admin-btn').style.display = 'flex';
+            }
+        });
+
+        // ---- Generator Form Logic ----
+        function openAdminModal() {
+            document.getElementById('gen-modal').classList.add('active');
+            updateGenResult();
+        }
+
+        function closeAdminModal() {
+            document.getElementById('gen-modal').classList.remove('active');
+        }
+
+        function updateGenResult() {
+            const title = document.getElementById('gen-title').value.replace(/\|/g, '') || 'Achievement Title';
+            const desc = document.getElementById('gen-desc').value.replace(/\|/g, '');
+            const year = document.getElementById('gen-year').value.replace(/\|/g, '');
+            const cat = document.getElementById('gen-category').value;
+
+            const str = `${title} | ${desc} | ${year} | ${cat}`;
+            document.getElementById('gen-output').innerHTML = `<span>${escapeHtml(str)}</span>`;
+        }
+
+        function copyGenResult() {
+            const title = document.getElementById('gen-title').value.replace(/\|/g, '');
+            if (!title) {
+                alert('Title is required!');
+                return;
+            }
+
+            const desc = document.getElementById('gen-desc').value.replace(/\|/g, '');
+            const year = document.getElementById('gen-year').value.replace(/\|/g, '');
+            const cat = document.getElementById('gen-category').value;
+
+            const str = `${title} | ${desc} | ${year} | ${cat}`;
+            navigator.clipboard.writeText(str).then(() => {
+                const btn = document.querySelector('.gen-copy');
+                const origHtml = btn.innerHTML;
+                btn.innerHTML = '<ion-icon name="checkmark-outline"></ion-icon> Copied!';
+                btn.style.background = '#48bb78';
+                setTimeout(() => {
+                    btn.innerHTML = origHtml;
+                    btn.style.background = '';
+                }, 2000);
+            });
+        }
+
     </script>
 
 </body>
