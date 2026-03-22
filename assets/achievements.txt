@@ -1,0 +1,21 @@
+# ===================================================
+# ACHIEVEMENTS & CERTIFICATIONS
+# ===================================================
+# Add one achievement per line. Push to GitHub and
+# the page updates automatically — no code changes!
+#
+# FORMAT:  Title | Description | Year | Category
+# (Description, Year, Category are optional)
+#
+# Lines starting with # are comments and ignored.
+# Empty lines are ignored.
+# ===================================================
+
+Certified Ethical Hacker (CEH) | Completed CEH certification covering penetration testing, vulnerability assessment, and security analysis | 2023 | Cybersecurity
+AWS Cloud Practitioner | Foundational understanding of AWS Cloud services, architecture, and security | 2024 | Cloud
+Google Cybersecurity Certificate | Professional certificate covering security operations, risk management, and threat detection | 2024 | Cybersecurity
+Python for Data Science — Coursera | Specialization covering Python, pandas, NumPy, and data visualization | 2023 | Programming
+1st Place — Inter-College Hackathon | Won first place at state-level hackathon for building an AI-powered waste management system | 2022 | Competition
+Best Project Award — Sahyadri College | Recognized for outstanding final year project on Digital Wellbeing application | 2023 | Academic
+Published Research Paper | Co-authored paper on secure password hashing techniques in modern applications | 2023 | Research
+Bug Bounty Recognition — HackerOne | Identified and reported critical XSS vulnerability in a major SaaS platform | 2024 | Cybersecurity

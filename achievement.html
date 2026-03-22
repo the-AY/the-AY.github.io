@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Achievements & Certificates — Adish Yermal</title>
+    <meta name="description"
+        content="Certificates, achievements, and certifications of Adish Yermal — Software Developer & Cybersecurity Enthusiast.">
+    <meta name="author" content="Adish Yermal">
+    <meta property="og:title" content="Achievements & Certificates — Adish Yermal">
+    <meta property="og:description"
+        content="Browse certificates, achievements, and certifications of Adish Yermal.">
+    <meta property="og:url" content="https://the-ay.github.io/achievement.html">
+    <meta property="og:type" content="website">
+    <link rel="canonical" href="https://the-ay.github.io/achievement.html">
+    <meta name="robots" content="index, follow">
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="./assets/images/logo.svg" type="image/svg+xml">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="./assets/css/style.css">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+    <!-- Ionicons -->
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+
+    <style>
+        /* ============================================
+           ACHIEVEMENTS & CERTIFICATES PAGE STYLES
+           ============================================ */
+
+        .ach-page {
+            padding-top: 100px;
+            min-height: 100vh;
+            background: var(--bg-light);
+        }
+
+        /* ---- Tab Navigation ---- */
+        .ach-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: var(--spacing-xl);
+        }
+
+        .ach-tab {
+            padding: 12px 28px;
+            border-radius: var(--radius-xl);
+            font-size: var(--fs-body);
+            font-weight: 600;
+            color: var(--text-secondary);
+            background: white;
+            border: 1px solid var(--border-color);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .ach-tab:hover {
+            color: var(--primary-blue);
+            border-color: var(--primary-blue-light);
+            transform: translateY(-2px);
+        }
+
+        .ach-tab.active {
+            background: var(--primary-blue);
+            color: white;
+            border-color: var(--primary-blue);
+            box-shadow: 0 4px 16px rgba(26, 115, 232, 0.3);
+        }
+
+        .ach-tab-count {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 2px 8px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+        }
+
+        .ach-tab:not(.active) .ach-tab-count {
+            background: var(--bg-light);
+            color: var(--text-muted);
+        }
+
+        /* ---- Section Panels ---- */
+        .ach-panel {
+            display: none;
+            animation: achFadeIn 0.4s ease;
+        }
+
+        .ach-panel.active {
+            display: block;
+        }
+
+        @keyframes achFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(12px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ---- Achievements List ---- */
+        .ach-list {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-md);
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .ach-card {
+            background: white;
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-lg) var(--spacing-xl);
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-sm);
+            transition: 0.4s;
+            display: flex;
+            align-items: flex-start;
+            gap: var(--spacing-lg);
+        }
+
+        .ach-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-md);
+            border-color: var(--primary-blue-light);
+        }
+
+        .ach-card-icon {
+            width: 52px;
+            height: 52px;
+            min-width: 52px;
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+        }
+
+        .ach-card-icon.cybersecurity {
+            background: linear-gradient(135deg, #EF4444, #F97316);
+        }
+
+        .ach-card-icon.cloud {
+            background: linear-gradient(135deg, #3B82F6, #06B6D4);
+        }
+
+        .ach-card-icon.programming {
+            background: linear-gradient(135deg, #8B5CF6, #6366F1);
+        }
+
+        .ach-card-icon.competition {
+            background: linear-gradient(135deg, #F59E0B, #EF4444);
+        }
+
+        .ach-card-icon.academic {
+            background: linear-gradient(135deg, #10B981, #059669);
+        }
+
+        .ach-card-icon.research {
+            background: linear-gradient(135deg, #6366F1, #8B5CF6);
+        }
+
+        .ach-card-icon.default {
+            background: linear-gradient(135deg, var(--primary-blue), var(--accent-cyan));
+        }
+
+        .ach-card-body {
+            flex: 1;
+        }
+
+        .ach-card-title {
+            font-size: var(--fs-h4);
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+
+        .ach-card-desc {
+            font-size: var(--fs-small);
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 8px;
+        }
+
+        .ach-card-meta {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .ach-card-tag {
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 3px 12px;
+            border-radius: 20px;
+            background: var(--primary-blue-light);
+            color: var(--primary-blue);
+        }
+
+        .ach-card-year {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+
+        /* ---- Certificates Grid ---- */
+        .cert-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: var(--spacing-lg);
+        }
+
+        .cert-card {
+            background: white;
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-sm);
+            transition: 0.4s;
+            cursor: pointer;
+        }
+
+        .cert-card:hover {
+            transform: translateY(-6px);
+            box-shadow: var(--shadow-hover);
+            border-color: var(--primary-blue-light);
+        }
+
+        .cert-card-image {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            border-bottom: 1px solid var(--border-color);
+            background: var(--bg-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .cert-card-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .cert-card-pdf {
+            width: 100%;
+            height: 220px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #fef2f2, #fce7f3);
+            color: #DC2626;
+            gap: 8px;
+        }
+
+        .cert-card-pdf ion-icon {
+            font-size: 48px;
+        }
+
+        .cert-card-pdf span {
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .cert-card-body {
+            padding: var(--spacing-md) var(--spacing-lg);
+        }
+
+        .cert-card-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+
+        .cert-card-file {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        /* ---- Lightbox Modal ---- */
+        .lightbox {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+            cursor: zoom-out;
+        }
+
+        .lightbox.active {
+            display: flex;
+        }
+
+        .lightbox img {
+            max-width: 90vw;
+            max-height: 85vh;
+            object-fit: contain;
+            border-radius: var(--radius-md);
+            box-shadow: 0 24px 64px rgba(0, 0, 0, 0.5);
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: 20px;
+            right: 24px;
+            color: white;
+            font-size: 32px;
+            cursor: pointer;
+            background: rgba(255, 255, 255, 0.1);
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.3s;
+        }
+
+        .lightbox-close:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        /* ---- Loading & Empty States ---- */
+        .ach-loading {
+            text-align: center;
+            padding: var(--spacing-2xl);
+            color: var(--text-muted);
+        }
+
+        .ach-loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid var(--border-color);
+            border-top-color: var(--primary-blue);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin: 0 auto var(--spacing-md);
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .ach-empty {
+            text-align: center;
+            padding: var(--spacing-2xl);
+            color: var(--text-muted);
+        }
+
+        .ach-empty-icon {
+            font-size: 3.5rem;
+            margin-bottom: var(--spacing-md);
+            opacity: 0.4;
+        }
+
+        .ach-empty-text {
+            font-size: var(--fs-h4);
+            margin-bottom: 8px;
+        }
+
+        .ach-empty-hint {
+            font-size: var(--fs-small);
+            max-width: 500px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        /* ---- How It Works Hint ---- */
+        .ach-hint {
+            max-width: 700px;
+            margin: var(--spacing-xl) auto 0;
+            padding: var(--spacing-md) var(--spacing-lg);
+            background: var(--primary-blue-light);
+            border-radius: var(--radius-md);
+            border-left: 4px solid var(--primary-blue);
+            font-size: var(--fs-small);
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+
+        .ach-hint strong {
+            color: var(--primary-blue);
+        }
+
+        /* ---- Responsive ---- */
+        @media (max-width: 768px) {
+            .ach-tabs {
+                flex-wrap: wrap;
+            }
+
+            .ach-card {
+                flex-direction: column;
+                gap: var(--spacing-sm);
+                padding: var(--spacing-md);
+            }
+
+            .cert-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- NAVIGATION -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="./index.html" class="nav-brand">Adish Yermal</a>
+            <div class="nav-menu">
+                <a href="./index.html" class="nav-link">Home</a>
+                <a href="./index.html#resume" class="nav-link">Resume</a>
+                <a href="./index.html#projects" class="nav-link">Projects</a>
+                <a href="./achievement.html" class="nav-link active">Achievements</a>
+                <a href="./index.html#contact" class="nav-link">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- MAIN PAGE -->
+    <section class="ach-page">
+        <div class="section-container">
+            <h1 class="section-title">Achievements & Certificates</h1>
+            <p class="section-subtitle">My certifications, awards, and professional milestones</p>
+
+            <!-- Tab Navigation -->
+            <div class="ach-tabs">
+                <button class="ach-tab active" onclick="switchTab('achievements')" id="tab-achievements">
+                    <ion-icon name="trophy-outline"></ion-icon>
+                    Achievements
+                    <span class="ach-tab-count" id="ach-count">—</span>
+                </button>
+                <button class="ach-tab" onclick="switchTab('certificates')" id="tab-certificates">
+                    <ion-icon name="ribbon-outline"></ion-icon>
+                    Certificates
+                    <span class="ach-tab-count" id="cert-count">—</span>
+                </button>
+            </div>
+
+            <!-- ACHIEVEMENTS PANEL -->
+            <div id="panel-achievements" class="ach-panel active">
+                <div id="ach-loading" class="ach-loading">
+                    <div class="ach-loading-spinner"></div>
+                    <p>Loading achievements...</p>
+                </div>
+                <div id="ach-list" class="ach-list" style="display:none;"></div>
+                <div id="ach-empty" class="ach-empty" style="display:none;">
+                    <div class="ach-empty-icon">🏆</div>
+                    <p class="ach-empty-text">No achievements yet</p>
+                    <p class="ach-empty-hint">
+                        Add achievements to <code>assets/achievements.txt</code> and push to GitHub.
+                        They'll appear here automatically!
+                    </p>
+                </div>
+            </div>
+
+            <!-- CERTIFICATES PANEL -->
+            <div id="panel-certificates" class="ach-panel">
+                <div id="cert-loading" class="ach-loading">
+                    <div class="ach-loading-spinner"></div>
+                    <p>Scanning certificates folder...</p>
+                </div>
+                <div id="cert-grid" class="cert-grid" style="display:none;"></div>
+                <div id="cert-empty" class="ach-empty" style="display:none;">
+                    <div class="ach-empty-icon">📜</div>
+                    <p class="ach-empty-text">No certificates uploaded yet</p>
+                    <p class="ach-empty-hint">
+                        Drop certificate images (<code>.jpg</code>, <code>.png</code>, <code>.webp</code>,
+                        <code>.pdf</code>) into
+                        <code>assets/certificates/</code> folder and push to GitHub. They'll appear here
+                        automatically — no code changes needed!
+                    </p>
+                </div>
+            </div>
+
+            <!-- How It Works -->
+            <div class="ach-hint">
+                <strong>✨ Zero-Code Updates:</strong> To add achievements, edit
+                <code>assets/achievements.txt</code> (one per line).
+                To add certificates, drop images into <code>assets/certificates/</code>.
+                Push to GitHub — the page auto-detects everything!
+            </div>
+        </div>
+    </section>
+
+    <!-- Lightbox -->
+    <div id="lightbox" class="lightbox" onclick="closeLightbox()">
+        <button class="lightbox-close" onclick="closeLightbox()">
+            <ion-icon name="close-outline"></ion-icon>
+        </button>
+        <img id="lightbox-img" src="" alt="Certificate">
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-social">
+                <a href="https://www.linkedin.com/in/adish-yermal/" target="_blank">
+                    <ion-icon name="logo-linkedin"></ion-icon>
+                </a>
+                <a href="https://github.com/the-AY" target="_blank">
+                    <ion-icon name="logo-github"></ion-icon>
+                </a>
+                <a href="http://g.dev/Adish_yermal" target="_blank">
+                    <ion-icon name="logo-google"></ion-icon>
+                </a>
+            </div>
+            <p>&copy; 2026 Adish Yermal. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // ==============================================
+        // AUTO-DETECT CERTIFICATES & ACHIEVEMENTS
+        // ==============================================
+        // This page automatically loads:
+        //   1. Achievements from assets/achievements.txt
+        //   2. Certificates from assets/certificates/ folder (via GitHub API)
+        //
+        // To add new items: just edit the file or folder and push to GitHub!
+        // ==============================================
+
+        const GITHUB_USER = 'the-AY';
+        const GITHUB_REPO = 'the-AY.github.io';
+        const CERT_FOLDER = 'assets/certificates';
+        const ACH_FILE = './assets/achievements.txt';
+        const IMAGE_EXTS = ['jpg', 'jpeg', 'png', 'webp', 'gif', 'bmp', 'svg'];
+        const ALLOWED_EXTS = [...IMAGE_EXTS, 'pdf'];
+
+        // Category icon mappings
+        const CATEGORY_ICONS = {
+            'cybersecurity': '🔒',
+            'cloud': '☁️',
+            'programming': '💻',
+            'competition': '🏆',
+            'academic': '🎓',
+            'research': '📄',
+            'default': '⭐'
+        };
+
+        // ---- Tab Switching ----
+        function switchTab(tab) {
+            document.querySelectorAll('.ach-tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.ach-panel').forEach(p => p.classList.remove('active'));
+            document.getElementById(`tab-${tab}`).classList.add('active');
+            document.getElementById(`panel-${tab}`).classList.add('active');
+        }
+
+        // ---- Load Achievements from Text File ----
+        async function loadAchievements() {
+            const loadingEl = document.getElementById('ach-loading');
+            const listEl = document.getElementById('ach-list');
+            const emptyEl = document.getElementById('ach-empty');
+            const countEl = document.getElementById('ach-count');
+
+            try {
+                const response = await fetch(ACH_FILE + '?t=' + Date.now()); // cache-bust
+                if (!response.ok) throw new Error('File not found');
+
+                const text = await response.text();
+                const lines = text.split('\n')
+                    .map(l => l.trim())
+                    .filter(l => l && !l.startsWith('#'));
+
+                if (lines.length === 0) {
+                    loadingEl.style.display = 'none';
+                    emptyEl.style.display = 'block';
+                    countEl.textContent = '0';
+                    return;
+                }
+
+                countEl.textContent = lines.length;
+
+                const cards = lines.map(line => {
+                    const parts = line.split('|').map(p => p.trim());
+                    const title = parts[0] || 'Untitled';
+                    const desc = parts[1] || '';
+                    const year = parts[2] || '';
+                    const category = (parts[3] || 'default').toLowerCase();
+
+                    const icon = CATEGORY_ICONS[category] || CATEGORY_ICONS['default'];
+                    const categoryClass = CATEGORY_ICONS[category] ? category : 'default';
+
+                    return `
+                        <div class="ach-card">
+                            <div class="ach-card-icon ${categoryClass}">${icon}</div>
+                            <div class="ach-card-body">
+                                <h3 class="ach-card-title">${escapeHtml(title)}</h3>
+                                ${desc ? `<p class="ach-card-desc">${escapeHtml(desc)}</p>` : ''}
+                                <div class="ach-card-meta">
+                                    ${category !== 'default' ? `<span class="ach-card-tag">${escapeHtml(parts[3] || category)}</span>` : ''}
+                                    ${year ? `<span class="ach-card-year">📅 ${escapeHtml(year)}</span>` : ''}
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+
+                listEl.innerHTML = cards.join('');
+                loadingEl.style.display = 'none';
+                listEl.style.display = 'flex';
+            } catch (err) {
+                console.error('Failed to load achievements:', err);
+                loadingEl.style.display = 'none';
+                emptyEl.style.display = 'block';
+                countEl.textContent = '0';
+            }
+        }
+
+        // ---- Load Certificates from GitHub API ----
+        async function loadCertificates() {
+            const loadingEl = document.getElementById('cert-loading');
+            const gridEl = document.getElementById('cert-grid');
+            const emptyEl = document.getElementById('cert-empty');
+            const countEl = document.getElementById('cert-count');
+
+            try {
+                // Try GitHub API first (works for public repos, 60 req/hour unauthenticated)
+                const apiUrl = `https://api.github.com/repos/${GITHUB_USER}/${GITHUB_REPO}/contents/${CERT_FOLDER}`;
+                const response = await fetch(apiUrl);
+
+                if (!response.ok) throw new Error('API failed');
+
+                const files = await response.json();
+
+                // Filter to only image/PDF files
+                const certFiles = files.filter(f => {
+                    if (f.type !== 'file') return false;
+                    const ext = f.name.split('.').pop().toLowerCase();
+                    return ALLOWED_EXTS.includes(ext);
+                });
+
+                if (certFiles.length === 0) {
+                    loadingEl.style.display = 'none';
+                    emptyEl.style.display = 'block';
+                    countEl.textContent = '0';
+                    return;
+                }
+
+                countEl.textContent = certFiles.length;
+
+                const cards = certFiles.map(file => {
+                    const ext = file.name.split('.').pop().toLowerCase();
+                    const title = file.name
+                        .replace(/\.[^.]+$/, '') // remove extension
+                        .replace(/[-_]/g, ' ')   // hyphens/underscores to spaces
+                        .replace(/\b\w/g, c => c.toUpperCase()); // title case
+
+                    const rawUrl = `https://raw.githubusercontent.com/${GITHUB_USER}/${GITHUB_REPO}/main/${CERT_FOLDER}/${file.name}`;
+                    const isPdf = ext === 'pdf';
+
+                    return `
+                        <div class="cert-card" onclick="${isPdf ? `window.open('${rawUrl}', '_blank')` : `openLightbox('${rawUrl}')`}">
+                            ${isPdf ? `
+                                <div class="cert-card-pdf">
+                                    <ion-icon name="document-outline"></ion-icon>
+                                    <span>PDF Document</span>
+                                </div>
+                            ` : `
+                                <div class="cert-card-image">
+                                    <img src="${rawUrl}" alt="${escapeHtml(title)}" loading="lazy"
+                                         onerror="this.parentElement.innerHTML='<div style=\\'padding:40px;text-align:center;color:var(--text-muted)\\'>⚠️ Image not loaded</div>'">
+                                </div>
+                            `}
+                            <div class="cert-card-body">
+                                <h3 class="cert-card-title">${escapeHtml(title)}</h3>
+                                <p class="cert-card-file">${escapeHtml(file.name)}</p>
+                            </div>
+                        </div>
+                    `;
+                });
+
+                gridEl.innerHTML = cards.join('');
+                loadingEl.style.display = 'none';
+                gridEl.style.display = 'grid';
+            } catch (err) {
+                console.warn('GitHub API failed, trying fallback...', err);
+                // Fallback: show empty state with helpful message
+                loadingEl.style.display = 'none';
+                emptyEl.style.display = 'block';
+                countEl.textContent = '0';
+            }
+        }
+
+        // ---- Lightbox ----
+        function openLightbox(src) {
+            const lb = document.getElementById('lightbox');
+            document.getElementById('lightbox-img').src = src;
+            lb.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeLightbox() {
+            document.getElementById('lightbox').classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeLightbox();
+        });
+
+        // ---- Utility ----
+        function escapeHtml(str) {
+            const div = document.createElement('div');
+            div.textContent = str;
+            return div.innerHTML;
+        }
+
+        // ---- Init ----
+        loadAchievements();
+        loadCertificates();
+    </script>
+
+</body>
+
+</html>
