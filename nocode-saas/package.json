@@ -1,0 +1,21 @@
+{
+  "name": "nocode-saas",
+  "version": "0.1.0",
+  "private": true,
+  "description": "A scalable No-Code SaaS platform for building dynamic apps via drag-and-drop",
+  "workspaces": [
+    "client",
+    "server",
+    "shared"
+  ],
+  "scripts": {
+    "dev": "concurrently \"npm run dev:server\" \"npm run dev:client\"",
+    "dev:client": "npm run dev --workspace=client",
+    "dev:server": "npm run dev --workspace=server",
+    "build": "npm run build --workspace=client",
+    "lint": "concurrently \"npm run lint --workspace=client\" \"npm run lint --workspace=server\""
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}

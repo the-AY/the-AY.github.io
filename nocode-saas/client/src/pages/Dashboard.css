@@ -1,0 +1,64 @@
+/* ---- Dashboard ---- */
+.dashboard-page {
+  animation: fadeIn 0.4s ease;
+}
+
+.apps-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: var(--space-lg);
+}
+
+.app-card {
+  padding: var(--space-lg);
+  animation: slideUp 0.4s ease both;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.app-card-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+.app-card-icon {
+  width: 44px;
+  height: 44px;
+  background: var(--accent-gradient);
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 1.25rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.app-card-meta {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.app-card-name {
+  font-size: 1.0625rem;
+  font-weight: 700;
+}
+
+.app-card-desc {
+  font-size: 0.8125rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.app-card-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+  padding-top: var(--space-sm);
+  border-top: 1px solid var(--border-subtle);
+}
