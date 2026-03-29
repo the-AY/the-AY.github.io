@@ -25,7 +25,7 @@ function App() {
       <div className="min-h-screen bg-background text-text flex flex-col font-sans">
         {user && (
           <header className="bg-surface p-4 flex justify-between items-center shadow-md">
-            <h1 className="text-xl font-bold text-primary tracking-wide">Petpooja POS Replica</h1>
+            <h1 className="text-xl font-bold text-primary tracking-wide">Smart Hotel POS</h1>
             <div className="flex gap-4 items-center">
               <span className="text-gray-400 capitalize">Role: {user.role}</span>
               <button onClick={handleLogout} className="bg-red-500/10 text-red-400 px-4 py-2 rounded-md hover:bg-red-500/20 transition">Logout</button>
@@ -34,10 +34,10 @@ function App() {
         )}
         <main className="flex-1 p-4 overflow-y-auto">
           <Routes>
-            <Route path="/login" element={!user ? <Login onLogin={handleLogin} api={API_URL} /> : <Navigate to={user.role === 'kitchen' ? '/kitchen' : user.role === 'cashier' ? '/cashier' : '/admin'} />} />
+            <Route path="/login" element={!user ? <Login onLogin={handleLogin} api={API_URL} /> : <Navigate to={user.role === 'kitchen' ? '/kitchen' : (user.role === 'cashier' || user.role === 'waiter') ? '/cashier' : '/admin'} />} />
             
             <Route path="/admin" element={user?.role === 'admin' ? <AdminDashboard api={API_URL} /> : <Navigate to="/login" />} />
-            <Route path="/cashier" element={(user?.role === 'cashier' || user?.role === 'admin') ? <CashierPOS api={API_URL} /> : <Navigate to="/login" />} />
+            <Route path="/cashier" element={(user?.role === 'cashier' || user?.role === 'admin' || user?.role === 'waiter') ? <CashierPOS api={API_URL} user={user} /> : <Navigate to="/login" />} />
             <Route path="/kitchen" element={(user?.role === 'kitchen' || user?.role === 'admin') ? <KitchenKDS api={API_URL} /> : <Navigate to="/login" />} />
             
             <Route path="*" element={<Navigate to="/login" />} />

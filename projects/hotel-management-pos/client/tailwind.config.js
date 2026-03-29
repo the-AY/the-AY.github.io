@@ -7,7 +7,7 @@ export default {
   theme: {
     extend: {
       colors: {
-        primary: "#14b8a6", // Teal for Petpooja feel
+        primary: "#14b8a6",
         background: "#0f172a", // Dark mode
         surface: "#1e293b",
         text: "#f8fafc"

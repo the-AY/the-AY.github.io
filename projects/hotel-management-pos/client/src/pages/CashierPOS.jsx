@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { ShoppingCart, Printer, Check, Search, MapPin, Bike } from 'lucide-react';
 
-export default function CashierPOS({ api }) {
+export default function CashierPOS({ api, user }) {
   const [tables, setTables] = useState([]);
   const [menu, setMenu] = useState([]);
   const [categories, setCategories] = useState([]);
@@ -14,7 +14,6 @@ export default function CashierPOS({ api }) {
   const [cart, setCart] = useState([]);
   const [search, setSearch] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
-  const printRef = useRef(null);
   const [printData, setPrintData] = useState(null); // { type: 'KOT' | 'BILL', items: [], table: '', etc }
 
   const fetchData = async () => {
@@ -38,7 +37,6 @@ export default function CashierPOS({ api }) {
   );
 
   const cartTotal = cart.reduce((acc, item) => acc + (item.price * item.quantity), 0);
-  const activeOrderDetails = currentOrder ? currentOrder : null; // In a full app, we'd fetch previous KOT items here
 
   // Actions
   const handleSelectTable = (table) => {
@@ -80,7 +78,6 @@ export default function CashierPOS({ api }) {
     if (cart.length === 0) return;
     
     let orderId = currentOrder?.id;
-    // If no order exists for this table/parcel, create one
     if (!orderId) {
       const oRes = await fetch(`${api}/orders`, {
         method: 'POST', headers: {'Content-Type': 'application/json'},
@@ -91,29 +88,38 @@ export default function CashierPOS({ api }) {
       setCurrentOrder(oData);
     }
 
-    // Add items to KOT
     await fetch(`${api}/orders/${orderId}/items`, {
       method: 'POST', headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({ items: cart })
     });
 
-    // Trigger Print KOT
     const tableName = selectedTable ? tables.find(t=>t.id===selectedTable)?.name : 'Parcel';
     setPrintData({ type: 'KOT', id:`KOT-${orderId}-${Date.now()}`, items: [...cart], table: tableName, oType: orderType });
     
-    // Reset cart but keep order active
     setCart([]);
     fetchData();
-    setTimeout(() => { window.print(); }, 500); // Wait for react to render print template
+    setTimeout(() => { window.print(); }, 500);
   };
 
   const handleCheckout = async () => {
     if (!currentOrder) return;
+    
+    // Fetch all items for this order to show on the bill
+    const itemsRes = await fetch(`${api}/orders/${currentOrder.id}/items`);
+    const allItems = await itemsRes.json();
+    
     await fetch(`${api}/orders/${currentOrder.id}/checkout`, { method: 'POST' });
     
-    // Trigger Print Bill
     const tableName = selectedTable ? tables.find(t=>t.id===selectedTable)?.name : 'Parcel';
-    setPrintData({ type: 'BILL', id: `INV-${currentOrder.id}`, orderId: currentOrder.id, items: [], total: currentOrder.total, table: tableName, oType: orderType }); // Ideally fetch all KOT items for bill
+    setPrintData({ 
+      type: 'BILL', 
+      id: `INV-${currentOrder.id}`, 
+      orderId: currentOrder.id, 
+      items: allItems, 
+      total: currentOrder.total, 
+      table: tableName, 
+      oType: orderType 
+    });
     
     setCurrentOrder(null);
     setSelectedTable(null);
@@ -121,7 +127,6 @@ export default function CashierPOS({ api }) {
     fetchData();
     setTimeout(() => { window.print(); }, 500);
   };
-
 
   return (
     <div className="flex h-[calc(100vh-80px)] overflow-hidden gap-4">
@@ -162,7 +167,6 @@ export default function CashierPOS({ api }) {
 
       {/* MID: Menu Selection */}
       <div className="flex-1 bg-surface rounded-xl shadow border border-slate-800 flex flex-col overflow-hidden">
-        {/* Search & Categories */}
         <div className="p-4 border-b border-slate-700 bg-slate-800/50">
            <div className="relative mb-4">
              <Search className="absolute left-3 top-2.5 text-slate-400" size={20}/>
@@ -179,7 +183,6 @@ export default function CashierPOS({ api }) {
               ))}
            </div>
         </div>
-        {/* Items Grid */}
         <div className="flex-1 overflow-y-auto p-4 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 align-top place-content-start">
            {filteredMenu.map(m => (
              <button key={m.id} onClick={() => addToCart(m)} className="bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-lg p-4 flex flex-col text-left transition h-28">
@@ -230,30 +233,33 @@ export default function CashierPOS({ api }) {
              <button onClick={handleKOT} disabled={cart.length === 0 && !currentOrder} className="bg-amber-500 hover:bg-amber-600 disabled:opacity-50 text-white p-3 rounded-lg font-bold flex items-center justify-center gap-2">
                <Printer size={18}/> KOT
              </button>
-             <button onClick={handleCheckout} disabled={!currentOrder} className="bg-primary hover:bg-teal-600 disabled:opacity-50 text-white p-3 rounded-lg font-bold flex items-center justify-center gap-2">
-               <Check size={18}/> Print Bill
-             </button>
+             {(user?.role === 'admin' || user?.role === 'cashier') && (
+               <button onClick={handleCheckout} disabled={!currentOrder} className="bg-primary hover:bg-teal-600 disabled:opacity-50 text-white p-3 rounded-lg font-bold flex items-center justify-center gap-2">
+                 <Check size={18}/> Print Bill
+               </button>
+             )}
            </div>
         </div>
       </div>
 
-      {/* PRINT TEMPLATE (Hidden from screen, visible on print via index.css) */}
       {printData && (
         <div className="kot-print bg-white text-black p-4 text-sm font-mono">
            <h2 className="text-center font-bold text-lg mb-1">{printData.type === 'KOT' ? 'KITCHEN ORDER TICKET' : 'TAX INVOICE'}</h2>
            <p className="text-center text-xs mb-3">Table/Type: <span className="font-bold">{printData.table} ({printData.oType})</span></p>
            <div className="border-b border-black border-dashed mb-2"></div>
-           {printData.type === 'KOT' && printData.items.map((i, idx) => (
-             <div key={idx} className="flex justify-between mb-1">
-               <span className="font-bold text-lg">{i.quantity} x {i.name}</span>
-             </div>
-           ))}
-           {printData.type === 'BILL' && (
-              <div className="text-center my-6">
-                 <div className="font-bold text-xl mb-2">Total Amount: ₹{printData.total?.toFixed(2)}</div>
-                 <div className="text-xs">Thank You & Visit Again!</div>
+           {(printData.type === 'KOT' || printData.type === 'BILL') && printData.items.map((i, idx) => (
+              <div key={idx} className="flex justify-between mb-1">
+                <span className="font-bold text-lg">{i.quantity} x {i.name}</span>
+                {printData.type === 'BILL' && <span>₹{i.price * i.quantity}</span>}
               </div>
-           )}
+            ))}
+            {printData.type === 'BILL' && (
+               <div className="text-center my-4 border-t border-black border-dashed pt-4">
+                  <div className="font-bold text-xl mb-2 text-right">Total: ₹{printData.total?.toFixed(2)}</div>
+                  <div className="text-xs">GST Included (5%)</div>
+                  <div className="text-xs mt-2 uppercase font-bold tracking-widest">Thank You & Visit Again!</div>
+               </div>
+            )}
            <div className="border-t border-black border-dashed mt-2 pt-2 text-xs text-center">{new Date().toLocaleString()}</div>
         </div>
       )}

@@ -97,6 +97,16 @@ export function initMockBackend() {
         return response(newItem);
       }
     } // --- ORDERS & KOT ---
+    else if (url.includes('/items') && method === 'GET') {
+       // GET /api/orders/:id/items
+       const urlParts = url.split('/api/orders/')[1].split('/');
+       const orderId = parseInt(urlParts[0]);
+       const items = db.orderItems.filter(oi => oi.order_id === orderId).map(oi => {
+          const m = db.menu.find(x => x.id === oi.menu_item_id);
+          return { ...oi, name: m ? m.name : 'Unknown' };
+       });
+       return response(items);
+    }
     else if (url.includes('/api/orders/running')) {
       return response(db.orders.filter(o => o.status === 'running'));
     }
@@ -145,7 +155,7 @@ export function initMockBackend() {
       setDb(db);
       return response({ success: true });
     }
-    else if (url.includes('/api/kot')) {
+    else if (url.includes('/api/kot') && !url.includes('/status')) {
       if (method === 'GET') {
         // Build KDS View
         const pendingItems = db.orderItems.filter(oi => oi.status === 'pending' || oi.status === 'preparing');
@@ -159,18 +169,24 @@ export function initMockBackend() {
              table_id: o ? o.table_id : null,
              table_name: t ? t.name : '',
              order_type: o ? o.type : 'Unknown',
-             created_at: o ? o.created_at : new Date().toISOString()
+             created_at: o ? o.created_at : (t ? t.created_at : new Date().toISOString())
            };
         });
         return response(kds);
       }
     }
     else if (url.includes('/status') && method === 'PATCH') {
-       const id = parseInt(url.split('/api/kot/')[1].split('/')[0]);
+       // Supports: /api/kot/:id/status
+       const parts = url.split('/');
+       const idIndex = parts.indexOf('kot') + 1;
+       const id = parseInt(parts[idIndex]);
        const item = db.orderItems.find(oi => oi.id === id);
-       if (item) item.status = body.status;
-       setDb(db);
-       return response({ success: true });
+       if (item) {
+         item.status = body.status;
+         setDb(db);
+         return response({ success: true });
+       }
+       return response({ error: 'Item not found' }, 404);
     }
 
     return response({ error: 'Not Found in Mock DB' }, 404);

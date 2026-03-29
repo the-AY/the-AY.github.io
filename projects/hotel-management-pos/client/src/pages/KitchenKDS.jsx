@@ -18,13 +18,27 @@ export default function KitchenKDS({ api }) {
   }, [api]);
 
   const bumpStatus = async (id, currentStatus) => {
-    const nextStatus = currentStatus === 'pending' ? 'preparing' : 'ready';
-    await fetch(`${api}/kot/${id}/status`, {
-      method: 'PATCH',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ status: nextStatus })
-    });
-    fetchKots();
+    try {
+      const nextStatus = currentStatus === 'pending' ? 'preparing' : 'ready';
+      const res = await fetch(`${api}/kot/${id}/status`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status: nextStatus })
+      });
+      
+      if (res.ok) {
+        // Optimistic update
+        setKots(prev => prev.map(item => 
+          item.id === id ? { ...item, status: nextStatus } : item
+        ));
+        // Also refresh from server to be sure
+        fetchKots();
+      } else {
+        console.error('Failed to update status', await res.text());
+      }
+    } catch (err) {
+      console.error('Network error updating status', err);
+    }
   };
 
   // Group by Order ID so the KDS shows tickets per order
