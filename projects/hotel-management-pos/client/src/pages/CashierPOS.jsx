@@ -20,7 +20,7 @@ export default function CashierPOS({ api }) {
   const fetchData = async () => {
     try {
       const [tRes, mRes, cRes, oRes] = await Promise.all([
-        fetch(\`\${api}/tables\`), fetch(\`\${api}/menu\`), fetch(\`\${api}/categories\`), fetch(\`\${api}/orders/running\`)
+        fetch(`${api}/tables`), fetch(`${api}/menu`), fetch(`${api}/categories`), fetch(`${api}/orders/running`)
       ]);
       setTables(await tRes.json());
       setMenu(await mRes.json());
@@ -82,7 +82,7 @@ export default function CashierPOS({ api }) {
     let orderId = currentOrder?.id;
     // If no order exists for this table/parcel, create one
     if (!orderId) {
-      const oRes = await fetch(\`\${api}/orders\`, {
+      const oRes = await fetch(`${api}/orders`, {
         method: 'POST', headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({ table_id: selectedTable, type: orderType })
       });
@@ -92,14 +92,14 @@ export default function CashierPOS({ api }) {
     }
 
     // Add items to KOT
-    await fetch(\`\${api}/orders/\${orderId}/items\`, {
+    await fetch(`${api}/orders/${orderId}/items`, {
       method: 'POST', headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({ items: cart })
     });
 
     // Trigger Print KOT
     const tableName = selectedTable ? tables.find(t=>t.id===selectedTable)?.name : 'Parcel';
-    setPrintData({ type: 'KOT', id:`KOT-\${orderId}-\${Date.now()}`, items: [...cart], table: tableName, oType: orderType });
+    setPrintData({ type: 'KOT', id:`KOT-${orderId}-${Date.now()}`, items: [...cart], table: tableName, oType: orderType });
     
     // Reset cart but keep order active
     setCart([]);
@@ -109,11 +109,11 @@ export default function CashierPOS({ api }) {
 
   const handleCheckout = async () => {
     if (!currentOrder) return;
-    await fetch(\`\${api}/orders/\${currentOrder.id}/checkout\`, { method: 'POST' });
+    await fetch(`${api}/orders/${currentOrder.id}/checkout`, { method: 'POST' });
     
     // Trigger Print Bill
     const tableName = selectedTable ? tables.find(t=>t.id===selectedTable)?.name : 'Parcel';
-    setPrintData({ type: 'BILL', id: \`INV-\${currentOrder.id}\`, orderId: currentOrder.id, items: [], total: currentOrder.total, table: tableName, oType: orderType }); // Ideally fetch all KOT items for bill
+    setPrintData({ type: 'BILL', id: `INV-${currentOrder.id}`, orderId: currentOrder.id, items: [], total: currentOrder.total, table: tableName, oType: orderType }); // Ideally fetch all KOT items for bill
     
     setCurrentOrder(null);
     setSelectedTable(null);
@@ -133,11 +133,11 @@ export default function CashierPOS({ api }) {
             const isRun = orders.find(o => o.table_id === t.id);
             return (
               <button key={t.id} onClick={() => handleSelectTable(t)}
-                className={\`p-3 rounded-lg text-sm font-bold border-2 transition \${
+                className={`p-3 rounded-lg text-sm font-bold border-2 transition ${
                   selectedTable === t.id ? 'border-primary bg-primary/20 text-primary' :
                   isRun ? 'border-amber-500 bg-amber-500/10 text-amber-500' :
                   'border-slate-700 bg-slate-800 text-slate-300 hover:border-slate-500'
-                }\`}
+                }`}
               >
                 {t.name}
               </button>
@@ -148,10 +148,10 @@ export default function CashierPOS({ api }) {
         <div className="flex flex-col gap-2">
           {['parcel', 'swiggy', 'zomato'].map(t => (
             <button key={t} onClick={() => handleSelectParcel(t)}
-              className={\`p-3 rounded-lg text-sm font-bold capitalize border-2 transition flex items-center gap-3 \${
+              className={`p-3 rounded-lg text-sm font-bold capitalize border-2 transition flex items-center gap-3 ${
                 (selectedTable === null && orderType === t) ? 'border-primary bg-primary/20 text-primary' :
                 'border-slate-700 bg-slate-800 text-slate-300 hover:border-slate-500'
-              }\`}
+              }`}
             >
               {t === 'zomato' || t === 'swiggy' ? <Bike size={18}/> : <MapPin size={18}/>}
               {t} Takeaway
@@ -170,10 +170,10 @@ export default function CashierPOS({ api }) {
                className="w-full bg-slate-900 border border-slate-700 rounded-lg pl-10 pr-4 py-2 text-white focus:border-primary focus:outline-none"/>
            </div>
            <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
-              <button onClick={()=>setSelectedCategory('All')} className={\`px-4 py-1.5 rounded-full text-sm shrink-0 transition \${selectedCategory==='All'?'bg-primary text-white':'bg-slate-700 text-slate-300'}\`}>All</button>
+              <button onClick={()=>setSelectedCategory('All')} className={`px-4 py-1.5 rounded-full text-sm shrink-0 transition ${selectedCategory==='All'?'bg-primary text-white':'bg-slate-700 text-slate-300'}`}>All</button>
               {categories.map(c => (
                 <button key={c.id} onClick={()=>setSelectedCategory(c.id.toString())} 
-                   className={\`px-4 py-1.5 rounded-full text-sm shrink-0 transition \${selectedCategory===c.id.toString()?'bg-primary text-white':'bg-slate-700 text-slate-300'}\`}>
+                   className={`px-4 py-1.5 rounded-full text-sm shrink-0 transition ${selectedCategory===c.id.toString()?'bg-primary text-white':'bg-slate-700 text-slate-300'}`}>
                   {c.name}
                 </button>
               ))}

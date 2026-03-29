@@ -8,5 +8,10 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": ""
+  "description": "",
+  "devDependencies": {
+    "electron": "^41.1.0",
+    "electron-builder": "^26.8.1",
+    "wait-on": "^9.0.4"
+  }
 }

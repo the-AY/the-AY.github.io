@@ -1,10 +1,17 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #14b8a6;
+  --color-background: #0f172a;
+  --color-surface: #1e293b;
+  --color-text: #f8fafc;
+}
 
 @layer base {
   body {
-    @apply bg-background text-text font-sans antialiased;
+    @apply font-sans antialiased;
+    background-color: var(--color-background);
+    color: var(--color-text);
   }
 }
 

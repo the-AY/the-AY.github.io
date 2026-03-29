@@ -34,13 +34,20 @@ npm run dev
 \`\`\`
 *(This will start the UI on \`http://localhost:5173\`)*
 
-### 3. Running as a Desktop App (Offline)
+### 3. Static Web Simulation (No Backend)
+For portfolio integration, the app can run using `localStorage` to mock the offline SQLite Database.
+To view this, simply open [`client/dist/index.html`](./client/dist/index.html) in your browser. (The backend does not need to be running!)
+
+### 4. Running as a Desktop App (Offline)
 If you want to run this as a standalone desktop application rather than in your browser:
 \`\`\`bash
 cd electron
 npm install
 npm start
 \`\`\`
+
+---
+[📥 Download Complete Source & Offline Project Bundle](../hotel-management-pos.zip)
 
 ---
 [⬅️ Back to Main Portfolio](../../README.md)

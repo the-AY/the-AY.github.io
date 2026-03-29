@@ -6,7 +6,7 @@ export default function KitchenKDS({ api }) {
 
   const fetchKots = async () => {
     try {
-      const res = await fetch(\`\${api}/kot\`);
+      const res = await fetch(`${api}/kot`);
       setKots(await res.json());
     } catch (err) {}
   };
@@ -19,7 +19,7 @@ export default function KitchenKDS({ api }) {
 
   const bumpStatus = async (id, currentStatus) => {
     const nextStatus = currentStatus === 'pending' ? 'preparing' : 'ready';
-    await fetch(\`\${api}/kot/\${id}/status\`, {
+    await fetch(`${api}/kot/${id}/status`, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ status: nextStatus })
@@ -65,9 +65,9 @@ export default function KitchenKDS({ api }) {
 
             return (
               <div key={orderId} className="w-80 flex-shrink-0 bg-surface border border-slate-700 rounded-xl shadow-lg flex flex-col max-h-full overflow-hidden">
-                <div className={\`p-4 border-b border-slate-700 flex justify-between items-center \${timerClass.replace('text-', 'bg-').split(' ')[1].replace('/10', '/5')}\`}>
+                <div className={`p-4 border-b border-slate-700 flex justify-between items-center ${timerClass.replace('text-', 'bg-').split(' ')[1].replace('/10', '/5')}`}>
                   <div className="font-bold text-lg">{firstItem.table_name || 'Parcel'}</div>
-                  <div className={\`flex items-center gap-1 text-sm font-bold border px-2 py-1 rounded \${timerClass}\`}>
+                  <div className={`flex items-center gap-1 text-sm font-bold border px-2 py-1 rounded ${timerClass}`}>
                      <Clock size={16}/> {minutes} min
                   </div>
                 </div>
@@ -77,20 +77,20 @@ export default function KitchenKDS({ api }) {
                 
                 <div className="flex-1 overflow-y-auto p-2 flex flex-col gap-2">
                    {items.map(item => (
-                     <div key={item.id} className={\`p-3 rounded-lg border \${item.status==='preparing'?'border-primary bg-primary/10':'border-slate-700 bg-slate-800'}\`}>
+                     <div key={item.id} className={`p-3 rounded-lg border ${item.status==='preparing'?'border-primary bg-primary/10':'border-slate-700 bg-slate-800'}`}>
                        <div className="flex justify-between items-start mb-2">
                           <span className="font-bold text-lg break-words w-48 leading-tight">{item.quantity} x {item.item_name}</span>
-                          <span className={\`text-xs uppercase px-2 py-1 rounded font-bold \${item.status==='preparing'?'bg-primary text-white':'bg-slate-700 text-slate-400'}\`}>
+                          <span className={`text-xs uppercase px-2 py-1 rounded font-bold ${item.status==='preparing'?'bg-primary text-white':'bg-slate-700 text-slate-400'}`}>
                             {item.status}
                           </span>
                        </div>
                        
                        <button 
                          onClick={() => bumpStatus(item.id, item.status)}
-                         className={\`w-full py-2 rounded font-bold flex justify-center items-center gap-2 mt-2 transition \${
+                         className={`w-full py-2 rounded font-bold flex justify-center items-center gap-2 mt-2 transition ${
                            item.status==='pending' ? 'bg-amber-500 hover:bg-amber-600 text-white' : 
                            'bg-emerald-500 hover:bg-emerald-600 text-white'
-                         }\`}>
+                         }`}>
                           {item.status === 'pending' ? 'Start Preparing' : <><CheckCircle2 size={18}/> Mark Ready</>}
                        </button>
                      </div>

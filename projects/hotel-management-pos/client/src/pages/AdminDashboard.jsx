@@ -19,10 +19,10 @@ export default function AdminDashboard({ api }) {
   const fetchData = async () => {
     try {
       const [staffRes, tablesRes, catRes, menuRes] = await Promise.all([
-        fetch(\`\${api}/staff\`),
-        fetch(\`\${api}/tables\`),
-        fetch(\`\${api}/categories\`),
-        fetch(\`\${api}/menu\`)
+        fetch(`${api}/staff`),
+        fetch(`${api}/tables`),
+        fetch(`${api}/categories`),
+        fetch(`${api}/menu`)
       ]);
       setStaff(await staffRes.json());
       setTables(await tablesRes.json());
@@ -39,7 +39,7 @@ export default function AdminDashboard({ api }) {
 
   // Handlers
   const addStaff = async () => {
-    await fetch(\`\${api}/staff\`, {
+    await fetch(`${api}/staff`, {
       method: 'POST', headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(newStaff)
     });
@@ -48,12 +48,12 @@ export default function AdminDashboard({ api }) {
   };
 
   const deleteStaff = async (id) => {
-    await fetch(\`\${api}/staff/\${id}\`, { method: 'DELETE' });
+    await fetch(`${api}/staff/${id}`, { method: 'DELETE' });
     fetchData();
   };
 
   const addTable = async () => {
-    await fetch(\`\${api}/tables\`, {
+    await fetch(`${api}/tables`, {
       method: 'POST', headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ name: newTable })
     });
@@ -62,12 +62,12 @@ export default function AdminDashboard({ api }) {
   };
 
   const deleteTable = async (id) => {
-    await fetch(\`\${api}/tables/\${id}\`, { method: 'DELETE' });
+    await fetch(`${api}/tables/${id}`, { method: 'DELETE' });
     fetchData();
   };
 
   const addCategory = async () => {
-    await fetch(\`\${api}/categories\`, {
+    await fetch(`${api}/categories`, {
       method: 'POST', headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ name: newCategory })
     });
@@ -76,7 +76,7 @@ export default function AdminDashboard({ api }) {
   };
 
   const addMenuItem = async () => {
-    await fetch(\`\${api}/menu\`, {
+    await fetch(`${api}/menu`, {
       method: 'POST', headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ ...newMenuItem, price: parseFloat(newMenuItem.price) })
     });
@@ -93,13 +93,13 @@ export default function AdminDashboard({ api }) {
           Admin Panel
         </h2>
         <nav className="flex flex-col gap-2">
-          <button onClick={() => setActiveTab('staff')} className={\`flex items-center gap-3 p-3 rounded-lg transition shrink-0 \${activeTab === 'staff' ? 'bg-primary/20 text-primary' : 'hover:bg-slate-800'}\`}>
+          <button onClick={() => setActiveTab('staff')} className={`flex items-center gap-3 p-3 rounded-lg transition shrink-0 ${activeTab === 'staff' ? 'bg-primary/20 text-primary' : 'hover:bg-slate-800'}`}>
              <Users size={20} /> Staff Accounts
           </button>
-          <button onClick={() => setActiveTab('tables')} className={\`flex items-center gap-3 p-3 rounded-lg transition shrink-0 \${activeTab === 'tables' ? 'bg-primary/20 text-primary' : 'hover:bg-slate-800'}\`}>
+          <button onClick={() => setActiveTab('tables')} className={`flex items-center gap-3 p-3 rounded-lg transition shrink-0 ${activeTab === 'tables' ? 'bg-primary/20 text-primary' : 'hover:bg-slate-800'}`}>
              <Grid size={20} /> Table Setup
           </button>
-          <button onClick={() => setActiveTab('menu')} className={\`flex items-center gap-3 p-3 rounded-lg transition shrink-0 \${activeTab === 'menu' ? 'bg-primary/20 text-primary' : 'hover:bg-slate-800'}\`}>
+          <button onClick={() => setActiveTab('menu')} className={`flex items-center gap-3 p-3 rounded-lg transition shrink-0 ${activeTab === 'menu' ? 'bg-primary/20 text-primary' : 'hover:bg-slate-800'}`}>
              <Coffee size={20} /> Menu Items
           </button>
         </nav>

@@ -45,6 +45,9 @@ A multi-modal AI agent interface utilizing the Gemini API for autonomous task ex
 An Android application designed to help users track and manage their device usage for a healthier digital life.
 
 ### 6. [Hotel Management POS System](https://the-ay.github.io/projects/hotel-management-pos/client/dist/index.html)
+- **Live Static Preview**: [View Web Simulation Here](https://the-ay.github.io/projects/hotel-management-pos/client/dist/index.html)
+- **Download Full Suite**: [📥 Download Source & Offline Files](projects/hotel-management-pos.zip)
+
 A comprehensive internal offline Restaurant Management application built with React, Node.js, and Electron, featuring:
 - Live dynamic Table and Role management.
 - KDS (Kitchen Display System) for chef tracking.
