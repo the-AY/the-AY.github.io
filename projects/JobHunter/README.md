@@ -37,3 +37,7 @@ streamlit run app.py
 *   **Parsing**: pdfminer.six, spacy
 *   **Visuals**: Plotly
 *   **Data**: Pandas, Feedparser
+
+
+---
+> **Note:** For a complete list of my projects, please visit the [Main Portfolio README](../../README.md).

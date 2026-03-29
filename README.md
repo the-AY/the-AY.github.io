@@ -44,6 +44,17 @@ A multi-modal AI agent interface utilizing the Gemini API for autonomous task ex
 ### 5. [Digital Wellbeing](https://the-ay.github.io/projects/DigitalWellbeing/index.html)
 An Android application designed to help users track and manage their device usage for a healthier digital life.
 
+### 6. [Hotel Management POS System](https://the-ay.github.io/projects/hotel-management-pos/client/dist/index.html)
+A comprehensive internal offline Restaurant Management application built with React, Node.js, and Electron, featuring:
+- Live dynamic Table and Role management.
+- KDS (Kitchen Display System) for chef tracking.
+- Automated Native KOT and Final GST Invoice thermal printing.
+- Offline-first SQLite approach designed for secure Local Area Network Sync.
+
+---
+> **Note on Project Documentation:**
+> Every project listed above (along with several others in the `projects/` directory) contains its own specific `README.md` file. These files include dedicated installation instructions, architecture overviews, and usage guides specific to that application!
+
 ## 🏗️ Building from Scratch (Architecture)
 
 If you are looking to build a similar application from scratch, here is the high-level workflow used for these project:

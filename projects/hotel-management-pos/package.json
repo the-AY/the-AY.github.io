@@ -1,0 +1,11 @@
+{
+  "name": "hotel-management-pos-root",
+  "version": "1.0.0",
+  "scripts": {
+    "dev:server": "cd server && npm run dev",
+    "dev:client": "cd client && npm run dev",
+    "dev:electron": "cd electron && npm start",
+    "start": "node server/index.js",
+    "dev": "npm run start"
+  }
+}
