@@ -5,6 +5,7 @@ C:/Users/Super User/.gemini/antigravity/
 *.bak
 node_modules/
 dist/
+!projects/hotel-management-pos/client/dist/
 build/
 .env
 functions/.env
