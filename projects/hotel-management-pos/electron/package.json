@@ -1,17 +1,62 @@
 {
-  "name": "electron",
-  "version": "1.0.0",
+  "name": "smart-hotel-pos",
+  "version": "2.0.0",
+  "description": "Smart Hotel POS — plug-and-play restaurant management system",
   "main": "main.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "electron .",
+    "build-exe": "electron-builder --win --x64",
+    "dev": "electron ."
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": "",
+  "build": {
+    "appId": "com.smarthotelpOS.app",
+    "productName": "Smart Hotel POS",
+    "copyright": "Smart Hotel POS",
+    "directories": {
+      "output": "../dist-installer"
+    },
+    "files": [
+      "main.js",
+      "package.json",
+      "node_modules/**/*",
+      "../server/**/*",
+      "../client/dist-electron/**/*"
+    ],
+    "extraResources": [
+      {
+        "from": "../server",
+        "to": "server",
+        "filter": ["**/*", "!node_modules/**"]
+      },
+      {
+        "from": "../client/dist-electron",
+        "to": "client/dist-electron"
+      }
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": ["x64"]
+        }
+      ],
+      "icon": "../client/public/favicon.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "installerIcon": "../client/public/favicon.ico",
+      "shortcutName": "Smart Hotel POS",
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "include": null
+    }
+  },
+  "keywords": ["pos", "hotel", "restaurant", "billing"],
+  "author": "Smart Hotel POS",
+  "license": "MIT",
   "devDependencies": {
     "electron": "^41.1.0",
-    "electron-builder": "^26.8.1",
-    "wait-on": "^9.0.4"
+    "electron-builder": "^26.8.1"
   }
 }
