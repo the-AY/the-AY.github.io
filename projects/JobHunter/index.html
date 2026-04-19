@@ -731,6 +731,184 @@
             border-top: 1px solid var(--border);
             margin: 1rem 0
         }
+
+        /* ─── AI OPTIMIZER STYLES ─── */
+        .ai-hero {
+            background: linear-gradient(135deg, rgba(99,102,241,.12) 0%, rgba(34,211,238,.08) 100%);
+            border: 1px solid rgba(99,102,241,.25);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1.25rem;
+            flex-wrap: wrap
+        }
+        .ai-hero-icon {
+            font-size: 2.5rem;
+            line-height: 1
+        }
+        .ai-key-bar {
+            display: flex;
+            align-items: center;
+            gap: .6rem;
+            flex-wrap: wrap;
+            margin-top: .75rem
+        }
+        .ai-key-input {
+            flex: 1;
+            min-width: 200px;
+            background: var(--card2);
+            border: 1px solid var(--border);
+            border-radius: .6rem;
+            padding: .6rem .9rem;
+            color: var(--txt);
+            font-size: .85rem;
+            font-family: monospace;
+            transition: .2s
+        }
+        .ai-key-input:focus { border-color: var(--primary); outline: none }
+        .ai-two-col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1rem
+        }
+        @media(max-width:750px) { .ai-two-col { grid-template-columns: 1fr } }
+        .ai-resume-tabs { display: flex; gap: .4rem; margin-bottom: .75rem }
+        .ai-rtab {
+            background: none;
+            border: 1px solid var(--border);
+            color: var(--muted);
+            padding: .35rem .85rem;
+            border-radius: 999px;
+            cursor: pointer;
+            font-size: .8rem;
+            transition: .2s
+        }
+        .ai-rtab.active { background: var(--primary); color: #fff; border-color: var(--primary) }
+        .ai-run-btn {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, var(--primary), #7c3aed);
+            color: #fff;
+            border: none;
+            border-radius: .75rem;
+            font-size: 1.05rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: .6rem;
+            transition: .2s;
+            margin-bottom: 1.75rem
+        }
+        .ai-run-btn:hover { opacity: .9; transform: translateY(-1px) }
+        .ai-run-btn:disabled { opacity: .5; cursor: not-allowed; transform: none }
+        .ai-results { display: none }
+        .ai-match-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1.25rem
+        }
+        @media(max-width:600px){ .ai-match-row { grid-template-columns: 1fr } }
+        .ai-match-card {
+            background: var(--card2);
+            border-radius: .75rem;
+            padding: 1rem;
+            text-align: center;
+            border: 1px solid var(--border)
+        }
+        .ai-pct {
+            font-size: 2.4rem;
+            font-weight: 700;
+            display: block;
+            margin-bottom: .25rem
+        }
+        .ai-bar-wrap { height: 8px; background: var(--border); border-radius: 4px; overflow: hidden; margin-top: .5rem }
+        .ai-bar { height: 100%; border-radius: 4px; transition: width 1s ease }
+        .ai-skills-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: .83rem
+        }
+        .ai-skills-table th {
+            background: var(--card2);
+            color: var(--muted);
+            padding: .6rem .8rem;
+            text-align: left;
+            font-weight: 600;
+            font-size: .75rem;
+            text-transform: uppercase;
+            letter-spacing: .04em
+        }
+        .ai-skills-table td {
+            padding: .6rem .8rem;
+            border-bottom: 1px solid var(--border);
+            vertical-align: top
+        }
+        .ai-skills-table tr:last-child td { border-bottom: none }
+        .ai-skills-table tr:hover td { background: rgba(99,102,241,.05) }
+        .ai-arrow { color: var(--accent); padding: 0 .5rem }
+        .ai-kw-cloud { display: flex; flex-wrap: wrap; gap: .4rem; padding: .25rem 0 }
+        .ai-kw-tag {
+            background: rgba(34,211,238,.12);
+            color: var(--accent);
+            border-radius: 999px;
+            padding: .25rem .75rem;
+            font-size: .78rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: .15s;
+            user-select: none
+        }
+        .ai-kw-tag:hover { background: var(--accent); color: #000 }
+        .ai-summary-box {
+            background: var(--card2);
+            border-left: 3px solid var(--primary);
+            border-radius: 0 .6rem .6rem 0;
+            padding: 1rem 1.25rem;
+            font-size: .88rem;
+            line-height: 1.65;
+            color: var(--txt);
+            white-space: pre-wrap
+        }
+        .ai-gap-list { list-style: none; display: flex; flex-direction: column; gap: .5rem }
+        .ai-gap-item {
+            display: flex;
+            gap: .75rem;
+            align-items: flex-start;
+            background: var(--card2);
+            padding: .75rem;
+            border-radius: .6rem;
+            border-left: 3px solid var(--danger);
+            font-size: .83rem
+        }
+        .ai-loading {
+            text-align: center;
+            padding: 2.5rem;
+            display: none
+        }
+        .ai-spinner {
+            width: 44px; height: 44px;
+            border: 3px solid var(--border);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin .8s linear infinite;
+            margin: 0 auto 1rem
+        }
+        @keyframes spin { to { transform: rotate(360deg) } }
+        .ai-error {
+            background: rgba(239,68,68,.1);
+            border: 1px solid rgba(239,68,68,.3);
+            color: #fca5a5;
+            border-radius: .75rem;
+            padding: 1rem 1.25rem;
+            display: none;
+            font-size: .875rem
+        }
     </style>
 </head>
 
@@ -775,6 +953,7 @@
         <div class="top-tabs">
             <button class="top-tab active" onclick="switchTab('ats',this)">📄 ATS Scanner</button>
             <button class="top-tab" onclick="switchTab('search',this)">🔍 Job Search</button>
+            <button class="top-tab" onclick="switchTab('ai',this)" style="color: #a5b4fc; position:relative">🤖 AI Optimizer <span style="position:absolute;top:6px;right:6px;background:linear-gradient(135deg,#6366f1,#22d3ee);color:#fff;font-size:.6rem;padding:.1rem .35rem;border-radius:999px;font-weight:700">NEW</span></button>
         </div>
 
         <!-- ========== ATS TAB ========== -->
@@ -906,6 +1085,138 @@
                 <div class="preview-strip" id="previewStrip"></div>
             </div>
         </div><!-- /ats tab -->
+
+        <!-- ========== AI OPTIMIZER TAB ========== -->
+        <div id="tab-ai" class="tab-pane">
+
+            <!-- API Key Bar -->
+            <div class="ai-hero">
+                <div class="ai-hero-icon">🤖</div>
+                <div style="flex:1;min-width:220px">
+                    <div style="font-weight:700;font-size:1.1rem;margin-bottom:.25rem">AI Resume Optimizer</div>
+                    <div style="font-size:.82rem;color:var(--muted)">Powered by Gemini 1.5 Flash &mdash; enter your free key to get semantic match scores, skill reframing, and an AI-tailored summary.</div>
+                    <div class="ai-key-bar">
+                        <input class="ai-key-input" id="aiKeyInput" type="password" placeholder="AIza... (Gemini API Key)" autocomplete="off">
+                        <button class="btn btn-sm" onclick="saveAIKey()">💾 Save Key</button>
+                        <a href="https://aistudio.google.com/app/apikey" target="_blank" class="btn btn-sm btn-outline">Get Free Key ↗</a>
+                    </div>
+                    <div id="aiKeyStatus" style="font-size:.75rem;margin-top:.4rem;color:var(--muted)"></div>
+                </div>
+            </div>
+
+            <!-- Input Grid -->
+            <div class="ai-two-col">
+                <!-- Left: JD -->
+                <div class="card">
+                    <div class="card-title"><ion-icon name="document-text"></ion-icon>Job Description <span class="jd-badge">Paste</span></div>
+                    <p class="section-sub">Paste the full job description you are targeting.</p>
+                    <textarea class="jd-input" id="aiJdInput" placeholder="Paste job description here…&#10;&#10;e.g. We are looking for a Software Engineer with 3+ years in Python, REST APIs, AWS, and strong communication…" style="min-height:260px"></textarea>
+                </div>
+                <!-- Right: Resume -->
+                <div class="card">
+                    <div class="card-title"><ion-icon name="person-circle"></ion-icon>Your Resume</div>
+                    <div class="ai-resume-tabs">
+                        <button class="ai-rtab active" id="aiRtabUpload" onclick="switchAIResumeTab('upload')">📄 Upload PDF</button>
+                        <button class="ai-rtab" id="aiRtabPaste" onclick="switchAIResumeTab('paste')">✏️ Paste Text</button>
+                    </div>
+                    <!-- Upload panel -->
+                    <div id="aiUploadPanel">
+                        <div class="upload-zone" id="aiUploadZone" ondragover="handleAIDrag(event,true)" ondragleave="handleAIDrag(event,false)" ondrop="handleAIDrop(event)">
+                            <input type="file" id="aiResumeFile" accept="application/pdf,.pdf" onchange="handleAIFileSelect()">
+                            <ion-icon name="document-attach"></ion-icon>
+                            <div style="font-weight:600;margin-bottom:.25rem">Drop PDF resume here</div>
+                            <div style="font-size:.8rem;color:var(--muted)">or click to browse</div>
+                        </div>
+                        <div id="aiFileStatus" style="font-size:.8rem;color:var(--success);margin-top:.4rem;min-height:1.2rem"></div>
+                    </div>
+                    <!-- Paste panel -->
+                    <div id="aiPastePanel" style="display:none">
+                        <textarea class="jd-input" id="aiResumeText" placeholder="Paste your resume text here…" style="min-height:240px"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Run Button -->
+            <button class="ai-run-btn" id="aiRunBtn" onclick="runAIOptimizer()">
+                ✨ Run AI Analysis
+            </button>
+
+            <!-- Loading -->
+            <div class="ai-loading" id="aiLoading">
+                <div class="ai-spinner"></div>
+                <div style="color:var(--muted);font-size:.9rem" id="aiLoadingMsg">Sending to Gemini AI…</div>
+            </div>
+
+            <!-- Error -->
+            <div class="ai-error" id="aiError"></div>
+
+            <!-- Results -->
+            <div class="ai-results" id="aiResults">
+
+                <!-- Match Score Before / After -->
+                <div class="card">
+                    <div class="card-title"><ion-icon name="bar-chart"></ion-icon>Match Score Comparison</div>
+                    <p class="section-sub">Semantic AI match — not just keyword count.</p>
+                    <div class="ai-match-row">
+                        <div class="ai-match-card">
+                            <div style="font-size:.78rem;color:var(--muted);margin-bottom:.3rem">📋 Current Resume Match</div>
+                            <span class="ai-pct" id="aiBeforePct" style="color:var(--danger)">—</span>
+                            <div style="font-size:.75rem;color:var(--muted)">without optimization</div>
+                            <div class="ai-bar-wrap"><div class="ai-bar" id="aiBeforeBar" style="background:var(--danger);width:0%"></div></div>
+                        </div>
+                        <div class="ai-match-card" style="border-color:rgba(16,185,129,.3)">
+                            <div style="font-size:.78rem;color:var(--muted);margin-bottom:.3rem">🚀 Projected Match After Optimization</div>
+                            <span class="ai-pct" id="aiAfterPct" style="color:var(--success)">—</span>
+                            <div style="font-size:.75rem;color:var(--muted)">if suggestions applied</div>
+                            <div class="ai-bar-wrap"><div class="ai-bar" id="aiAfterBar" style="background:var(--success);width:0%"></div></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Transferable Skills -->
+                <div class="card">
+                    <div class="card-title"><ion-icon name="repeat"></ion-icon>Transferable Skills — JD Reframing</div>
+                    <p class="section-sub">Your existing skills mapped to how the JD expects them to be described.</p>
+                    <div style="overflow-x:auto">
+                        <table class="ai-skills-table">
+                            <thead>
+                                <tr>
+                                    <th>Your Skill / Experience</th>
+                                    <th></th>
+                                    <th>Reframe As (JD-aligned)</th>
+                                    <th>Why It Matters</th>
+                                </tr>
+                            </thead>
+                            <tbody id="aiSkillsBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Keywords to Add -->
+                <div class="card">
+                    <div class="card-title"><ion-icon name="pricetags"></ion-icon>JD Keywords to Add to Your Resume</div>
+                    <p class="section-sub">Click any keyword to copy it. Add these to your skills section or work bullets.</p>
+                    <div class="ai-kw-cloud" id="aiKwCloud"></div>
+                </div>
+
+                <!-- AI Tailored Summary -->
+                <div class="card">
+                    <div class="card-title"><ion-icon name="create"></ion-icon>AI-Tailored Professional Summary
+                        <button class="btn btn-sm btn-outline" style="margin-left:auto" onclick="copyAISummary()">📋 Copy</button>
+                    </div>
+                    <p class="section-sub">Drop this directly into your resume's summary/profile section for this JD.</p>
+                    <div class="ai-summary-box" id="aiSummaryBox">—</div>
+                </div>
+
+                <!-- Gap Analysis -->
+                <div class="card">
+                    <div class="card-title" style="color:var(--danger)"><ion-icon name="alert-circle"></ion-icon>Gaps to Address</div>
+                    <p class="section-sub">Requirements in the JD that your current resume doesn't address well.</p>
+                    <ul class="ai-gap-list" id="aiGapList"></ul>
+                </div>
+
+            </div><!-- /ai-results -->
+        </div><!-- /tab-ai -->
 
         <!-- ========== SEARCH TAB ========== -->
         <div id="tab-search" class="tab-pane">
@@ -1518,6 +1829,252 @@
             btn.innerHTML = '<ion-icon name="grid-outline"></ion-icon> Download Tracker (CSV)';
             document.getElementById('linkResults').appendChild(btn);
         }
+    </script>
+
+    <script>
+    // ─── AI OPTIMIZER ───────────────────────────────────────────────────────
+
+    let aiExtractedText = '';  // resume text for AI tab
+
+    // Key management
+    (function loadSavedKey() {
+        const k = localStorage.getItem('gemini_api_key');
+        if (k) {
+            document.getElementById('aiKeyInput').value = k;
+            document.getElementById('aiKeyStatus').textContent = '✅ Key loaded from local storage (never sent anywhere except Google API)';
+            document.getElementById('aiKeyStatus').style.color = 'var(--success)';
+        }
+    })();
+
+    function saveAIKey() {
+        const k = document.getElementById('aiKeyInput').value.trim();
+        if (!k.startsWith('AIza')) { alert('Enter a valid Gemini API key (starts with AIza…)'); return; }
+        localStorage.setItem('gemini_api_key', k);
+        const st = document.getElementById('aiKeyStatus');
+        st.textContent = '✅ Key saved to localStorage — only sent directly to Google Gemini API';
+        st.style.color = 'var(--success)';
+    }
+
+    // Resume input tab toggle
+    function switchAIResumeTab(mode) {
+        document.getElementById('aiUploadPanel').style.display = mode === 'upload' ? 'block' : 'none';
+        document.getElementById('aiPastePanel').style.display  = mode === 'paste'  ? 'block' : 'none';
+        document.getElementById('aiRtabUpload').classList.toggle('active', mode === 'upload');
+        document.getElementById('aiRtabPaste').classList.toggle('active', mode === 'paste');
+    }
+
+    // Drag/drop for AI upload zone
+    function handleAIDrag(e, on) { e.preventDefault(); document.getElementById('aiUploadZone').classList.toggle('drag', on); }
+    function handleAIDrop(e) {
+        e.preventDefault();
+        document.getElementById('aiUploadZone').classList.remove('drag');
+        const f = e.dataTransfer.files[0];
+        if (f && f.type === 'application/pdf') { processAIFile(f); }
+    }
+    function handleAIFileSelect() {
+        const f = document.getElementById('aiResumeFile').files[0];
+        if (f) processAIFile(f);
+    }
+    async function processAIFile(f) {
+        const st = document.getElementById('aiFileStatus');
+        st.textContent = '⏳ Reading PDF…';
+        st.style.color = 'var(--warn)';
+        try {
+            const arr = await f.arrayBuffer();
+            const pdf = await pdfjsLib.getDocument(new Uint8Array(arr)).promise;
+            let text = '';
+            for (let i = 1; i <= pdf.numPages; i++) {
+                const pg = await pdf.getPage(i);
+                const tc = await pg.getTextContent();
+                text += tc.items.map(it => it.str).join(' ') + '\n';
+            }
+            aiExtractedText = text.trim();
+            st.textContent = `✅ ${f.name} — ${pdf.numPages} page(s) extracted (${Math.round(aiExtractedText.length / 1000)}k chars)`;
+            st.style.color = 'var(--success)';
+        } catch(err) {
+            st.textContent = '❌ Failed to read PDF: ' + err.message;
+            st.style.color = 'var(--danger)';
+        }
+    }
+
+    // Main AI orchestration
+    async function runAIOptimizer() {
+        const apiKey = (localStorage.getItem('gemini_api_key') || document.getElementById('aiKeyInput').value).trim();
+        if (!apiKey) { showAIError('Please enter your Gemini API key above. Get one free at aistudio.google.com'); return; }
+
+        const jdText = document.getElementById('aiJdInput').value.trim();
+        if (!jdText) { showAIError('Please paste a job description on the left.'); return; }
+
+        // Get resume text from upload or paste
+        const pasteActive = document.getElementById('aiPastePanel').style.display !== 'none';
+        const resumeText = pasteActive
+            ? document.getElementById('aiResumeText').value.trim()
+            : aiExtractedText;
+        if (!resumeText) {
+            showAIError(pasteActive
+                ? 'Please paste your resume text in the right panel.'
+                : 'Please upload your PDF resume, or switch to paste mode.');
+            return;
+        }
+
+        // Show loading
+        document.getElementById('aiResults').style.display = 'none';
+        document.getElementById('aiError').style.display = 'none';
+        document.getElementById('aiLoading').style.display = 'block';
+        document.getElementById('aiRunBtn').disabled = true;
+
+        const msgs = ['Sending to Gemini AI…', 'Analysing JD requirements…', 'Mapping transferable skills…', 'Generating optimized summary…', 'Almost done…'];
+        let mi = 0;
+        const ticker = setInterval(() => {
+            document.getElementById('aiLoadingMsg').textContent = msgs[Math.min(mi++, msgs.length - 1)];
+        }, 2000);
+
+        const prompt = buildAIPrompt(resumeText, jdText);
+
+        try {
+            const resp = await fetch(
+                `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`,
+                {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        contents: [{ parts: [{ text: prompt }] }],
+                        generationConfig: { temperature: 0.4, maxOutputTokens: 2048, responseMimeType: 'application/json' }
+                    })
+                }
+            );
+
+            if (!resp.ok) {
+                const err = await resp.json().catch(() => ({}));
+                throw new Error(err?.error?.message || `HTTP ${resp.status}`);
+            }
+
+            const raw = await resp.json();
+            const jsonText = raw?.candidates?.[0]?.content?.parts?.[0]?.text || '';
+            let data;
+            try { data = JSON.parse(jsonText); }
+            catch(pe) {
+                // Try extracting JSON block if wrapped in markdown
+                const match = jsonText.match(/```(?:json)?\s*([\s\S]+?)```/);
+                if (match) data = JSON.parse(match[1]);
+                else throw new Error('Could not parse AI response as JSON. Raw: ' + jsonText.substring(0, 200));
+            }
+            renderAIResults(data);
+        } catch(err) {
+            showAIError('AI Error: ' + err.message + (err.message.includes('API_KEY') ? '\n\nCheck your API key is correct and has Gemini 1.5 Flash enabled.' : ''));
+        } finally {
+            clearInterval(ticker);
+            document.getElementById('aiLoading').style.display = 'none';
+            document.getElementById('aiRunBtn').disabled = false;
+        }
+    }
+
+    function buildAIPrompt(resume, jd) {
+        return `You are an expert resume coach and ATS specialist. Analyse the following resume against the job description and return ONLY a single valid JSON object (no markdown, no extra text) with exactly these fields:
+
+{
+  "before_match_pct": <integer 0-100, semantic match of current resume to JD>,
+  "after_match_pct": <integer 0-100, projected match if all suggestions applied>,
+  "transferable_skills": [
+    { "your_skill": "...", "reframe_as": "...", "why": "..." }
+  ],
+  "keywords_to_add": ["keyword1", "keyword2", ...],
+  "ai_summary": "3-4 sentence professional resume summary tailored to this exact JD",
+  "gaps": ["Gap 1 description", "Gap 2 description", ...]
+}
+
+Rules:
+- transferable_skills: 5-8 entries mapping candidate's actual experience to JD language
+- keywords_to_add: 10-15 specific technical or domain keywords from JD missing in resume
+- ai_summary: write in third-person bullet-point style (no "I"), specific to this JD
+- gaps: 4-6 clear, actionable gap statements (e.g. "No mention of Docker/containerisation despite JD requiring it")
+- before_match_pct: be honest and conservative
+- after_match_pct: realistic projection if all keywords_to_add and transferable_skills reframing is applied
+
+--- RESUME ---
+${resume.substring(0, 6000)}
+
+--- JOB DESCRIPTION ---
+${jd.substring(0, 3000)}`;
+    }
+
+    function renderAIResults(d) {
+        // Match scores
+        const before = Math.min(100, Math.max(0, parseInt(d.before_match_pct) || 0));
+        const after  = Math.min(100, Math.max(0, parseInt(d.after_match_pct)  || 0));
+        const beforeColor = before >= 70 ? 'var(--success)' : before >= 45 ? 'var(--warn)' : 'var(--danger)';
+
+        document.getElementById('aiBeforePct').textContent = before + '%';
+        document.getElementById('aiBeforePct').style.color = beforeColor;
+        document.getElementById('aiAfterPct').textContent = after + '%';
+        setTimeout(() => {
+            document.getElementById('aiBeforeBar').style.width = before + '%';
+            document.getElementById('aiBeforeBar').style.background = beforeColor;
+            document.getElementById('aiAfterBar').style.width = after + '%';
+        }, 100);
+
+        // Transferable skills table
+        const skills = Array.isArray(d.transferable_skills) ? d.transferable_skills : [];
+        document.getElementById('aiSkillsBody').innerHTML = skills.map(s => `
+            <tr>
+                <td style="color:var(--txt);font-weight:500">${escHtml(s.your_skill || '')}</td>
+                <td class="ai-arrow">→</td>
+                <td style="color:var(--accent);font-weight:500">${escHtml(s.reframe_as || '')}</td>
+                <td style="color:var(--muted)">${escHtml(s.why || '')}</td>
+            </tr>`).join('') || '<tr><td colspan="4" style="color:var(--muted)">No data returned.</td></tr>';
+
+        // Keywords cloud
+        const kws = Array.isArray(d.keywords_to_add) ? d.keywords_to_add : [];
+        document.getElementById('aiKwCloud').innerHTML = kws.map(k =>
+            `<span class="ai-kw-tag" onclick="copyText('${escHtml(k)}', this)" title="Click to copy">${escHtml(k)}</span>`
+        ).join('') || '<span style="color:var(--muted);font-size:.82rem">No keywords returned.</span>';
+
+        // AI summary
+        document.getElementById('aiSummaryBox').textContent = d.ai_summary || '—';
+
+        // Gaps
+        const gaps = Array.isArray(d.gaps) ? d.gaps : [];
+        document.getElementById('aiGapList').innerHTML = gaps.map(g =>
+            `<li class="ai-gap-item"><span style="color:var(--danger);flex-shrink:0">⚠️</span><span>${escHtml(g)}</span></li>`
+        ).join('') || '<li style="color:var(--muted);font-size:.82rem;padding:.5rem">No gaps identified — great match!</li>';
+
+        // Show
+        document.getElementById('aiResults').style.display = 'block';
+        document.getElementById('aiResults').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function showAIError(msg) {
+        const el = document.getElementById('aiError');
+        el.textContent = '⚠️ ' + msg;
+        el.style.display = 'block';
+        el.scrollIntoView({ behavior: 'smooth' });
+        document.getElementById('aiLoading').style.display = 'none';
+        document.getElementById('aiRunBtn').disabled = false;
+    }
+
+    function copyAISummary() {
+        const txt = document.getElementById('aiSummaryBox').textContent;
+        navigator.clipboard.writeText(txt).then(() => {
+            const btn = event.target.closest('button');
+            const orig = btn.innerHTML;
+            btn.innerHTML = '✅ Copied!';
+            setTimeout(() => btn.innerHTML = orig, 1800);
+        });
+    }
+
+    function copyText(txt, el) {
+        navigator.clipboard.writeText(txt).then(() => {
+            const orig = el.textContent;
+            el.textContent = '✅ ' + orig;
+            el.style.background = 'var(--success)';
+            el.style.color = '#000';
+            setTimeout(() => { el.textContent = orig; el.style.background = ''; el.style.color = ''; }, 1500);
+        });
+    }
+
+    function escHtml(s) {
+        return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
     </script>
 </body>
 
