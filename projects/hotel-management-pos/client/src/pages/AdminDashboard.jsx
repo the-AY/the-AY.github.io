@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Settings, Users, Grid, Coffee, Plus, Trash2, Monitor, RefreshCw, LogOut, Leaf, UtensilsCrossed, Save, ChevronRight } from 'lucide-react';
+import { Settings, Users, Grid, Coffee, Plus, Trash2, Monitor, RefreshCw, LogOut, Leaf, UtensilsCrossed, Save, ChevronRight, ArrowLeft } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 export default function AdminDashboard({ api }) {
   const [activeTab, setActiveTab] = useState('staff');
+  const navigate = useNavigate();
 
   // ── Data State ─────────────────────────────────────────
   const [staff,      setStaff]      = useState([]);
@@ -39,14 +41,20 @@ export default function AdminDashboard({ api }) {
   const fetchSettings = async () => {
     try {
       const r = await fetch(`${api}/settings`);
-      if (r.ok) setSettings(await r.json());
+      if (r.ok) {
+         const data = await r.json();
+         if (data) setSettings(data);
+      }
     } catch (_) {}
   };
 
   const fetchSessions = async () => {
     try {
       const r = await fetch(`${api}/sessions`);
-      if (r.ok) setSessions(await r.json());
+      if (r.ok) {
+         const data = await r.json();
+         setSessions(Array.isArray(data) ? data : []);
+      }
     } catch (_) {}
   };
 
@@ -152,6 +160,23 @@ export default function AdminDashboard({ api }) {
             </button>
           );
         })}
+
+        <div className="mt-auto space-y-2 pt-4 border-t border-slate-800">
+          <button
+            onClick={() => navigate('/cashier')}
+            className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition w-full text-slate-400 hover:bg-slate-800 hover:text-slate-200"
+          >
+            <ArrowLeft size={18} />
+            Back to POS
+          </button>
+          <button
+            onClick={() => navigate('/kitchen')}
+            className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition w-full text-slate-400 hover:bg-slate-800 hover:text-slate-200"
+          >
+            <ArrowLeft size={18} />
+            Go to Kitchen
+          </button>
+        </div>
       </div>
 
       {/* ── Content ──────────────────────────────────────── */}
@@ -367,37 +392,37 @@ export default function AdminDashboard({ api }) {
             <div className="space-y-4">
               <div>
                 <label className="text-xs text-slate-400 mb-1 block uppercase tracking-wide">Restaurant Name</label>
-                <input value={settings.restaurant_name || ''}
+                <input value={settings?.restaurant_name || ''}
                   onChange={e => setSettings({ ...settings, restaurant_name: e.target.value })}
                   className={`${inp} w-full`} placeholder="e.g. Sagar Hotel" />
               </div>
               <div>
                 <label className="text-xs text-slate-400 mb-1 block uppercase tracking-wide">Address (shown on bill)</label>
-                <textarea value={settings.address || ''}
+                <textarea value={settings?.address || ''}
                   onChange={e => setSettings({ ...settings, address: e.target.value })}
                   rows={2} className={`${inp} w-full resize-none`} placeholder="123 Main Road, Bangalore - 560001" />
               </div>
               <div>
                 <label className="text-xs text-slate-400 mb-1 block uppercase tracking-wide">FSSAI License No.</label>
-                <input value={settings.fssai || ''}
+                <input value={settings?.fssai || ''}
                   onChange={e => setSettings({ ...settings, fssai: e.target.value })}
                   className={`${inp} w-full`} placeholder="10012345678901" />
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="text-xs text-slate-400 mb-1 block uppercase tracking-wide">GST %</label>
-                  <input value={settings.gst_percent || ''} type="number" min={0} max={28} step={0.5}
+                  <input value={settings?.gst_percent || ''} type="number" min={0} max={28} step={0.5}
                     onChange={e => setSettings({ ...settings, gst_percent: parseFloat(e.target.value) })}
                     className={`${inp} w-full`} />
-                  {settings.gst_percent > 0 && (
+                  {settings?.gst_percent > 0 && (
                     <p className="text-xs text-slate-500 mt-1">
-                      Split: CGST {(settings.gst_percent / 2).toFixed(1)}% + SGST {(settings.gst_percent / 2).toFixed(1)}%
+                      Split: CGST {(settings?.gst_percent / 2).toFixed(1)}% + SGST {(settings?.gst_percent / 2).toFixed(1)}%
                     </p>
                   )}
                 </div>
                 <div>
                   <label className="text-xs text-slate-400 mb-1 block uppercase tracking-wide">Currency Symbol</label>
-                  <input value={settings.currency || '₹'}
+                  <input value={settings?.currency || '₹'}
                     onChange={e => setSettings({ ...settings, currency: e.target.value })}
                     className={`${inp} w-full`} placeholder="₹" />
                 </div>
@@ -425,7 +450,7 @@ export default function AdminDashboard({ api }) {
                 <RefreshCw size={14} /> Refresh
               </button>
             </div>
-            {sessions.length === 0
+            {(!sessions || sessions.length === 0)
               ? <p className="text-slate-500 text-sm text-center py-8">No active sessions in the last 5 minutes.</p>
               : (
                 <table className="w-full text-sm text-left">
@@ -440,7 +465,7 @@ export default function AdminDashboard({ api }) {
                     </tr>
                   </thead>
                   <tbody>
-                    {sessions.map(s => (
+                    {(sessions || []).map(s => (
                       <tr key={s.id} className="border-b border-slate-800/50 hover:bg-slate-800/20">
                         <td className="py-3 font-medium">{s.staff_name}</td>
                         <td className="py-3">
