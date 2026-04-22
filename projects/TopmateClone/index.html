@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book a Call | Adishy</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <div class="background-elements">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+    </div>
+
+    <main class="container">
+        <!-- Profile Header -->
+        <header class="profile-section glass-panel">
+            <div class="avatar-container">
+                <!-- Fallback to a placeholder if no image exists -->
+                <img src="../../assets/img/profile.jpeg" onerror="this.src='https://ui-avatars.com/api/?name=Adishy&size=200&background=4F46E5&color=fff'" alt="Adishy" class="avatar">
+            </div>
+            <h1 class="name">Adishy</h1>
+            <p class="bio">Developer & Creator. Building innovative digital products. Let's talk about your next big idea, tech reviews, or just have a coffee chat.</p>
+            
+            <div class="social-links">
+                <a href="https://github.com/the-AY" target="_blank" class="social-btn"><i class="fa-brands fa-github"></i></a>
+                <a href="#" target="_blank" class="social-btn"><i class="fa-brands fa-linkedin"></i></a>
+                <a href="mailto:adishy.is19@gmail.com" class="social-btn"><i class="fa-solid fa-envelope"></i></a>
+            </div>
+        </header>
+
+        <!-- Services Section -->
+        <section class="services-section">
+            <h2 class="section-title">Available Services</h2>
+            <div class="services-grid">
+                
+                <!-- Service Card 1 -->
+                <div class="service-card glass-panel" onclick="openBookingModal('1:1 Strategy Call', '30 min')">
+                    <div class="card-content">
+                        <div class="service-icon"><i class="fa-solid fa-rocket"></i></div>
+                        <div class="service-details">
+                            <h3 class="service-title">1:1 Strategy Call</h3>
+                            <p class="service-desc">Discuss your project architecture, startup ideas, or general tech strategy.</p>
+                            <span class="service-duration"><i class="fa-regular fa-clock"></i> 30 mins</span>
+                        </div>
+                    </div>
+                    <div class="card-action">
+                        <span class="book-text">Book</span>
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </div>
+                </div>
+
+                <!-- Service Card 2 -->
+                <div class="service-card glass-panel" onclick="openBookingModal('Resume & Portfolio Review', '20 min')">
+                    <div class="card-content">
+                        <div class="service-icon"><i class="fa-solid fa-file-code"></i></div>
+                        <div class="service-details">
+                            <h3 class="service-title">Resume/Portfolio Review</h3>
+                            <p class="service-desc">Get actionable feedback on your developer portfolio and resume.</p>
+                            <span class="service-duration"><i class="fa-regular fa-clock"></i> 20 mins</span>
+                        </div>
+                    </div>
+                    <div class="card-action">
+                        <span class="book-text">Book</span>
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </div>
+                </div>
+
+                <!-- Service Card 3 -->
+                <div class="service-card glass-panel" onclick="openBookingModal('Coffee Chat', '15 min')">
+                    <div class="card-content">
+                        <div class="service-icon"><i class="fa-solid fa-mug-hot"></i></div>
+                        <div class="service-details">
+                            <h3 class="service-title">Casual Coffee Chat</h3>
+                            <p class="service-desc">Just want to say hi or network? Grab a virtual coffee and let's talk!</p>
+                            <span class="service-duration"><i class="fa-regular fa-clock"></i> 15 mins</span>
+                        </div>
+                    </div>
+                    <div class="card-action">
+                        <span class="book-text">Book</span>
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+    </main>
+
+    <!-- Booking Modal -->
+    <div id="bookingModal" class="modal-overlay">
+        <div class="modal glass-panel">
+            <div class="modal-header">
+                <div>
+                    <h3 id="modalTitle">Book</h3>
+                    <p id="modalDuration" class="modal-subtitle"><i class="fa-regular fa-clock"></i> -- mins</p>
+                </div>
+                <button class="close-btn" onclick="closeBookingModal()"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="modal-body">
+                <p style="margin-bottom: 20px; font-size: 0.95rem; color: var(--text-secondary);">Fill out the form below to confirm your meeting. Once submitted, you'll automatically receive a calendar invite!</p>
+                
+                <!-- YOU NEED TO REPLACE THIS SRC LINK WITH YOUR GOOGLE FORM EMBED LINK -->
+                <iframe id="googleFormFrame" 
+                    src="https://docs.google.com/forms/d/e/YOUR_FORM_ID/viewform?embedded=true" 
+                    width="100%" 
+                    height="500" 
+                    frameborder="0" 
+                    marginheight="0" 
+                    marginwidth="0">
+                    Loading…
+                </iframe>
+
+                <div class="fallback-action">
+                    <p>If the form doesn't load,</p>
+                    <!-- REPLACE WITH YOUR FORM LINK -->
+                    <a href="https://forms.google.com/YOUR_FORM_ID" target="_blank" class="primary-btn">Open Form in New Tab</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
