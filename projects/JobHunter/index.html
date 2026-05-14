@@ -1080,9 +1080,13 @@
             <div class="preview-wrap card" id="previewWrap">
                 <div class="preview-head">
                     <div class="card-title" style="margin-bottom:0"><ion-icon name="eye"></ion-icon>Resume Preview</div>
-                    <button class="btn btn-sm btn-outline" onclick="togglePreview()">Hide</button>
+                    <div style="display:flex;gap:8px">
+                        <button class="btn btn-sm btn-outline" id="parsedViewBtn" onclick="toggleParsedView()">View Parsed Text</button>
+                        <button class="btn btn-sm btn-outline" onclick="togglePreview()">Hide</button>
+                    </div>
                 </div>
                 <div class="preview-strip" id="previewStrip"></div>
+                <div id="parsedTextView" style="display:none; padding:1rem; background:var(--card2); border:1px solid var(--border); border-radius:.5rem; max-height:400px; overflow-y:auto; font-size:.85rem; line-height:1.6; white-space:pre-wrap;"></div>
             </div>
         </div><!-- /ats tab -->
 
@@ -1528,6 +1532,8 @@
         let verbsFound = [];
         let jdKeywords = [];
         let currentFile = null;
+        let globalFullText = '';
+        let isParsedView = false;
         // ─── Main flow ───
         async function analyzeResume() {
             const f = document.getElementById('resumeFile').files[0];
@@ -1561,6 +1567,7 @@
                 });
                 const boldPct = totalChars > 0 ? Math.round(boldChars / totalChars * 100) : 0;
                 const avgFont = fontSizes.length > 0 ? fontSizes.reduce((a, b) => a + b, 0) / fontSizes.length : 0;
+                globalFullText = fullText;
                 runAnalysis(fullText, pdf.numPages, boldPct, avgFont, f.name);
                 setLoadBar(100);
                 renderPDFPreview(arr, pdf.numPages);
@@ -1789,10 +1796,65 @@
                 await pg.render({ canvasContext: cv.getContext('2d'), viewport: vp }).promise;
                 strip.appendChild(cv);
             }
+            renderParsedText(); // Prepare the text view
         }
         function togglePreview() {
             const w = document.getElementById('previewWrap');
             w.style.display = w.style.display === 'none' ? 'block' : 'none';
+        }
+
+        // ─── VISUAL TEXT PARSE VIEW ───
+        function toggleParsedView() {
+            isParsedView = !isParsedView;
+            const strip = document.getElementById('previewStrip');
+            const textView = document.getElementById('parsedTextView');
+            const btn = document.getElementById('parsedViewBtn');
+            if (isParsedView) {
+                strip.style.display = 'none';
+                textView.style.display = 'block';
+                btn.innerHTML = 'View Original PDF';
+                btn.classList.add('btn-cyan');
+            } else {
+                strip.style.display = 'flex';
+                textView.style.display = 'none';
+                btn.innerHTML = 'View Parsed Text';
+                btn.classList.remove('btn-cyan');
+            }
+        }
+
+        function renderParsedText() {
+            if (!globalFullText) return;
+            const textView = document.getElementById('parsedTextView');
+            
+            // Basic tokenization
+            let text = globalFullText.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+            
+            // Build regex for skills and verbs
+            // We sort by length descending so longer phrases match first
+            const sortedSkills = extractedSkills.slice().sort((a,b) => b.length - a.length);
+            const sortedVerbs = verbsFound.slice().sort((a,b) => b.length - a.length);
+            
+            // Highlight Skills (Blue)
+            sortedSkills.forEach(s => {
+                const regex = new RegExp(`\\\\b(${s.replace(/[.*+?^${}()|[\\]\\\\]/g, '\\\\$&')})\\\\b`, 'gi');
+                text = text.replace(regex, '<span style="background:rgba(99,102,241,0.2); color:#a5b4fc; padding:0 2px; border-radius:3px; font-weight:600;" title="Skill">$1</span>');
+            });
+            
+            // Highlight Verbs (Green)
+            sortedVerbs.forEach(v => {
+                const regex = new RegExp(`\\\\b(${v.replace(/[.*+?^${}()|[\\]\\\\]/g, '\\\\$&')}e?d?s?)\\\\b`, 'gi');
+                text = text.replace(regex, '<span style="background:rgba(16,185,129,0.2); color:#6ee7b7; padding:0 2px; border-radius:3px; font-weight:600;" title="Action Verb">$1</span>');
+            });
+
+            // Mute "unparsed" text (text not in a span).
+            // A simple trick is to wrap everything in a muted span, but since inner spans override color, we can just apply a global color to the container.
+            textView.style.color = "rgba(255,255,255,0.4)"; // Muted text for unrecognized content
+            textView.innerHTML = `<div style="margin-bottom:1rem; font-size:0.8rem; color:var(--muted); border-bottom:1px solid var(--border); padding-bottom:0.5rem;">
+                <strong>Legend:</strong> 
+                <span style="background:rgba(99,102,241,0.2); color:#a5b4fc; padding:2px 4px; border-radius:3px; margin:0 4px;">Skills/Keywords</span>
+                <span style="background:rgba(16,185,129,0.2); color:#6ee7b7; padding:2px 4px; border-radius:3px; margin:0 4px;">Action Verbs</span>
+                <span style="color:rgba(255,255,255,0.4); margin-left:4px;">Unparsed/Filler Text</span>
+            </div>` + text;
         }
 
         // ─── JOB SEARCH ───

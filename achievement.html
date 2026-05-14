@@ -571,6 +571,11 @@
                         Certificates
                         <span class="ach-tab-count" id="cert-count">—</span>
                     </button>
+                    <button class="ach-tab" onclick="switchTab('news')" id="tab-news">
+                        <ion-icon name="newspaper-outline"></ion-icon>
+                        News Coverage
+                        <span class="ach-tab-count" id="news-count">2</span>
+                    </button>
                 </div>
                 <!-- Admin Add Button -->
                 <button id="admin-btn" class="ach-tab" onclick="openAdminModal()" style="display: none; border-color: var(--primary-blue); color: var(--primary-blue);">
@@ -612,6 +617,38 @@
                         <code>assets/certificates/</code> folder and push to GitHub. They'll appear here
                         automatically — no code changes needed!
                     </p>
+                </div>
+            </div>
+
+            <!-- NEWS COVERAGE PANEL -->
+            <div id="panel-news" class="ach-panel">
+                <div class="cert-grid" id="news-grid">
+                    <div class="cert-card">
+                        <div class="cert-card-image" style="height:180px;">
+                            <img src="./assets/images/adish_news.png" alt="News Feature" style="object-fit:cover; width:100%; height:100%;">
+                        </div>
+                        <div class="cert-card-body">
+                            <h3 class="cert-card-title">Sahyadri College Alumni Feature</h3>
+                            <p class="ach-card-desc" style="font-size:0.875rem; color:var(--text-secondary); margin-top:8px;">Adish Yermal was featured by his alma mater, Sahyadri College, for returning to campus to inspire future engineers. Currently a Software Development Engineer in Healthcare at Tata Elxsi.</p>
+                            <div class="ach-card-meta" style="margin-top:12px;">
+                                <span class="ach-card-tag">Sep 2025</span>
+                                <span class="ach-card-year">Tata Elxsi</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="cert-card">
+                        <div class="cert-card-image" style="height:180px; background:linear-gradient(135deg, #e0f2fe, #bae6fd); display:flex; align-items:center; justify-content:center;">
+                            <ion-icon name="document-text-outline" style="font-size:64px; color:#0284c7;"></ion-icon>
+                        </div>
+                        <div class="cert-card-body">
+                            <h3 class="cert-card-title">Published Research on Cybercrime</h3>
+                            <p class="ach-card-desc" style="font-size:0.875rem; color:var(--text-secondary); margin-top:8px;">Co-authored academic work "Advancements in Cybercrime Investigation and Digital Forensics" addressing modern cyber threats and forensic methodologies.</p>
+                            <div class="ach-card-meta" style="margin-top:12px;">
+                                <span class="ach-card-tag">Publication</span>
+                                <span class="ach-card-year">Cybersecurity</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
