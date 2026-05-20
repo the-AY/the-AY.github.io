@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Compressor & Editor</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Cropper.js CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.css" rel="stylesheet">
+    <!-- Ionicons -->
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar Controls -->
+        <aside class="sidebar">
+            <div class="logo">
+                <ion-icon name="images-outline"></ion-icon>
+                <h2>PixelPerfect</h2>
+            </div>
+            
+            <div class="control-group upload-group">
+                <label for="image-upload" class="upload-btn">
+                    <ion-icon name="cloud-upload-outline"></ion-icon>
+                    <span>Upload Image</span>
+                </label>
+                <input type="file" id="image-upload" accept="image/png, image/jpeg, image/webp" hidden>
+                <div id="file-info" class="file-info hidden"></div>
+            </div>
+
+            <div class="control-section disabled" id="editor-controls">
+                <!-- Action Tabs -->
+                <div class="tabs">
+                    <button class="tab-btn active" data-tab="compress">Compress</button>
+                    <button class="tab-btn" data-tab="resize">Resize</button>
+                    <button class="tab-btn" data-tab="crop">Crop</button>
+                </div>
+
+                <!-- Compress Panel -->
+                <div class="tab-panel active" id="panel-compress">
+                    <div class="control-group">
+                        <label>Format</label>
+                        <select id="format-select">
+                            <option value="image/jpeg">JPEG</option>
+                            <option value="image/png">PNG</option>
+                            <option value="image/webp">WEBP</option>
+                        </select>
+                    </div>
+                    <div class="control-group">
+                        <div class="slider-header">
+                            <label>Quality</label>
+                            <span id="quality-val">80%</span>
+                        </div>
+                        <input type="range" id="quality-slider" min="0.1" max="1" step="0.05" value="0.8">
+                    </div>
+                </div>
+
+                <!-- Resize Panel -->
+                <div class="tab-panel hidden" id="panel-resize">
+                    <div class="control-group row-inputs">
+                        <div class="input-col">
+                            <label>Width (px)</label>
+                            <input type="number" id="resize-width" min="1">
+                        </div>
+                        <div class="input-col">
+                            <label>Height (px)</label>
+                            <input type="number" id="resize-height" min="1">
+                        </div>
+                    </div>
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="maintain-ratio" checked>
+                        <label for="maintain-ratio">Maintain aspect ratio</label>
+                    </div>
+                    <button id="apply-resize-btn" class="btn-secondary">Apply Resize</button>
+                </div>
+
+                <!-- Crop Panel -->
+                <div class="tab-panel hidden" id="panel-crop">
+                    <div class="control-group row-inputs">
+                        <button id="start-crop-btn" class="btn-secondary">Start Cropping</button>
+                        <button id="apply-crop-btn" class="btn-primary hidden">Apply Crop</button>
+                        <button id="cancel-crop-btn" class="btn-danger hidden">Cancel</button>
+                    </div>
+                    <div class="aspect-ratio-controls hidden" id="crop-ratio-controls">
+                        <label>Aspect Ratio</label>
+                        <select id="crop-ratio">
+                            <option value="free">Free</option>
+                            <option value="1">1:1 (Square)</option>
+                            <option value="1.3333333333333333">4:3</option>
+                            <option value="1.7777777777777777">16:9</option>
+                            <option value="0.6666666666666666">2:3</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="action-buttons">
+                    <button id="download-btn" class="btn-primary">
+                        <ion-icon name="download-outline"></ion-icon>
+                        Download Image
+                    </button>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Preview Area -->
+        <main class="preview-area">
+            <div class="preview-header">
+                <h3>Preview</h3>
+                <div class="stats hidden" id="image-stats">
+                    <span class="stat-badge original">
+                        <ion-icon name="document-outline"></ion-icon>
+                        <span id="orig-size">0 KB</span>
+                    </span>
+                    <ion-icon name="arrow-forward-outline" class="stat-arrow"></ion-icon>
+                    <span class="stat-badge compressed">
+                        <ion-icon name="document-text-outline"></ion-icon>
+                        <span id="comp-size">0 KB</span>
+                    </span>
+                    <span class="stat-badge saving" id="saving-badge">0% Saved</span>
+                </div>
+            </div>
+            
+            <div class="canvas-container">
+                <div class="upload-placeholder" id="upload-placeholder">
+                    <ion-icon name="image-outline"></ion-icon>
+                    <p>Drag and drop an image or click upload</p>
+                </div>
+                <!-- Image for cropper and preview -->
+                <img id="image-preview" class="hidden" src="" alt="Preview">
+            </div>
+            <a href="../../index.html" class="back-link">
+                <ion-icon name="arrow-back-outline"></ion-icon>
+                Back to Portfolio
+            </a>
+        </main>
+    </div>
+
+    <!-- Cropper.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

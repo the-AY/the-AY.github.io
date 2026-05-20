@@ -1570,7 +1570,7 @@
                 globalFullText = fullText;
                 runAnalysis(fullText, pdf.numPages, boldPct, avgFont, f.name);
                 setLoadBar(100);
-                renderPDFPreview(arr, pdf.numPages);
+                renderPDFPreview(pdf, pdf.numPages);
                 setTimeout(() => setLoadBar(0), 600);
             } catch (err) { console.error(err); alert('Error reading PDF: ' + err.message); setLoadBar(0); }
         }
@@ -1784,10 +1784,9 @@
         }
 
         // ─── PDF PREVIEW ───
-        async function renderPDFPreview(arr, numPages) {
+        async function renderPDFPreview(pdf, numPages) {
             const strip = document.getElementById('previewStrip');
             strip.innerHTML = '';
-            const pdf = await pdfjsLib.getDocument(new Uint8Array(arr)).promise;
             for (let i = 1; i <= Math.min(numPages, 4); i++) {
                 const pg = await pdf.getPage(i);
                 const vp = pg.getViewport({ scale: 0.6 });
@@ -1836,13 +1835,17 @@
             
             // Highlight Skills (Blue)
             sortedSkills.forEach(s => {
-                const regex = new RegExp(`\\\\b(${s.replace(/[.*+?^${}()|[\\]\\\\]/g, '\\\\$&')})\\\\b`, 'gi');
+                if (!s || s.length < 2) return;
+                const safeS = s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+                const regex = new RegExp(`\\b(${safeS})\\b(?![^<]*>)`, 'gi');
                 text = text.replace(regex, '<span style="background:rgba(99,102,241,0.2); color:#a5b4fc; padding:0 2px; border-radius:3px; font-weight:600;" title="Skill">$1</span>');
             });
             
             // Highlight Verbs (Green)
             sortedVerbs.forEach(v => {
-                const regex = new RegExp(`\\\\b(${v.replace(/[.*+?^${}()|[\\]\\\\]/g, '\\\\$&')}e?d?s?)\\\\b`, 'gi');
+                if (!v || v.length < 2) return;
+                const safeV = v.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+                const regex = new RegExp(`\\b(${safeV}e?d?s?)\\b(?![^<]*>)`, 'gi');
                 text = text.replace(regex, '<span style="background:rgba(16,185,129,0.2); color:#6ee7b7; padding:0 2px; border-radius:3px; font-weight:600;" title="Action Verb">$1</span>');
             });
 
@@ -1971,7 +1974,7 @@
         const pasteActive = document.getElementById('aiPastePanel').style.display !== 'none';
         const resumeText = pasteActive
             ? document.getElementById('aiResumeText').value.trim()
-            : aiExtractedText;
+            : (aiExtractedText || globalFullText);
         if (!resumeText) {
             showAIError(pasteActive
                 ? 'Please paste your resume text in the right panel.'
