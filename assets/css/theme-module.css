@@ -1,0 +1,22 @@
+/*
+  #THEME MODULE - UNIFIED GLOBAL COLORS
+*/
+:root {
+  --portfolio-primary: #1A73E8;
+  --portfolio-primary-dark: #0D47A1;
+  --portfolio-primary-light: #E8F0FE;
+  --portfolio-accent-cyan: #00F2FF;
+  --portfolio-accent-purple: #7B2FF7;
+  --portfolio-accent-pink: #FF2D78;
+  
+  --portfolio-bg-white: #FFFFFF;
+  --portfolio-bg-light: #F8F9FA;
+  --portfolio-bg-dark: #050507;
+  
+  --portfolio-text-primary: #171717;
+  --portfolio-text-secondary: #4A4A4A;
+  --portfolio-text-muted: #80868B;
+  
+  --portfolio-border-color: rgba(0, 0, 0, 0.08);
+  --portfolio-border-light: rgba(0, 0, 0, 0.05);
+}
