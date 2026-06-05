@@ -1,6 +1,6 @@
 # Adish Yermal - Portfolio Website
 
-Welcome to the official portfolio of **Adish Yermal**, a Software Developer & Cybersecurity Enthusiast. This website showcases my projects, skills, and professional journey.
+Welcome to the official portfolio of **Adish Yermal**, a Software Development Engineer & Cybersecurity Enthusiast. This website showcases my projects, skills, and professional journey.
 
 ## 🚀 Overview
 
@@ -70,7 +70,7 @@ If you are looking to build a similar application from scratch, here is the high
 
 ## 👨‍💻 Developed By
 
-**Adish Yermal** — *Software Developer at Tata Elxsi*
+**Adish Yermal** — *Software Development Engineer at Tata Elxsi*
 
 - [LinkedIn](https://www.linkedin.com/in/adish-yermal/)
 - [GitHub](https://github.com/the-AY)
